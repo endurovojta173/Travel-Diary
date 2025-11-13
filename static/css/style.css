@@ -1,0 +1,16 @@
+body {background: silver;}
+header {margin:auto; width:40vw; min-width: 300px; background:white;}
+
+:root { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
+.container {width:40vw; min-width: 300px; margin: auto; padding: 1rem;background: white; }
+h1, h2, h3 { margin: .2rem 0 .6rem; }
+form input, form textarea { width: 100%; max-width: 420px; }
+button { margin-top: .5rem; padding: .4rem .8rem; cursor: pointer; }
+.grid { display: grid; grid-template-columns: 1fr; }
+
+table.data {width:90%; border-collapse: collapse;border:3px solid blue}
+table.data tr:nth-child(even){background-color: aquamarine;}
+table.data td {padding: 5px; border:1px solid black}
+table.data th {padding: 5px; background:black;color:white;border:1px solid white}
+
+@media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
