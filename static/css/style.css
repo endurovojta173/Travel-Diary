@@ -17,11 +17,10 @@ body {
 /* Horní vrstva navbaru (pokud budeš chtít oddělenou horní část) */
 .upperNav {
   width: 100%;
-  background-color: #222; /* tmavší odstín pro horní část */
+  background-color: var(--footer-background-color);
   padding: 5px 20px;
-  color: #fff;
   display: flex;
-  justify-content: flex-end; /* např. pro uživatele/přihlášení v pravém rohu */
+  justify-content: flex-end;
   font-size: 0.9rem;
 }
 
@@ -37,10 +36,12 @@ body {
 
 /* Logo vlevo */
 .nav-logo {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: var(--white-text-color, #fff);
-  text-decoration: none;
+    max-width: 30px;
+    height: auto;
+    font-size: 1.5rem;
+    font-weight: bold;
+    color: var(--white-text-color, #fff);
+    text-decoration: none;
 }
 
 /* Pravá část s položkami */
