@@ -2,16 +2,29 @@
 <html lang="cs">
 <head>
   <meta charset="utf-8" />
-  <title>{% block title %}Aplikace{% endblock %}</title>
-  <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>{% block title %}Cestovní deník{% endblock %}</title>
+    <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
+    <link rel="icon" href="static/img/favicon.ico" type="image/x-icon">
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
 </head>
+
+
 <body>
-  <header class="container">
-    <h1>{% block header %}FastAPI Demo{% endblock %}</h1>
-    <nav></nav>
-  </header>
-  <main class="container">
+<div class="header">
+    <div class = "upperNav">
+        <a href="myProfile.html">Můj profil</a>
+    </div>
+    <div class="nav">
+        <div class="nav-logo"><a href="home.html"><img src="static/img/logo.png"></a></div>
+        <div class="nav-items">
+            <a href="home.html" class="nav-item">Domů</a>
+            <a href="locations.html" class="nav-item">Lokace</a>
+            <a href="rankings.html" class="nav-item">Žebříčky</a>
+            <a href="addLocation.html" class="nav-item">Přidat lokaci</a>
+        </div>
+    </div>
+</div>
+  <main>
     {% block content %}{% endblock %}
   </main>
 </body>

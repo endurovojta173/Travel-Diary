@@ -1,16 +1,61 @@
-body {background: silver;}
-header {margin:auto; width:40vw; min-width: 300px; background:white;}
+:root {
+    font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    --background-color: white;
+    --text-color: black;
+    --navbar-background-color: #669900;
+    --footer-background-color: #111a00;
+    --white-text-color: white;
+}
+body {
+    background: var(--background-color);
+}
 
-:root { font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif; }
-.container {width:40vw; min-width: 300px; margin: auto; padding: 1rem;background: white; }
-h1, h2, h3 { margin: .2rem 0 .6rem; }
-form input, form textarea { width: 100%; max-width: 420px; }
-button { margin-top: .5rem; padding: .4rem .8rem; cursor: pointer; }
-.grid { display: grid; grid-template-columns: 1fr; }
+.header{
+    width: 100%;
 
-table.data {width:90%; border-collapse: collapse;border:3px solid blue}
-table.data tr:nth-child(even){background-color: aquamarine;}
-table.data td {padding: 5px; border:1px solid black}
-table.data th {padding: 5px; background:black;color:white;border:1px solid white}
+}
+/* Horní vrstva navbaru (pokud budeš chtít oddělenou horní část) */
+.upperNav {
+  width: 100%;
+  background-color: #222; /* tmavší odstín pro horní část */
+  padding: 5px 20px;
+  color: #fff;
+  display: flex;
+  justify-content: flex-end; /* např. pro uživatele/přihlášení v pravém rohu */
+  font-size: 0.9rem;
+}
 
-@media (max-width: 800px) { .grid { grid-template-columns: 1fr; } }
+/* Hlavní navbar */
+.nav {
+  display: flex;
+  justify-content: space-between; /* levá vs pravá část */
+  align-items: center;
+  width: 100%;
+  background-color: var(--navbar-background-color, #333);
+  padding: 10px 20px;
+}
+
+/* Logo vlevo */
+.nav-logo {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--white-text-color, #fff);
+  text-decoration: none;
+}
+
+/* Pravá část s položkami */
+.nav-items {
+  display: flex;
+  gap: 20px; /* mezera mezi odkazy */
+}
+
+/* Jednotlivé odkazy */
+.nav-item {
+  color: var(--white-text-color, #fff);
+  text-decoration: none;
+  font-weight: 500;
+}
+
+.nav-item:hover {
+  text-decoration: underline;
+}
