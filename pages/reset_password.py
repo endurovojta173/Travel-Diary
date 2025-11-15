@@ -3,11 +3,11 @@ from fastapi.responses import HTMLResponse
 
 router = APIRouter()
 
-#Router for displaying home page
-@router.get("/", response_class=HTMLResponse)
-async def landing_page(request: Request):
+#Router for displaying reset password page
+@router.get("/reset_password", response_class=HTMLResponse)
+async def reset_password_page(request: Request):
 
     return request.app.state.templates.TemplateResponse(
-        "home.html",
+        "reset_password.html",
         {"request": request, "title": "Locations"}
     )

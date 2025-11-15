@@ -3,11 +3,10 @@ from fastapi.responses import HTMLResponse
 
 router = APIRouter()
 
-#Router for displaying locations page
-@router.get("/locations", response_class=HTMLResponse)
-async def locations_page(request: Request):
-
+#router for displaying add location page
+@router.get("/add_location", response_class=HTMLResponse)
+async def add_location_page(request: Request):
     return request.app.state.templates.TemplateResponse(
-        "locations.html",
+        "add_location.html",
         {"request": request, "title": "Locations"}
     )

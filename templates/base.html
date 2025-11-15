@@ -12,15 +12,17 @@
 <body>
 <div class="header">
     <div class = "upperNav">
-        <a href="myProfile.html">Můj profil</a>
+        <a href="{{ request.url_for('login_page') }}">Přihlásit se</a>
+        <a href="{{ request.url_for('register_page') }}">Zaregistrovat se</a>
+        <a href="{{ request.url_for('my_profile_page') }}">Můj profil</a>
     </div>
     <div class="nav">
         <div class="nav-logo"><a href="{{ request.url_for('landing_page') }}"><img alt="logo" src="{{ request.url_for('static', path='img/logo.png') }}"></a></div>
         <div class="nav-items">
             <a href="{{ request.url_for('landing_page') }}" class="nav-item">Domů</a>
-            <a href="" class="nav-item">Lokace</a>
-            <a href="rankings.html" class="nav-item">Žebříčky</a>
-            <a href="addLocation.html" class="nav-item">Přidat lokaci</a>
+            <a href="{{ request.url_for('locations_page') }}" class="nav-item">Lokace</a>
+            <a href="{{ request.url_for('rankings_page') }}" class="nav-item">Žebříčky</a>
+            <a href="{{ request.url_for('add_location_page') }}" class="nav-item">Přidat lokaci</a>
         </div>
     </div>
 </div>
