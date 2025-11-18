@@ -6,15 +6,17 @@
     <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
     <link rel="icon" href="{{ request.url_for('static', path='img/favicon.ico') }}" type="image/x-icon">
     <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <!-- Font Awesome CDN -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" integrity="sha512-omGHcivVE0w..." crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 
 
 <body>
-<div class="header">
+<!--Header-->
+<div class = "header">
     <div class = "upper-nav">
-        <a href="{{ request.url_for('login_page') }}" class="upper-nav-items">Přihlásit se</a>
         <a href="{{ request.url_for('register_page') }}" class="upper-nav-items">Zaregistrovat se</a>
-        <a href="{{ request.url_for('my_profile_page') }}" class="upper-nav-items">Můj profil</a>
+        <a href="{{ request.url_for('my_profile_page') }}" class="upper-nav-items"><i class="fa-regular fa-user" style ="color: #63E6BE;"></i></a>
     </div>
     <div class="lower-nav">
         <div class="lower-nav-logo"><a href="{{ request.url_for('landing_page') }}"><img alt="logo" src="{{ request.url_for('static', path='img/logo.png') }}"></a></div>
@@ -26,6 +28,25 @@
         </div>
     </div>
 </div>
+<!--Main content -->
     {% block content %}{% endblock %}
+<!--Footer-->
+<div class="footer">
+    <div class="footer-nav">
+        <div class ="footer-logo"><a href="{{ request.url_for('landing_page') }}"><img alt="logo" src="{{ request.url_for('static', path='img/logo.png') }}"></a></div>
+        <a href="{{ request.url_for('landing_page') }}" class="footer-nav-item">Domů</a>
+        <a href="{{ request.url_for('locations_page') }}" class="footer-nav-item">Lokace</a>
+        <a href="{{ request.url_for('rankings_page') }}" class="footer-nav-item">Žebříčky</a>
+        <a href="{{ request.url_for('add_location_page') }}" class="footer-nav-item">Přidat lokaci</a>
+        <div class="footer-nav-fb"><i class="fa-brands fa-facebook"></i></div>
+        <div class="footer-nav-ig"><i class="fa-brands fa-instagram"></i></div>
+    </div>
+    <div class= "footer-lower-nav">
+        <div class="footer-lower-nav-item">Copyright</div>
+        <div class="footer-lower-nav-item">Terms of 1</div>
+        <div class="footer-lower-nav-item">Terms of 2</div>
+
+    </div>
+</div>
 </body>
 </html>

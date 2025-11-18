@@ -5,6 +5,7 @@
     --navbar-background-color: #669900;
     --footer-background-color: #3c4e23;
     --white-text-color: white;
+    font-size: 16px;
 }
 html, body {
     margin:0;
@@ -22,12 +23,17 @@ html, body {
     padding: 5px 20px;
     display: flex;
     justify-content: flex-end;
-    font-size: 1rem;
+    font-size: 0.9rem;
 }
 .upper-nav-items{
     margin-left: 5px;
     margin-right: 5px;
     padding-right: 30px;
+    color: var(--white-text-color);
+}
+
+.upper-nav-items:hover{
+    color: gray;
 }
 
 /* Dolní navbar */
@@ -59,13 +65,14 @@ html, body {
 .lower-nav-items {
     display: flex;
     gap: 20px;
-    padding-right: 0;
+    padding-right: 35px;
 }
 
 /* Jednotlivé odkazy */
 .lower-nav-item {
     color: var(--white-text-color, #fff);
     text-decoration: none;
+    font-size: 1rem;
     font-weight: 500;
 }
 
