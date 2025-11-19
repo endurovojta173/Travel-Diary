@@ -2,4 +2,8 @@
 
 {% block content %}
 <h1>Locations</h1>
+
+    {% for loc in locations %}
+  {{ loc.name }} – {{ loc.description or "" }}
+{% endfor %}
 {% endblock %}
