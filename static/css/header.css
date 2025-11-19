@@ -1,5 +1,8 @@
 .header{
     width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
 }
 /* Horní lišta navbaru */
 .upper-nav {
@@ -28,11 +31,13 @@
     flex-direction: row;
     align-items: center;
     max-height: 10vh;
-    justify-content: space-between; /* levá vs pravá část */
-    align-items: center;
+    justify-content: space-between;
     width: 100%;
     background-color: var(--navbar-background-color, #333);
+
+
 }
+
 
 /* Logo vlevo */
 .lower-nav-logo {
@@ -52,7 +57,7 @@
 .lower-nav-items {
     display: flex;
     gap: 20px;
-    padding-right: 35px;
+    padding-right: 1vh;
 }
 
 /* Jednotlivé odkazy */
