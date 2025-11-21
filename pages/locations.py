@@ -25,7 +25,7 @@ async def list_locations_with_photos_rating(request: Request,svc: LocationServic
         {
             "request": request,
             "title": "Seznam lokací",
-            "locations": locations,  # každá lokace obsahuje seznam fotek + Rating
+            "locations": locations,  # Seznam lokací - údaje o lokaci + fotky + Rating
         },
     )
 
