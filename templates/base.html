@@ -5,12 +5,13 @@
     <!--Title-->
     <title>{% block title %}Cestovní deník{% endblock %}</title>
     <!--Favicon-->
-    <link rel="icon" href="{{ request.url_for('static', path='img/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ request.url_for('static', path='img/web/favicon.ico') }}" type="image/x-icon">
     <!--Styles-->
     <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/header.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/footer.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/icon.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/location.css') }}">
     <!-- Google icons -->
     <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
@@ -25,10 +26,10 @@
         <a href="{{ request.url_for('my_profile_page') }}" class="upper-nav-items"><span class="material-symbols-outlined">account_circle</span></a>
     </div>
     <div class="lower-nav">
-        <div class="lower-nav-logo"><a href="{{ request.url_for('landing_page') }}"><img alt="logo" src="{{ request.url_for('static', path='img/logo.png') }}"></a></div>
+        <div class="lower-nav-logo"><a href="{{ request.url_for('landing_page') }}"><img alt="logo" src="{{ request.url_for('static', path='img/web/logo.webp') }}"></a></div>
         <div class="lower-nav-items">
             <a href="{{ request.url_for('landing_page') }}" class="lower-nav-item">Domů</a>
-            <a href="{{ request.url_for('locations_page') }}" class="lower-nav-item">Lokace</a>
+            <a href="{{ request.url_for('list_locations_with_photos_rating') }}" class="lower-nav-item">Lokace</a>
             <a href="{{ request.url_for('rankings_page') }}" class="lower-nav-item">Žebříčky</a>
             <a href="{{ request.url_for('add_location_page') }}" class="lower-nav-item">Přidat lokaci</a>
         </div>
@@ -40,12 +41,12 @@
 <footer class="footer">
     <div class="footer-top">
         <div class="footer-logo">
-            <a href="{{ request.url_for('landing_page') }}"><img alt="logo" src="{{ request.url_for('static', path='img/logo.png') }}"></a>
+            <a href="{{ request.url_for('landing_page') }}"><img alt="logo" src="{{ request.url_for('static', path='img/web/logo.webp') }}"></a>
         </div>
 
         <nav class="footer-nav">
             <a href="{{ request.url_for('landing_page') }}" class="footer-nav-item">Domů</a>
-            <a href="{{ request.url_for('locations_page') }}" class="footer-nav-item">Lokace</a>
+            <a href="{{ request.url_for('list_locations_with_photos_rating') }}" class="footer-nav-item">Lokace</a>
             <a href="{{ request.url_for('rankings_page') }}" class="footer-nav-item">Žebříčky</a>
             <a href="{{ request.url_for('add_location_page') }}" class="footer-nav-item">Přidat lokaci</a>
         </nav>

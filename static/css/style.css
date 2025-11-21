@@ -13,3 +13,7 @@ html, body {
     background: var(--background-color);
     width: 100%;
 }
+
+h1 {
+    font-size: 3em;
+}

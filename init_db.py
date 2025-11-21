@@ -19,6 +19,7 @@ CREATE TABLE location (
     id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR NOT NULL,
     description VARCHAR,
+    date_location_added TEXT NOT NULL,
     id_user INTEGER NOT NULL,
     FOREIGN KEY (id_user) REFERENCES user(id)
 );
