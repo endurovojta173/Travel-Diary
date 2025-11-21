@@ -8,18 +8,38 @@ router = APIRouter()
 
 #Router for displaying locations page
 @router.get("/locations", response_class=HTMLResponse)
-async def locations_page(request: Request):
+async def locations_page(request: Request, svc: LocationService = Depends(locations_service)):
 
+
+
+    #Výpis všech lokací
+    locations = svc.list_locations()
+    # Ověření pro consoli
+    for location in locations:
+        print("1. test")
+        print(type(locations))
+        print(location.values())
+
+
+    #Co router vrací stránce jako proměnné
     return request.app.state.templates.TemplateResponse(
         "locations.html",
-        {"request": request, "title": "Locations"}
+        {
+            "request": request,
+            "title": "Lokace",
+            "locations": locations,
+
+        },
     )
 
-@router.get("/locations-ui", response_class=HTMLResponse)
-async def locations_ui(request: Request,svc: LocationService = Depends(locations_service)):
+@router.get("/locations/list", name="list_locations",response_class=HTMLResponse)
+async def list_locations(request: Request, svc: LocationService = Depends(locations_service)):
     # získání seznamu lokací z databáze
     locations = svc.list_locations()
+    #Ověření pro consoli
     for location in locations:
+        print("1. test")
+        print(type(locations))
         print(location.values())
     # templating engine z app.state
     tpl = request.app.state.templates

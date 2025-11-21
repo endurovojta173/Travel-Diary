@@ -1,9 +1,28 @@
 {% extends "base.html" %}
 
-{% block content %}
-<h1>Locations</h1>
+<head>
+    <title>{{ title }}</title>
+</head>
+<body>
 
+{% block content %}
+<h1>Lokace</h1>
+
+<table>
+<tr>
+    <th>ID lokace</th>
+    <th>Název lokace</th>
+    <th>Popis lokace</th>
+    <th>ID uživatele</th>
+</tr>
     {% for loc in locations %}
-  {{ loc.name }} – {{ loc.description or "" }}
-{% endfor %}
+        <tr>
+            <td>{{ loc['id'] }}</td>
+            <td>{{ loc['name'] }}</td>
+            <td>{{ loc['description'] }}</td>
+            <td>{{ loc['id_user'] }}</td>
+        </tr>
+    {% endfor %}
+</table>
 {% endblock %}
+</body>

@@ -2,12 +2,12 @@ from database.database import open_connection
 
 DDL = """
 CREATE TABLE role (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR NOT NULL
 );
 
 CREATE TABLE user (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR NOT NULL,
     email VARCHAR NOT NULL UNIQUE,
     password_hash VARCHAR NOT NULL,
@@ -16,7 +16,7 @@ CREATE TABLE user (
 );
 
 CREATE TABLE location (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR NOT NULL,
     description VARCHAR,
     id_user INTEGER NOT NULL,
@@ -24,7 +24,7 @@ CREATE TABLE location (
 );
 
 CREATE TABLE photo (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     name VARCHAR NOT NULL,
     alt_text VARCHAR,
     url VARCHAR NOT NULL,
@@ -33,7 +33,7 @@ CREATE TABLE photo (
 );
     
 CREATE TABLE favorite_location (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     id_user INTEGER NOT NULL,
     id_location INTEGER NOT NULL,
     FOREIGN KEY (id_user) REFERENCES user(id),
@@ -42,7 +42,7 @@ CREATE TABLE favorite_location (
 );
     
 CREATE TABLE comment (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     text VARCHAR NOT NULL,
     id_user INTEGER NOT NULL,
     id_location INTEGER NOT NULL,
@@ -51,7 +51,7 @@ CREATE TABLE comment (
 );
     
 CREATE TABLE rating (
-    id INTEGER PRIMARY KEY,
+    id INTEGER PRIMARY KEY AUTOINCREMENT,
     rating INTEGER NOT NULL CHECK(rating BETWEEN 1 AND 5),
     id_user INTEGER NOT NULL,
     id_location INTEGER NOT NULL,
