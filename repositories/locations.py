@@ -54,4 +54,4 @@ def list_locations_with_photos_and_rating(conn: sqlite3.Connection) -> List[Dict
 
     return list(locations.values())
 
-def get_locations_by_id_with_photos_and_rating(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
+#def get_locations_by_id_with_photos_and_rating(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
