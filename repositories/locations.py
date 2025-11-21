@@ -52,4 +52,46 @@ def list_locations_with_photos_and_rating(conn: sqlite3.Connection) -> List[Dict
 
     return list(locations.values())
 
-#def get_locations_by_id_with_photos_and_rating(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
+def get_location_by_id_with_photos_and_rating(conn: sqlite3.Connection, location_id:int) -> Dict[str, Any]:
+    cursor = conn.cursor()
+    # SQL
+    cursor.execute("""
+                   SELECT l.id          AS loc_id,
+                          l.name        AS loc_name,
+                          l.description AS loc_description,
+                          l.date_location_added AS loc_date_location_added,
+                          p.id          AS photo_id,
+                          p.alt_text    AS photo_alt_text,
+                          p.url         AS photo_url,
+                          r.avg_rating  AS avg_rating
+                   FROM location l
+                            LEFT JOIN photo p ON l.id = p.id_location
+                            LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating
+                                       FROM rating
+                                       GROUP BY id_location) r ON l.id = r.id_location
+                   WHERE l.id = :id
+                   ORDER BY l.id
+                   """, {"id": location_id})
+
+    #Inicializace slovníku
+    location = {}
+
+    for row in cursor.fetchall():
+        location = {
+            "id": row[0],
+            "name": row[1],
+            "description": row[2],
+            "date_location_added": row[3],
+            "photos": [],
+            "avg_rating": row[7]
+        }
+
+        # pokud je přiřazená fotka, přidáme ji do seznamu
+        if row[4] is not None:
+            location["photos"].append({
+                "id": row[4],
+                "alt_text": row[5],
+                "url": row[6]
+            })
+
+    return location

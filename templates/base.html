@@ -5,7 +5,7 @@
     <!--Title-->
     <title>{% block title %}Cestovní deník{% endblock %}</title>
     <!--Favicon-->
-    <link rel="icon" href="{{ request.url_for('static', path='img/web/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{url_for('static', path='img/web/favicon.ico') }}" type="image/x-icon">
     <!--Styles-->
     <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/header.css') }}">
@@ -22,16 +22,16 @@
 <!--Header-->
 <div class = "header">
     <div class = "upper-nav">
-        <a href="{{ request.url_for('register_page') }}" class="upper-nav-items">Zaregistrovat se</a>
-        <a href="{{ request.url_for('my_profile_page') }}" class="upper-nav-items"><span class="material-symbols-outlined">account_circle</span></a>
+        <a href="{{url_for('register_page') }}" class="upper-nav-items">Zaregistrovat se</a>
+        <a href="{{url_for('my_profile_page') }}" class="upper-nav-items"><span class="material-symbols-outlined">account_circle</span></a>
     </div>
     <div class="lower-nav">
-        <div class="lower-nav-logo"><a href="{{ request.url_for('landing_page') }}"><img alt="logo" src="{{ request.url_for('static', path='img/web/logo.webp') }}"></a></div>
+        <div class="lower-nav-logo"><a href="{{url_for('landing_page') }}"><img alt="logo" src="{{url_for('static', path='img/web/logo.webp') }}"></a></div>
         <div class="lower-nav-items">
-            <a href="{{ request.url_for('landing_page') }}" class="lower-nav-item">Domů</a>
-            <a href="{{ request.url_for('list_locations_with_photos_rating') }}" class="lower-nav-item">Lokace</a>
-            <a href="{{ request.url_for('rankings_page') }}" class="lower-nav-item">Žebříčky</a>
-            <a href="{{ request.url_for('add_location_page') }}" class="lower-nav-item">Přidat lokaci</a>
+            <a href="{{url_for('landing_page') }}" class="lower-nav-item">Domů</a>
+            <a href="{{url_for('list_locations_with_photos_rating') }}" class="lower-nav-item">Lokace</a>
+            <a href="{{url_for('rankings_page') }}" class="lower-nav-item">Žebříčky</a>
+            <a href="{{url_for('add_location_page') }}" class="lower-nav-item">Přidat lokaci</a>
         </div>
     </div>
 </div>
@@ -41,14 +41,14 @@
 <footer class="footer">
     <div class="footer-top">
         <div class="footer-logo">
-            <a href="{{ request.url_for('landing_page') }}"><img alt="logo" src="{{ request.url_for('static', path='img/web/logo.webp') }}"></a>
+            <a href="{{url_for('landing_page') }}"><img alt="logo" src="{{url_for('static', path='img/web/logo.webp') }}"></a>
         </div>
 
         <nav class="footer-nav">
-            <a href="{{ request.url_for('landing_page') }}" class="footer-nav-item">Domů</a>
-            <a href="{{ request.url_for('list_locations_with_photos_rating') }}" class="footer-nav-item">Lokace</a>
-            <a href="{{ request.url_for('rankings_page') }}" class="footer-nav-item">Žebříčky</a>
-            <a href="{{ request.url_for('add_location_page') }}" class="footer-nav-item">Přidat lokaci</a>
+            <a href="{{url_for('landing_page') }}" class="footer-nav-item">Domů</a>
+            <a href="{{url_for('list_locations_with_photos_rating') }}" class="footer-nav-item">Lokace</a>
+            <a href="{{url_for('rankings_page') }}" class="footer-nav-item">Žebříčky</a>
+            <a href="{{url_for('add_location_page') }}" class="footer-nav-item">Přidat lokaci</a>
         </nav>
         <div class="footer-icons">
             <i class="fa-brands fa-facebook"></i>

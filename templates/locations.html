@@ -15,17 +15,17 @@
         <!--Photo-->
         <div class="loc-thumb">
             {% if loc['photos'] %}
-                <a href="{{ request.url_for('landing_page')}}">
+                <a href="{{url_for('location_detail', id=loc['id']) }}">
                     <img alt="{{ loc['photos'][0]['alt_text'] }}" src="/static/{{ loc['photos'][0]['url'] }}">
                 </a>
             {% else %}
-                <img alt="No photo" src="{{ request.url_for('static', path='img/web/noImage.webp') }}"></a>
+                <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}"></a>
             {% endif %}
         </div>
 
         <div class="loc-body">
             <!--Name-->
-            <a href="{{ request.url_for('landing_page')}}">
+            <a href="{{url_for('location_detail', id=loc['id']) }}">
             <h2 class="loc-title">{{ loc['name'] }}</h2>
             </a>
             <!--Rating-->
@@ -38,7 +38,7 @@
             <!--Description-->
             <p class="loc-desc">
                 {{ loc['description'] | truncate(250, True, '...') }}
-                <a href="/lokace/{{ loc['id'] }}" class="more">Více</a>
+                <a href="{{url_for('location_detail', id=loc['id']) }}" class="more">Více...</a>
             </p>
         </div>
     </div>
