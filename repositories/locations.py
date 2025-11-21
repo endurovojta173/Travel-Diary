@@ -15,7 +15,6 @@ def list_locations_with_photos_and_rating(conn: sqlite3.Connection) -> List[Dict
                           l.name        AS loc_name,
                           l.description AS loc_description,
                           p.id          AS photo_id,
-                          p.name        AS photo_name,
                           p.alt_text    AS photo_alt_text,
                           p.url         AS photo_url,
                           r.avg_rating  AS avg_rating
@@ -40,16 +39,15 @@ def list_locations_with_photos_and_rating(conn: sqlite3.Connection) -> List[Dict
                 "name": row[1],
                 "description": row[2],
                 "photos": [],
-                "avg_rating": row[7]  # průměrné hodnocení
+                "avg_rating": row[6]  # průměrné hodnocení
             }
 
         # pokud je přiřazená fotka, přidáme ji do seznamu
         if row[3] is not None:
             locations[loc_id]["photos"].append({
                 "id": row[3],
-                "name": row[4],
-                "alt_text": row[5],
-                "url": row[6]
+                "alt_text": row[4],
+                "url": row[5]
             })
 
     return list(locations.values())
