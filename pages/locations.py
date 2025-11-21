@@ -33,10 +33,6 @@ async def list_locations_with_photos_rating(request: Request,svc: LocationServic
 async def location_detail(request: Request, id:int ,svc: LocationService = Depends(locations_service)):
     location = svc.get_location_by_id_with_photos_and_rating(id)
 
-    #Kontrola v konzoli
-    for item in location:
-        print(item)
-
     tpl = request.app.state.templates
     return tpl.TemplateResponse(
         "location-detail.html",
