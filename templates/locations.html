@@ -1,26 +1,42 @@
 {% extends "base.html" %}
+<!--Title-->
+{% block title %}{{ title }}{% endblock %}
 
-<head>
-    <title>{{ title }}</title>
-</head>
+
 <body>
 
 {% block content %}
-<h1>Lokace</h1>
+<h1>Seznam lokací</h1>
 
 <table>
 <tr>
     <th>ID lokace</th>
+    <th>Náhledová fotografie</th>
     <th>Název lokace</th>
     <th>Popis lokace</th>
     <th>ID uživatele</th>
+    <th>Fotografie</th>
+    <th>Rating</th>
 </tr>
     {% for loc in locations %}
         <tr>
             <td>{{ loc['id'] }}</td>
+            <td>
+                {% if loc['photos'] %}
+                    <img alt="{{ loc['photos'][0]['alt_text'] }}" src="/static/{{ loc['photos'][0]['url'] }}" width="100">
+                {% else %}
+                     <span>Žádná fotka</span>
+                {% endif %}
+            </td>
             <td>{{ loc['name'] }}</td>
             <td>{{ loc['description'] }}</td>
             <td>{{ loc['id_user'] }}</td>
+            <td>
+            {% for photo in loc['photos'] %}
+                <img alt="{{ photo['alt_text'] }}" src="/static/{{ photo['url'] }}" width="100">
+            {% endfor %}
+            </td>
+            <td>{{ loc['avg_rating'] }}</td>
         </tr>
     {% endfor %}
 </table>
