@@ -40,13 +40,13 @@ def create_app() -> FastAPI:
     app.include_router(terms_and_conditions_router)
 
     # DEBUG: vypiš zaregistrované cesty - Pro ladění
-    print("=== ROUTES ===")
-    for r in app.routes:
-        #print(repr(r.name), r.path)
-        try:
-            print(getattr(r, "methods", ""), getattr(r, "path", ""))
-        except Exception:
-            pass
+    #print("=== ROUTES ===")
+    #for r in app.routes:
+    #    #print(repr(r.name), r.path)
+    #    try:
+    #        print(getattr(r, "methods", ""), getattr(r, "path", ""))
+    #    except Exception:
+    #        pass
     return app
 
 app = create_app()

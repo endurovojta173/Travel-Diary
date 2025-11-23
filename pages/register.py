@@ -28,16 +28,15 @@ async def register_page(request: Request):
 async def register_user(request: Request, user_data: UserCreate = Depends(get_register_form), svc: UserService = Depends(user_service),):
     try:
         svc.register_user(name = user_data.name,email= user_data.email, password = user_data.password)
-
-        #ÚSPĚCH -> Přesměrujeme na přihlášení
+        #Přesměrujeme na přihlášení
         return RedirectResponse(url="/login", status_code=303)
 
     except HTTPException as e:
-        # CHYBA -> Znovu vykreslíme formulář
+        print(11111111111111111111)
         tpl = request.app.state.templates
         return tpl.TemplateResponse("register.html", {
             "request": request,
-            #"error_message": e.detail,
+            "error_message": e.detail,
             "name_value": user_data.name,
             "email_value": user_data.email
         })
