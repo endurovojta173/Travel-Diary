@@ -9,5 +9,11 @@ async def landing_page(request: Request):
 
     return request.app.state.templates.TemplateResponse(
         "home.html",
-        {"request": request, "title": "Locations"}
+        {
+            "request": request,
+            "title": "Cestovní deník"
+            "random_locations"
+            "favorite_location"
+            "newest_location"
+        }
     )

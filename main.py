@@ -14,7 +14,11 @@ from pages.my_profile import router as my_profile_router
 def create_app() -> FastAPI:
     app = FastAPI(title = "FastAPI")
 
+    #Mount for static files, like css, js, logos, icons...
     app.mount("/static", StaticFiles(directory="static"), name="static")
+    #Mount for images of locations in database
+    app.mount("/database", StaticFiles(directory="database"), name="database")
+
     app.state.templates = Jinja2Templates(directory="templates")
 
 

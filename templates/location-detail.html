@@ -7,6 +7,15 @@
 
 {% block content %}
 <h1>{{ title }}</h1>
+    {% if location['photos'] %}
+        <img alt="{{ location['photos'][0]['alt_text'] }}" src="/database/{{ location['photos'][0]['url'] }}">
+    {% else %}
+        <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}"></a>
+    {% endif %}
+    {{ location['avg_rating']}}<br>
+    {{ location['date_location_added']}}<br>
+    {{ location['description']}}
+
 
 {% endblock %}
 </body>
