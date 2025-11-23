@@ -1,26 +1,33 @@
-from fastapi import FastAPI, Request, APIRouter, Depends
+from fastapi import Request, APIRouter, Depends, Form
 from fastapi.responses import HTMLResponse
 from starlette.responses import RedirectResponse
 
 from dependencies import user_service
 from services.users import UserService
+from model.user import UserLogin
 
 router = APIRouter()
 
-#Router for displaying login page
 
+def get_login_form(email:str = Form(...),password:str = Form(...))->UserLogin:
+    return UserLogin(email=email,password=password)
+
+#Router for displaying login page
 @router.get("/login", response_class=HTMLResponse)
 async def login_page(request: Request):
     return request.app.state.templates.TemplateResponse(
         "login.html",
-        {"request": request, "title": "Locations"}
+        {
+            "request": request,
+            "title": "Přihlásit se"
+        }
     )
 
 
 @router.post("/login")
-async def login_user(request: Request,email: str,password: str,svc: UserService = Depends(user_service)):
+async def login_user(request: Request, login_data: UserLogin = Depends(get_login_form),svc: UserService = Depends(user_service)):
     #Porovnání hashe
-    user = svc.authenticate_user(email, password)
+    user = svc.authenticate_user(login_data.email, login_data.password)
 
     if not user:
         # CHYBA: Buď neexistuje user, nebo špatné heslo (z bezpečnostních důvodů neříkáme co přesně)
@@ -28,7 +35,7 @@ async def login_user(request: Request,email: str,password: str,svc: UserService 
         return tpl.TemplateResponse("login.html", {
             "request": request,
             "error_message": "Nesprávný e-mail nebo heslo.",
-            "email_value": email
+            "email_value": login_data.email
         })
 
     # ÚSPĚCH: Uložíme uživatele do Session

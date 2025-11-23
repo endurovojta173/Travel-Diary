@@ -7,7 +7,11 @@ router = APIRouter()
 @router.get("/reset_password", response_class=HTMLResponse)
 async def reset_password_page(request: Request):
 
-    return request.app.state.templates.TemplateResponse(
-        "reset_password.html",
-        {"request": request, "title": "Locations"}
+    tpl = request.app.state.templates
+    return tpl.TemplateResponse(
+        "reset-password.html",
+        {
+            "request": request,
+            "title": "Zapomenuté heslo"
+        }
     )
