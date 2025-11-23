@@ -6,6 +6,9 @@ from repositories.locations import get_location_by_id_with_photos_and_rating as 
 from repositories.locations import get_five_random_locations as repo_get_five_random_locations
 from repositories.locations import get_most_favorite_location as repo_get_most_favorite_location
 from repositories.locations import get_newest_location as repo_get_newest_location
+from repositories.locations import list_locations_by_newest as repo_list_locations_by_newest
+from repositories.locations import list_locations_by_avg_rating as repo_list_locations_by_avg_rating
+from repositories.locations import list_locations_by_most_comments as repo_list_locations_by_most_comments
 
 class LocationService:
     def __init__(self, conn: sqlite3.Connection):
@@ -28,3 +31,12 @@ class LocationService:
 
     def get_newest_location(self) -> Dict[str, Any]:
         return repo_get_newest_location(self.conn)
+
+    def list_locations_by_newest(self) -> List[Dict[str, Any]]:
+        return repo_list_locations_by_newest(self.conn)
+
+    def list_locations_by_avg_rating(self) -> List[Dict[str, Any]]:
+        return repo_list_locations_by_avg_rating(self.conn)
+
+    def list_locations_by_most_comments(self) -> List[Dict[str, Any]]:
+        return repo_list_locations_by_most_comments(self.conn)

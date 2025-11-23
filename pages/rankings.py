@@ -6,8 +6,11 @@ router = APIRouter()
 
 #Router for displaying rankings page
 @router.get("/rankings")
-async def rankings_page(request: Request,response_class=HTMLResponse):
+async def rankings_page(request: Request, response_class=HTMLResponse):
     return request.app.state.templates.TemplateResponse(
         "rankings.html",
-        {"request": request, "title": "Locations"}
+        {
+            "request": request,
+            "title": "Žebříček"
+        }
     )
