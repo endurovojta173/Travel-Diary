@@ -19,6 +19,25 @@ def register_user(conn: sqlite3.Connection, name:str, email:str, password_hash:s
 
         return None
 
-def login_user(conn: sqlite3.Connection, email:str, password:str) -> Optional[int]:
+
+def get_user_by_email(conn: sqlite3.Connection, email: str) -> Optional[Dict[str, Any]]:
     cursor = conn.cursor()
-    
+    # Vybereme id, jméno, heslo a roli
+    cursor.execute("""
+                   SELECT id, name, email, password_hash, id_role
+                   FROM user
+                   WHERE email = ?
+                   """, (email,))
+
+    row = cursor.fetchone()
+
+    if row is None:
+        return None
+
+    return {
+        "id": row[0],
+        "name": row[1],
+        "email": row[2],
+        "password_hash": row[3],
+        "id_role": row[4]
+    }

@@ -1,8 +1,9 @@
-from typing import List, Dict, Any
+from typing import List, Dict, Any, Optional
 import sqlite3
 from fastapi import HTTPException, status
 from passlib.context import CryptContext
 from repositories.users import register_user as repo_register_user
+from repositories.users import get_user_by_email as repo_get_user_by_email
 
 #Nastavení hashování na argon2
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
@@ -27,3 +28,18 @@ class UserService:
             "name": name,
             "email": email
         }
+
+        # Do třídy UserService přidej metodu:
+
+    def authenticate_user(self, email: str, password: str) -> Optional[Dict[str, Any]]:
+        #Vytáhne usera z db
+        user = repo_get_user_by_email(self.conn,email)
+
+        if not user:
+            return None  #Uživatel neexistuje
+        #Porovná s hashem
+        if not pwd_context.verify(password, user["password_hash"]):
+            return None  #Špatné heslo
+
+        #Success
+        return user
