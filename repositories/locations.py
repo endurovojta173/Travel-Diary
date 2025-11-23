@@ -1,4 +1,4 @@
-from typing import List, Dict, Any, Optional
+from typing import List, Dict, Any
 import sqlite3
 
 def list_locations(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
@@ -94,4 +94,111 @@ def get_location_by_id_with_photos_and_rating(conn: sqlite3.Connection, location
                 "url": row[6]
             })
 
+    return location
+
+def get_five_random_locations(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
+    cursor = conn.cursor()
+    #Vybere 5 random lokací
+    cursor.execute("""
+                   SELECT l.id       AS loc_id,
+                          l.name     AS loc_name,
+                          p.id       AS photo_id,
+                          p.alt_text AS photo_alt_text,
+                          p.url      AS photo_url
+                   FROM location l
+                            LEFT JOIN photo p ON l.id = p.id_location
+                   GROUP BY l.id
+                   ORDER BY RANDOM()
+                   LIMIT 5
+                   """)
+
+    locations = []
+
+    for row in cursor.fetchall():
+        loc_data = {
+            "id": row[0],
+            "name": row[1],
+            "photo": None
+        }
+
+        if row[2] is not None:
+            loc_data["photo"] = {
+                "alt_text": row[2],
+                "url": row[3]
+            }
+
+        locations.append(loc_data)
+
+    return locations
+
+def get_most_favorite_location(conn: sqlite3.Connection) -> Dict[str, Any]:
+    cursor = conn.cursor()
+    # SQL
+    cursor.execute("""
+                   SELECT l.id                  AS loc_id,
+                          l.name                AS loc_name,
+                          p.id                  AS photo_id,
+                          p.alt_text            AS photo_alt_text,
+                          p.url                 AS photo_url,
+                          r.avg_rating          AS avg_rating
+                   FROM location l
+                            LEFT JOIN photo p ON l.id = p.id_location
+                            LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating
+                                       FROM rating
+                                       GROUP BY id_location) r ON l.id = r.id_location
+                   ORDER BY avg_rating DESC 
+                    LIMIT 1
+                   """)
+    #Zpracuje pouze první výskyt
+    row = cursor.fetchone()
+
+    location = {
+        "id": row[0],
+        "name": row[1],
+        "photo": None,
+        "avg_rating": row[5]
+    }
+
+    # Pokud sloupce s fotkou nejsou None
+    if row[2] is not None:
+        location["photo"] = {
+            "id": row[2],
+            "alt_text": row[3],
+            "url": row[4]
+        }
+
+    return location
+
+def get_newest_location(conn: sqlite3.Connection) -> Dict[str, Any]:
+    cursor = conn.cursor()
+    cursor.execute("""
+                   SELECT l.id         AS loc_id,
+                          l.name       AS loc_name,
+                          p.id         AS photo_id,
+                          p.alt_text   AS photo_alt_text,
+                          p.url        AS photo_url
+                   FROM location l
+                            LEFT JOIN photo p ON l.id = p.id_location
+                   ORDER BY l.id DESC
+                   LIMIT 1
+                   """)
+    # Zpracuje pouze první výskyt
+    row = cursor.fetchone()
+    print("Row 4: ")
+    print(row[4])
+    location = {
+        "id": row[0],
+        "name": row[1],
+        "photo": None,
+    }
+
+    # Pokud sloupce s fotkou nejsou None
+    if row[2] is not None:
+        location["photo"] = {
+            "id": row[2],
+            "alt_text": row[3],
+            "url": row[4]
+        }
+    print("Row 4: ")
+    print(row[4])
     return location

@@ -3,4 +3,42 @@
 {% block content %}
 <h1>Cestovní deník</h1>
 
+
+    <!--Slider s lokacemi-->
+    {% for loc in random_locations %}
+        {% if loc['photo'] %}
+            <a href="{{url_for('location_detail', id=loc['id']) }}">
+                <img alt="{{ loc['photo']['alt_text'] }}" src="/database/{{ loc['photo']['url'] }}" style="width: 200px">
+            </a>
+        {% else %}
+            <a href="{{url_for('location_detail', id=loc['id']) }}">
+                <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}" style="width: 200px"></a>
+            </a>
+        {% endif %}
+    {% endfor %}
+
+    <!--Newest location-->
+    <h2>Nejnovější lokace</h2>
+    <h3>{{ newest_location['name'] }}</h3>
+    {% if newest_location['photo'] %}
+        <a href="{{url_for('location_detail', id=newest_location['id']) }}">
+            <img alt="{{ newest_location['photo']['alt_text'] }}" src="/database/{{ newest_location['photo']['url'] }}">
+        </a>
+    {% else %}
+        <a href="{{url_for('location_detail', id=newest_location['id']) }}">
+            <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}"></a>
+        </a>
+    {% endif %}
+    <!--Most favorite location-->
+    <h2>Nejoblíbenější lokace</h2>
+    <h3>{{ newest_location['name'] }}</h3>
+    {% if favorite_location['photo'] %}
+        <a href="{{url_for('location_detail', id=favorite_location['id']) }}">
+            <img alt="{{ favorite_location['photo']['alt_text'] }}" src="/database/{{ favorite_location['photo']['url'] }}">
+        </a>
+    {% else %}
+        <a href="{{url_for('location_detail', id=favorite_location['id']) }}">
+            <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}">
+        </a>
+    {% endif %}
 {% endblock %}
