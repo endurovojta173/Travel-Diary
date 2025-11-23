@@ -6,15 +6,14 @@
 
     <!--Slider s lokacemi-->
     {% for loc in random_locations %}
+        <a href="{{url_for('location_detail', id=loc['id']) }}">
+        <h3>{{ loc['name'] }}</h3>
         {% if loc['photo'] %}
-            <a href="{{url_for('location_detail', id=loc['id']) }}">
                 <img alt="{{ loc['photo']['alt_text'] }}" src="/database/{{ loc['photo']['url'] }}" style="width: 200px">
-            </a>
         {% else %}
-            <a href="{{url_for('location_detail', id=loc['id']) }}">
-                <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}" style="width: 200px"></a>
-            </a>
+                <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}" style="width: 200px">
         {% endif %}
+        </a>
     {% endfor %}
 
     <!--Newest location-->

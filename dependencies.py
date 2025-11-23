@@ -3,6 +3,7 @@ from typing import Iterator
 from fastapi import Depends
 from database.database import open_connection
 from services.locations import LocationService
+from services.users import UserService
 
 
 def get_conn() -> Iterator[sqlite3.Connection]:
@@ -11,3 +12,6 @@ def get_conn() -> Iterator[sqlite3.Connection]:
 
 def locations_service(conn: sqlite3.Connection = Depends(get_conn)) -> LocationService:
     return LocationService(conn)
+
+def user_service(conn: sqlite3.Connection = Depends(get_conn)) -> UserService:
+    return UserService(conn)

@@ -123,8 +123,9 @@ def get_five_random_locations(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
 
         if row[2] is not None:
             loc_data["photo"] = {
-                "alt_text": row[2],
-                "url": row[3]
+                "id": row[2],
+                "alt_text": row[3],
+                "url": row[4]
             }
 
         locations.append(loc_data)
@@ -166,7 +167,6 @@ def get_most_favorite_location(conn: sqlite3.Connection) -> Dict[str, Any]:
             "alt_text": row[3],
             "url": row[4]
         }
-
     return location
 
 def get_newest_location(conn: sqlite3.Connection) -> Dict[str, Any]:
@@ -184,8 +184,7 @@ def get_newest_location(conn: sqlite3.Connection) -> Dict[str, Any]:
                    """)
     # Zpracuje pouze první výskyt
     row = cursor.fetchone()
-    print("Row 4: ")
-    print(row[4])
+
     location = {
         "id": row[0],
         "name": row[1],
@@ -199,6 +198,4 @@ def get_newest_location(conn: sqlite3.Connection) -> Dict[str, Any]:
             "alt_text": row[3],
             "url": row[4]
         }
-    print("Row 4: ")
-    print(row[4])
     return location
