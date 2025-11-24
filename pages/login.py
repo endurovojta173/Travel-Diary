@@ -38,12 +38,20 @@ async def login_user(request: Request, login_data: UserLogin = Depends(get_login
             "email_value": login_data.email
         })
 
-    # ÚSPĚCH: Uložíme uživatele do Session
+    #Uložíme uživatele do Session
     request.session["user"] = {
         "id": user["id"],
         "name": user["name"],
+        "email": user["email"],
         "role": user["id_role"]
     }
 
-    # Přesměrujeme na domovskou stránku (nebo dashboard)
+    #Dashboard
     return RedirectResponse(url="/my_profile", status_code=303)
+
+
+@router.get("/logout")
+async def logout(request: Request):
+    request.session.clear()
+
+    return RedirectResponse(url="/login", status_code=303)

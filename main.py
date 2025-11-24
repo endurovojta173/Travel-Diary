@@ -3,6 +3,7 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 #Pro session
 from starlette.middleware.sessions import SessionMiddleware
+
 from starlette.templating import Jinja2Templates
 from pages.home import router as home_router
 from pages.locations import router as locations_router
@@ -21,8 +22,8 @@ def create_app() -> FastAPI:
     app.mount("/static", StaticFiles(directory="static"), name="static")
     #Mount for images of locations in database
     app.mount("/database", StaticFiles(directory="database"), name="database")
-    #Pro session
-    app.add_middleware(SessionMiddleware, secret_key="super-tajny-klic-ktery-nikdo-neuhadne")
+    #Pro session na šifrování
+    app.add_middleware(SessionMiddleware, secret_key="super-tajny-klic-ktery-nikdo-neuhadneiujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoabvdsdggasdgadf489849456dfhs648fhgda468fhgad648+hfgd468gdfhsg468f")
 
     app.state.templates = Jinja2Templates(directory="templates")
 
