@@ -1,6 +1,45 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
-<h1>Můj profil</h1>
-<p>Vítejte na landing page! Cestovatel0</p>
+<h1>{{ title }}</h1>
+
+    <span>Jméno: {{  request.session.user.name }}</span><br>
+    <span>Email: {{ request.session.user.email }}</span><br>
+    {% if request.session.user.role == 3 %}
+        <span>Role: Uživatel</span><br>
+    {% elif request.session.user.role == 2 %}
+         <span>Role: Redaktor</span><br>
+    {% elif request.session.user.role == 1 %}
+         <span>Role: Administrátor</span><br>
+    {% endif %}
+    <span>Počet přidaných lokací: </span><br>
+    <span>Počet navštívených lokací: </span><br>
+    <span>Počet hodnocených lokací: </span><br>
+    <span>Počet komentovaných lokací: </span><br>
+    <button class="toggle-btn" onclick="toggleSection('locations-box', this)">Moje přidané lokace <span class="arrow">▼</span></button>
+    <div id="locations-box" class="toggle-content" style="display: none;">
+        {% if my_added_locations %}
+            <ul>
+                {% for loc in my_added_locations %}
+                    <li><a href="/locations/{{ loc.id }}">{{ loc.name }}</a></li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Žádné lokace.</p>
+        {% endif %}
+    </div>
+    <button>Moje navštívené lokace</button>
+    <button>Moje oblíbené lokace</button>
+    <button>Přidat lokaci</button>
+    <button>Lokace čekající na schválení</button>
+    {% if request.session.user.role  == 2 %}
+        <button>Schválit lokaci</button>
+        {% if request.session.user.role == 1 %}
+            <button>Vytvořit uživatele</button>
+            <button>Zobrazit všechny uživatele</button>
+        {% endif %}
+    {% endif %}
+
+
+    <script src="/static/js/my_profile.js"></script>
 {% endblock %}

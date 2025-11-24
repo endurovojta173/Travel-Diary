@@ -320,3 +320,31 @@ def list_locations_by_most_comments(conn: sqlite3.Connection) -> List[Dict[str, 
             }
 
         locations.append(loc_data)
+
+def list_locations_added_by_concrete_user(conn: sqlite3.Connection, id_user:int) -> List[Dict[str, Any]]:
+    cursor = conn.cursor()
+    cursor.execute("""
+                SELECT
+                          l.name        AS loc_name,
+                          p.alt_text    AS photo_alt_text,
+                          p.url         AS photo_url
+                FROM location l
+                    LEFT JOIN photo p ON l.id = p.id_location
+                WHERE l.status = 'approved' AND  l.id_user = :id_user
+                GROUP BY l.id
+                ORDER BY l.id DESC
+                   """, {"id_user": id_user})
+    locations = []
+    for row in cursor.fetchall():
+        loc_data = {
+            "name": row[0],
+            "photo": None
+        }
+        if row[1] is not None:
+            loc_data["photo"] = {
+                "alt_text": row[1],
+                "url": row[2]
+            }
+        locations.append(loc_data)
+
+    return locations

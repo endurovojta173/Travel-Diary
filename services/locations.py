@@ -9,6 +9,7 @@ from repositories.locations import get_newest_location as repo_get_newest_locati
 from repositories.locations import list_locations_by_newest as repo_list_locations_by_newest
 from repositories.locations import list_locations_by_avg_rating as repo_list_locations_by_avg_rating
 from repositories.locations import list_locations_by_most_comments as repo_list_locations_by_most_comments
+from repositories.locations import list_locations_added_by_concrete_user as repo_list_locations_added_by_concrete_user
 
 class LocationService:
     def __init__(self, conn: sqlite3.Connection):
@@ -40,3 +41,6 @@ class LocationService:
 
     def list_locations_by_most_comments(self) -> List[Dict[str, Any]]:
         return repo_list_locations_by_most_comments(self.conn)
+
+    def list_locations_added_by_concrete_user(self, id_user:int) -> List[Dict[str, Any]]:
+        return repo_list_locations_added_by_concrete_user(self.conn, id_user)
