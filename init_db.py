@@ -20,6 +20,7 @@ CREATE TABLE location (
     name VARCHAR NOT NULL,
     description VARCHAR,
     date_location_added TEXT NOT NULL,
+    status VARCHAR NOT NULL,
     id_user INTEGER NOT NULL,
     FOREIGN KEY (id_user) REFERENCES user(id)
 );

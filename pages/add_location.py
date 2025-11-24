@@ -8,5 +8,8 @@ router = APIRouter()
 async def add_location_page(request: Request):
     return request.app.state.templates.TemplateResponse(
         "add_location.html",
-        {"request": request, "title": "Locations"}
+        {
+            "request": request,
+            "title": "Přidat lokaci"
+        }
     )
