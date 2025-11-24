@@ -14,6 +14,7 @@ def list_locations_with_photos_and_rating(conn: sqlite3.Connection) -> List[Dict
                    SELECT l.id          AS loc_id,
                           l.name        AS loc_name,
                           l.description AS loc_description,
+                          l.status      AS loc_status,
                           p.id          AS photo_id,
                           p.alt_text    AS photo_alt_text,
                           p.url         AS photo_url,
@@ -23,6 +24,7 @@ def list_locations_with_photos_and_rating(conn: sqlite3.Connection) -> List[Dict
                             LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating
                                        FROM rating
                                        GROUP BY id_location) r ON l.id = r.id_location
+                    WHERE l.status = 'approved'
                    ORDER BY l.id
                    """)
 
@@ -39,15 +41,15 @@ def list_locations_with_photos_and_rating(conn: sqlite3.Connection) -> List[Dict
                 "name": row[1],
                 "description": row[2],
                 "photos": [],
-                "avg_rating": row[6]  # průměrné hodnocení
+                "avg_rating": row[7]  # průměrné hodnocení
             }
 
         # pokud je přiřazená fotka, přidáme ji do seznamu
-        if row[3] is not None:
+        if row[4] is not None:
             locations[loc_id]["photos"].append({
-                "id": row[3],
-                "alt_text": row[4],
-                "url": row[5]
+                "id": row[4],
+                "alt_text": row[5],
+                "url": row[6]
             })
 
     return list(locations.values())
@@ -69,7 +71,7 @@ def get_location_by_id_with_photos_and_rating(conn: sqlite3.Connection, location
                             LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating
                                        FROM rating
                                        GROUP BY id_location) r ON l.id = r.id_location
-                   WHERE l.id = :id
+                   WHERE l.id = :id AND l.status = 'approved'
                    ORDER BY l.id
                    """, {"id": location_id})
 
@@ -107,6 +109,7 @@ def get_five_random_locations(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
                           p.url      AS photo_url
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
+                    WHERE l.status = 'approved'
                    GROUP BY l.id
                    ORDER BY RANDOM()
                    LIMIT 5
@@ -147,6 +150,7 @@ def get_most_favorite_location(conn: sqlite3.Connection) -> Dict[str, Any]:
                             LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating
                                        FROM rating
                                        GROUP BY id_location) r ON l.id = r.id_location
+                   WHERE l.status = 'approved'
                    ORDER BY avg_rating DESC 
                     LIMIT 1
                    """)
@@ -179,6 +183,7 @@ def get_newest_location(conn: sqlite3.Connection) -> Dict[str, Any]:
                           p.url        AS photo_url
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
+                    WHERE l.status = 'approved'
                    ORDER BY l.id DESC
                    LIMIT 1
                    """)
@@ -215,6 +220,7 @@ def list_locations_by_avg_rating(conn: sqlite3.Connection) -> List[Dict[str, Any
                             LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating
                                        FROM rating
                                        GROUP BY id_location) r ON l.id = r.id_location
+                        WHERE l.status = 'approved'
                    ORDER BY avg_rating DESC
                    """)
     locations = []
@@ -253,6 +259,7 @@ def list_locations_by_newest(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
                             LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating
                                        FROM rating
                                        GROUP BY id_location) r ON l.id = r.id_location
+                    WHERE l.status = 'approved'
                    ORDER BY l.id DESC
                    """)
     locations = []
@@ -290,6 +297,7 @@ def list_locations_by_most_comments(conn: sqlite3.Connection) -> List[Dict[str, 
                             LEFT JOIN photo p ON l.id = p.id_location
                             LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating FROM rating GROUP BY id_location) r ON l.id = r.id_location
                             LEFT JOIN (SELECT id_location, COUNT(id) AS com_count FROM comment GROUP BY id_location) c ON l.id = c.id_location
+                    WHERE l.status = 'approved'
                 GROUP BY l.id
                 ORDER BY com_count DESC
                    """)
