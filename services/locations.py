@@ -1,5 +1,7 @@
-from typing import List, Dict, Any, Optional
 import sqlite3
+import os
+from typing import List, Dict, Any, Optional
+from fastapi import  UploadFile
 from repositories.locations import list_locations as repo_list_locations
 from repositories.locations import list_locations_with_photos_and_rating as repo_list_locations_with_photos_and_rating
 from repositories.locations import get_location_by_id_with_photos_and_rating as repo_get_location_by_id_with_photos_and_rating
@@ -10,6 +12,7 @@ from repositories.locations import list_locations_by_newest as repo_list_locatio
 from repositories.locations import list_locations_by_avg_rating as repo_list_locations_by_avg_rating
 from repositories.locations import list_locations_by_most_comments as repo_list_locations_by_most_comments
 from repositories.locations import list_locations_added_by_concrete_user as repo_list_locations_added_by_concrete_user
+from repositories.locations import add_new_location as repo_add_new_location
 
 class LocationService:
     def __init__(self, conn: sqlite3.Connection):
@@ -44,3 +47,6 @@ class LocationService:
 
     def list_locations_added_by_concrete_user(self, id_user:int) -> List[Dict[str, Any]]:
         return repo_list_locations_added_by_concrete_user(self.conn, id_user)
+
+    def add_new_location(self, location_name:str, location_description:str, id_user:int, files: List[UploadFile]) -> Optional[int]:
+        upload_directory = "/database/img/locations/" + 

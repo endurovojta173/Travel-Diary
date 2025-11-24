@@ -17,3 +17,4 @@ async def add_location_page(request: Request):
             "title": "Přidat lokaci"
         }
     )
+
