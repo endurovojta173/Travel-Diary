@@ -221,6 +221,7 @@ def list_locations_by_avg_rating(conn: sqlite3.Connection) -> List[Dict[str, Any
                                        FROM rating
                                        GROUP BY id_location) r ON l.id = r.id_location
                         WHERE l.status = 'approved'
+                        GROUP BY l.id
                    ORDER BY avg_rating DESC
                    """)
     locations = []
@@ -260,6 +261,7 @@ def list_locations_by_newest(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
                                        FROM rating
                                        GROUP BY id_location) r ON l.id = r.id_location
                     WHERE l.status = 'approved'
+                    GROUP BY l.id
                    ORDER BY l.id DESC
                    """)
     locations = []

@@ -16,34 +16,30 @@
       'insertdatetime media table paste code help wordcount'
     ],
     toolbar: 'undo redo | styles | ' +
-             'bold italic backcolor | ' +
-             'alignleft aligncenter alignright alignjustify | ' +
-             'bullist numlist outdent indent | ' + // <--- TADY JSOU PĚKNĚ POHROMADĚ
-             'hr'
+             'bold italic backcolor | ' + //Styles of text
+             'alignleft aligncenter alignright alignjustify | ' + //Aligns
+             'bullist numlist outdent indent | ' +  //Tabs
+             'hr' //Horizontal line
   });
 </script>
 
 <form method="post" action="/add_location" enctype="multipart/form-data">
-
     <div>
         <label for="name">Název lokace:</label><br>
-        <input type="text" id="name" name="name" required style="width: 100%; padding: 8px;">
+        <input type="text" id="name" name="name" required>
     </div>
     <br>
-
     <div>
         <label for="description">Popis:</label><br>
         <textarea id="description" name="description"></textarea>
     </div>
     <br>
-
     <div>
         <label for="files">Fotky (Můžete vložit více, 1. fotka bude použita jako náhled lokace):</label><br>
         <input type="file" id="files" name="files" multiple accept="image/*">
     </div>
     <br>
-
-    <button type="submit" style="padding: 10px 20px; font-size: 16px;">Vložit lokaci</button>
+    <button type="submit">Vložit lokaci</button>
 </form>
 
 {% endblock %}

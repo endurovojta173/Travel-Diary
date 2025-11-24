@@ -19,7 +19,7 @@
                     <img alt="{{ loc['photos'][0]['alt_text'] }}" src="/database/{{ loc['photos'][0]['url'] }}">
                 </a>
             {% else %}
-                <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}"></a>
+                <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}">
             {% endif %}
         </div>
 

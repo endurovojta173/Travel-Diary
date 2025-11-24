@@ -32,7 +32,6 @@ async def register_user(request: Request, user_data: UserCreate = Depends(get_re
         return RedirectResponse(url="/login", status_code=303)
 
     except HTTPException as e:
-        print(11111111111111111111)
         tpl = request.app.state.templates
         return tpl.TemplateResponse("register.html", {
             "request": request,
