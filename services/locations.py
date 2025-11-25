@@ -1,6 +1,8 @@
 import sqlite3
 import os
+import uuid
 from typing import List, Dict, Any, Optional
+from PIL import Image, UnidentifiedImageError
 from fastapi import  UploadFile
 from repositories.locations import list_locations as repo_list_locations
 from repositories.locations import list_locations_with_photos_and_rating as repo_list_locations_with_photos_and_rating
@@ -48,5 +50,8 @@ class LocationService:
     def list_locations_added_by_concrete_user(self, id_user:int) -> List[Dict[str, Any]]:
         return repo_list_locations_added_by_concrete_user(self.conn, id_user)
 
-    def add_new_location(self, location_name:str, location_description:str, id_user:int, files: List[UploadFile]) -> Optional[int]:
-        upload_directory = "/database/img/locations/" + 
+    def add_new_location(self, location_name:str, location_description:str, id_user:int) -> Optional[int]:
+        return repo_add_new_location(self.conn, id_user, location_name, location_description)
+
+
+
