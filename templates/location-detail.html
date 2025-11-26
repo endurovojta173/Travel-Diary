@@ -6,42 +6,62 @@
 <body>
 
 {% block content %}
-<h1>{{ title }}</h1>
+    <h1>{{ title }}</h1>
     {% if location['photos'] %}
         <img alt="{{ location['photos'][0]['alt_text'] }}" src="/database/{{ location['photos'][0]['url'] }}">
     {% else %}
-        <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}">
+        <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}">
     {% endif %}
     <div>
-    <!--Add/Remove favorite-->
-    {% if user_status.is_favorite %}
-        <form action="/locations/{{ location["id"] }}/favorite/remove" method="post">
-        <button type="submit">
-            Oblíbené (Odebrat)
-        </button>
-        </form>
-    {% else %}
-        <form action="/locations/{{ location["id"] }}/favorite/add" method="post">
-        <button type="submit">
-            Přidat do oblíbených
-        </button>
-        </form>
-    {% endif %}
-    <!--Add/Remove visited-->
-    {% if user_status.is_visited %}
-        <form action="/locations/{{ location["id"] }}/visited/remove" method="post">
-            <button type="submit">Navštíveno (Odebrat)</button>
-        </form>
-    {% else %}
-        <form action="/locations/{{ location["id"] }}/visited/add" method="post">
-        <button type="submit">Přidat do navštívených</button>
-    </form>
-    {% endif %}
+        <!--Add/Remove favorite-->
+        {% if user_status.is_favorite %}
+            <form action="/locations/{{ location["id"] }}/favorite/remove" method="post">
+                <button type="submit">
+                    Oblíbené (Odebrat)
+                </button>
+            </form>
+        {% else %}
+            <form action="/locations/{{ location["id"] }}/favorite/add" method="post">
+                <button type="submit">
+                    Přidat do oblíbených
+                </button>
+            </form>
+        {% endif %}
+        <!--Add/Remove visited-->
+        {% if user_status.is_visited %}
+            <form action="/locations/{{ location["id"] }}/visited/remove" method="post">
+                <button type="submit">Navštíveno (Odebrat)</button>
+            </form>
+        {% else %}
+            <form action="/locations/{{ location["id"] }}/visited/add" method="post">
+                <button type="submit">Přidat do navštívených</button>
+            </form>
+        {% endif %}
     </div>
-    {{ location['avg_rating']}}<br>
-    {{ location['date_location_added']}}<br>
-    {{ location['description']}}
+    {{ location['avg_rating'] }}<br>
+    {{ location['date_location_added'] }}<br>
+    {{ location['description']  | safe}}
 
-
+    <div>
+        <h2>Komentáře</h2>
+        {% if request.session.get("user") %}
+            <h3>Přidat komentář</h3>
+            <form method="post" action="/locations/{{location.id}}/add_comment" enctype="multipart/form-data">
+                <div>
+                    <label for="comment_text">Komentář:</label><br>
+                    <textarea id="comment_text" name="comment_text"></textarea>
+                </div>
+                <br>
+                <button type="submit">Okomentovat</button>
+            </form>
+        {% endif %}
+        {% for com in comments %}
+            <div>
+                {{ com["author"] }}
+                {{ com["date"] }}
+                {{ com["text"]}}
+            </div>
+        {% endfor %}
+    </div>
 {% endblock %}
 </body>

@@ -1,6 +1,7 @@
-from fastapi import Request, APIRouter, Depends
+from fastapi import Request, APIRouter, Depends,Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from dependencies import locations_service
+from model import location
 from services.locations import LocationService
 
 router = APIRouter()
@@ -26,6 +27,7 @@ async def list_locations_with_photos_rating(request: Request,svc: LocationServic
 @router.get("/locations/{location_id}", name="location_detail", response_class=HTMLResponse)
 async def location_detail(request: Request, location_id:int, svc: LocationService = Depends(locations_service)):
     location = svc.get_location_by_id_with_photos_and_rating(location_id)
+    comments = svc.list_comments(location_id)
 
     user_status = {"is_favorite":False, "is_visited":False}
 
@@ -41,6 +43,7 @@ async def location_detail(request: Request, location_id:int, svc: LocationServic
             "request": request,
             "title": location["name"],
             "location": location,  #Všechny informace o lokaci
+            "comments": comments,
             "user_status": user_status #Informace zda uživatel má přidanou lokaci do favorite/visited
         },
     )
@@ -83,3 +86,8 @@ async def remove_from_visited(location_id:int, request: Request, svc: LocationSe
     else:
         svc.remove_location_from_visited(user["id"], location_id)
         return RedirectResponse(url=f"/locations/{location_id}", status_code=303)
+
+@router.post("/locations/{location_id}/add_comment")
+async def add_comment(location_id:int ,request: Request, svc: LocationService = Depends(locations_service), comment_text:str = Form(...)):
+    svc.add_comment_to_location(request.session["user"]["id"], location_id, comment_text)
+    return RedirectResponse(url=f"/locations/{location_id}", status_code=303)

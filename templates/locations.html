@@ -37,7 +37,7 @@
             </div>
             <!--Description-->
             <p class="loc-desc">
-                {{ loc['description'] | truncate(250, True, '...') }}
+                {{ loc['description'] | truncate(250, True, '...') | safe}}
                 <a href="{{url_for('location_detail',  location_id=loc['id']) }}" class="more">Více...</a>
             </p>
         </div>
