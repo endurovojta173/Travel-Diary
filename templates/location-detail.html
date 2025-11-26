@@ -12,6 +12,27 @@
     {% else %}
         <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}"></a>
     {% endif %}
+    <div>
+       <form action="/locations/{{ location["id"] }}/favorite" method="post">
+        <button type="submit">
+            {% if user_status.is_favorite %}
+                Oblíbené (Odebrat)
+            {% else %}
+                Přidat do oblíbených
+            {% endif %}
+        </button>
+        </form>
+
+    <form action="/locations/{{ location["id"] }}/visited" method="post">
+        <button type="submit">
+            {% if user_status.is_visited %}
+                Navštíveno (Odebrat)
+            {% else %}
+                Přidat do navštívených
+            {% endif %}
+        </button>
+    </form>
+    </div>
     {{ location['avg_rating']}}<br>
     {{ location['date_location_added']}}<br>
     {{ location['description']}}

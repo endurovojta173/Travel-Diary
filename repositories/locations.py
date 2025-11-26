@@ -373,21 +373,64 @@ def add_new_location(conn: sqlite3.Connection, id_user: int, name: str, descript
                        """, (name, description, id_user))
 
         new_location_id = cursor.lastrowid
-
-        #if photos:
-         #   photos_data = []
-          #  for photo in photos:
-           #     photos_data.append((
-            #        photo.get("id"),
-             #       photo.get("alt_text"),
-              #      photo.get("url"),
-               #     new_location_id
-                #))
-        #cursor.executemany(""" INSERT INTO photo(id_location, alt_text, url, id_location)VALUES (?, ?, ?, ?)""", photos_data)
-
         conn.commit()
         return new_location_id
     except:
         print("Error adding new location")
         conn.rollback()  #Vrátíme změny
         return None
+
+def add_location_to_favorites(conn: sqlite3.Connection, id_user: int, id_location: int) -> Optional[int]:
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+            INSERT INTO favorite_location(id_user, id_location)
+                VALUES (?,?)
+        """,(id_user, id_location))
+
+        new_location_id = cursor.lastrowid
+        conn.commit()
+        return new_location_id
+    except:
+        print("Error adding location to favorites")
+        conn.rollback()  # Vrátíme změny
+        return None
+
+def add_location_to_visited(conn: sqlite3.Connection, id_user: int, id_location: int) -> Optional[int]:
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+            INSERT INTO visited_location(id_user, id_location)
+                VALUES (?,?)
+        """,(id_user, id_location))
+
+        new_location_id = cursor.lastrowid
+        conn.commit()
+        return new_location_id
+    except:
+        print("Error adding location to favorites")
+        conn.rollback()  # Vrátíme změny
+        return None
+
+
+def is_location_favorite(conn: sqlite3.Connection, user_id: int, location_id: int) -> bool:
+    cursor = conn.cursor()
+    cursor.execute("""
+                   SELECT 1
+                   FROM favorite_location
+                   WHERE id_user = ?
+                     AND id_location = ?
+                   """, (user_id, location_id))
+    return cursor.fetchone() is not None
+
+
+def is_location_visited(conn: sqlite3.Connection, user_id: int, location_id: int) -> bool:
+    cursor = conn.cursor()
+    cursor.execute("""
+                   SELECT 1
+                   FROM visited_location
+                   WHERE id_user = ?
+                     AND id_location = ?
+                   """, (user_id, location_id))
+
+    return cursor.fetchone() is not None

@@ -21,7 +21,7 @@
         {% if my_added_locations %}
             <ul>
                 {% for loc in my_added_locations %}
-                    <li><a href="{{url_for('location_detail', id=loc['id']) }}">{{ loc.name }}<img alt="{{ loc['photo']['alt_text'] }}" src="/database/{{ loc['photo']['url'] }}"></a></li>
+                    <li><a href="{{url_for('location_detail',  location_id=loc['id']) }}">{{ loc.name }}<img alt="{{ loc['photo']['alt_text'] }}" src="/database/{{ loc['photo']['url'] }}"></a></li>
                 {% endfor %}
             </ul>
         {% else %}

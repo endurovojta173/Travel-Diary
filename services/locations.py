@@ -15,6 +15,10 @@ from repositories.locations import list_locations_by_avg_rating as repo_list_loc
 from repositories.locations import list_locations_by_most_comments as repo_list_locations_by_most_comments
 from repositories.locations import list_locations_added_by_concrete_user as repo_list_locations_added_by_concrete_user
 from repositories.locations import add_new_location as repo_add_new_location
+from repositories.locations import add_location_to_favorites as repo_add_location_to_favorites
+from repositories.locations import add_location_to_visited as repo_add_location_to_visited
+from repositories.locations import is_location_visited as repo_is_location_visited
+from repositories.locations import is_location_favorite as repo_is_location_favorite
 
 class LocationService:
     def __init__(self, conn: sqlite3.Connection):
@@ -53,5 +57,15 @@ class LocationService:
     def add_new_location(self, location_name:str, location_description:str, id_user:int) -> Optional[int]:
         return repo_add_new_location(self.conn, id_user, location_name, location_description)
 
+    def add_location_to_favorite(self, id_user:int, id_location:int) -> Optional[int]:
+        return repo_add_location_to_favorites(self.conn, id_user, id_location)
+
+    def add_location_to_visited(self, id_user:int, id_location:int) -> Optional[int]:
+        return repo_add_location_to_visited(self.conn, id_user, id_location)
 
 
+    def get_user_interaction_status(self, user_id: int, location_id: int):
+        return {
+            "is_favorite": repo_is_location_favorite(self.conn, user_id, location_id),
+            "is_visited": repo_is_location_visited(self.conn, user_id, location_id)
+        }

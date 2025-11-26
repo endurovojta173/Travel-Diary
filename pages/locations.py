@@ -1,5 +1,5 @@
 from fastapi import Request, APIRouter, Depends
-from fastapi.responses import HTMLResponse
+from fastapi.responses import HTMLResponse, RedirectResponse
 from dependencies import locations_service
 from services.locations import LocationService
 
@@ -12,12 +12,6 @@ async def list_locations_with_photos_rating(request: Request,svc: LocationServic
     #Získání seznamu lokací s fotkami
     locations = svc.list_locations_with_photos_rating()
 
-    #Kontrola do konzole
-    #for location in locations:
-    #    print(f"Lokace: {location['name']},rating: {location['avg_rating']}, počet fotek: {len(location['photos'])}")
-    #    for photo in location['photos']:
-    #        print(f" - Fotka: {photo['url']}")
-
     #templating engine z app.state
     tpl = request.app.state.templates
     return tpl.TemplateResponse(
@@ -29,9 +23,16 @@ async def list_locations_with_photos_rating(request: Request,svc: LocationServic
         },
     )
 
-@router.get("/locations/{id}", name="location_detail", response_class=HTMLResponse)
-async def location_detail(request: Request, id:int ,svc: LocationService = Depends(locations_service)):
-    location = svc.get_location_by_id_with_photos_and_rating(id)
+@router.get("/locations/{location_id}", name="location_detail", response_class=HTMLResponse)
+async def location_detail(request: Request, location_id:int, svc: LocationService = Depends(locations_service)):
+    location = svc.get_location_by_id_with_photos_and_rating(location_id)
+
+    user_status = {"is_favorite":False, "is_visited":False}
+
+    user = request.session.get("user")
+
+    if user:
+        user_status = svc.get_user_interaction_status(user["id"], location_id)
 
     tpl = request.app.state.templates
     return tpl.TemplateResponse(
@@ -40,5 +41,24 @@ async def location_detail(request: Request, id:int ,svc: LocationService = Depen
             "request": request,
             "title": location["name"],
             "location": location,  #Všechny informace o lokaci
+            "user_status": user_status #Informace zda uživatel má přidanou lokaci do favorite/visited
         },
     )
+
+@router.post("/locations/{location_id}/favorite")
+async def add_favorite(location_id:int, request: Request, svc: LocationService = Depends(locations_service)):
+    user = request.session.get("user")
+    if not user:
+        return RedirectResponse(url="/login", status_code=303)
+    else:
+        svc.add_location_to_favorite(user["id"], location_id)
+        return RedirectResponse(url=f"/locations/{location_id}", status_code=303)
+
+@router.post("/locations/{location_id}/visited")
+async def add_visited(location_id:int, request: Request, svc: LocationService = Depends(locations_service)):
+    user = request.session.get("user")
+    if not user:
+        return RedirectResponse(url="/login", status_code=303)
+    else:
+        svc.add_location_to_visited(user["id"], location_id)
+        return RedirectResponse(url=f"/locations/{location_id}", status_code=303)

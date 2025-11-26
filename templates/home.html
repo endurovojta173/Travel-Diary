@@ -6,7 +6,7 @@
 
     <!--Slider s lokacemi-->
     {% for loc in random_locations %}
-        <a href="{{url_for('location_detail', id=loc['id']) }}">
+        <a href="{{url_for('location_detail', location_id=loc['id']) }}">
         <h3>{{ loc['name'] }}</h3>
         {% if loc['photo'] %}
                 <img alt="{{ loc['photo']['alt_text'] }}" src="/database/{{ loc['photo']['url'] }}" style="width: 200px">
@@ -20,11 +20,11 @@
     <h2>Nejnovější lokace</h2>
     <h3>{{ newest_location['name'] }}</h3>
     {% if newest_location['photo'] %}
-        <a href="{{url_for('location_detail', id=newest_location['id']) }}">
+        <a href="{{url_for('location_detail',  location_id=newest_location['id']) }}">
             <img alt="{{ newest_location['photo']['alt_text'] }}" src="/database/{{ newest_location['photo']['url'] }}">
         </a>
     {% else %}
-        <a href="{{url_for('location_detail', id=newest_location['id']) }}">
+        <a href="{{url_for('location_detail',  location_id=newest_location['id']) }}">
             <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}"></a>
         </a>
     {% endif %}
@@ -32,11 +32,11 @@
     <h2>Nejoblíbenější lokace</h2>
     <h3>{{ newest_location['name'] }}</h3>
     {% if favorite_location['photo'] %}
-        <a href="{{url_for('location_detail', id=favorite_location['id']) }}">
+        <a href="{{url_for('location_detail',  location_id=favorite_location['id']) }}">
             <img alt="{{ favorite_location['photo']['alt_text'] }}" src="/database/{{ favorite_location['photo']['url'] }}">
         </a>
     {% else %}
-        <a href="{{url_for('location_detail', id=favorite_location['id']) }}">
+        <a href="{{url_for('location_detail',  location_id=favorite_location['id']) }}">
             <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}">
         </a>
     {% endif %}
