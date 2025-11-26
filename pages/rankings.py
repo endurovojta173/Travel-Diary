@@ -8,7 +8,7 @@ router = APIRouter()
 
 #Router for displaying rankings page
 @router.get("/rankings")
-async def rankings_page(request: Request, sort:str = "sort" ,response_class=HTMLResponse, svc: LocationService = Depends(locations_service) ):
+async def rankings_page(request: Request, sort:str = "sort", svc: LocationService = Depends(locations_service) ):
     titles_map = {
         "rating": "Nejoblíbenější lokace podle hodnocení",
         "comments": "Nejvíce diskutované lokace",

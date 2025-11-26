@@ -297,13 +297,13 @@ def list_locations_by_newest(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
 def list_locations_by_most_comments(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
     cursor = conn.cursor()
     cursor.execute("""
-                   SELECT l.id          AS loc_id,
-                          l.name        AS loc_name,
-                          l.description AS loc_description,
-                          p.id          AS photo_id,
-                          p.alt_text    AS photo_alt_text,
-                          p.url         AS photo_url,
-                          r.avg_rating  AS avg_rating
+                   SELECT l.id,          
+                          l.name,        
+                          l.description, 
+                          p.id,          
+                          p.alt_text,    
+                          p.url,         
+                          r.avg_rating  
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
                             LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating FROM rating GROUP BY id_location) r
@@ -320,18 +320,19 @@ def list_locations_by_most_comments(conn: sqlite3.Connection) -> List[Dict[str, 
         loc_data = {
             "id": row[0],
             "name": row[1],
+            "description": row[2],
             "photo": None
         }
 
-        if row[2] is not None:
+        if row[3] is not None:
             loc_data["photo"] = {
-                "id": row[2],
-                "alt_text": row[3],
-                "url": row[4]
+                "id": row[3],
+                "alt_text": row[4],
+                "url": row[5]
             }
-
         locations.append(loc_data)
 
+    return locations
 
 def list_locations_added_by_concrete_user(conn: sqlite3.Connection, id_user: int) -> List[Dict[str, Any]]:
     cursor = conn.cursor()
