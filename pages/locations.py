@@ -45,7 +45,8 @@ async def location_detail(request: Request, location_id:int, svc: LocationServic
         },
     )
 
-@router.post("/locations/{location_id}/favorite")
+#Adding to favorite
+@router.post("/locations/{location_id}/favorite/add")
 async def add_favorite(location_id:int, request: Request, svc: LocationService = Depends(locations_service)):
     user = request.session.get("user")
     if not user:
@@ -54,11 +55,31 @@ async def add_favorite(location_id:int, request: Request, svc: LocationService =
         svc.add_location_to_favorite(user["id"], location_id)
         return RedirectResponse(url=f"/locations/{location_id}", status_code=303)
 
-@router.post("/locations/{location_id}/visited")
+#Adding to visited
+@router.post("/locations/{location_id}/visited/add")
 async def add_visited(location_id:int, request: Request, svc: LocationService = Depends(locations_service)):
     user = request.session.get("user")
     if not user:
         return RedirectResponse(url="/login", status_code=303)
     else:
         svc.add_location_to_visited(user["id"], location_id)
+        return RedirectResponse(url=f"/locations/{location_id}", status_code=303)
+
+
+@router.post("/locations/{location_id}/favorite/remove")
+async def remove_from_favorite(location_id:int, request: Request, svc: LocationService = Depends(locations_service)):
+    user = request.session.get("user")
+    if not user:
+        return RedirectResponse(url="/login", status_code=303)
+    else:
+        svc.remove_location_from_favorite(user["id"], location_id)
+        return RedirectResponse(url=f"/locations/{location_id}", status_code=303)
+
+@router.post("/locations/{location_id}/visited/remove")
+async def remove_from_visited(location_id:int, request: Request, svc: LocationService = Depends(locations_service)):
+    user = request.session.get("user")
+    if not user:
+        return RedirectResponse(url="/login", status_code=303)
+    else:
+        svc.remove_location_from_visited(user["id"], location_id)
         return RedirectResponse(url=f"/locations/{location_id}", status_code=303)

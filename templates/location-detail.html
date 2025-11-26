@@ -10,28 +10,33 @@
     {% if location['photos'] %}
         <img alt="{{ location['photos'][0]['alt_text'] }}" src="/database/{{ location['photos'][0]['url'] }}">
     {% else %}
-        <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}"></a>
+        <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}">
     {% endif %}
     <div>
-       <form action="/locations/{{ location["id"] }}/favorite" method="post">
+    <!--Add/Remove favorite-->
+    {% if user_status.is_favorite %}
+        <form action="/locations/{{ location["id"] }}/favorite/remove" method="post">
         <button type="submit">
-            {% if user_status.is_favorite %}
-                Oblíbené (Odebrat)
-            {% else %}
-                Přidat do oblíbených
-            {% endif %}
+            Oblíbené (Odebrat)
         </button>
         </form>
-
-    <form action="/locations/{{ location["id"] }}/visited" method="post">
+    {% else %}
+        <form action="/locations/{{ location["id"] }}/favorite/add" method="post">
         <button type="submit">
-            {% if user_status.is_visited %}
-                Navštíveno (Odebrat)
-            {% else %}
-                Přidat do navštívených
-            {% endif %}
+            Přidat do oblíbených
         </button>
+        </form>
+    {% endif %}
+    <!--Add/Remove visited-->
+    {% if user_status.is_visited %}
+        <form action="/locations/{{ location["id"] }}/visited/remove" method="post">
+            <button type="submit">Navštíveno (Odebrat)</button>
+        </form>
+    {% else %}
+        <form action="/locations/{{ location["id"] }}/visited/add" method="post">
+        <button type="submit">Přidat do navštívených</button>
     </form>
+    {% endif %}
     </div>
     {{ location['avg_rating']}}<br>
     {{ location['date_location_added']}}<br>

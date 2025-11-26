@@ -412,6 +412,29 @@ def add_location_to_visited(conn: sqlite3.Connection, id_user: int, id_location:
         conn.rollback()  # Vrátíme změny
         return None
 
+def remove_location_from_favorite(conn: sqlite3.Connection, id_user: int, id_location: int) -> Optional[int]:
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+            DELETE FROM favorite_location WHERE id_user = ? AND id_location = ?
+        """, (id_user, id_location))
+        conn.commit()
+        return True
+    except:
+        print("Error removing location from favorites")
+        conn.rollback()
+
+def remove_location_from_visited(conn: sqlite3.Connection, id_user: int, id_location: int) -> Optional[int]:
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+        DELETE FROM visited_location WHERE id_user = ? AND id_location = ?
+                       """, (id_user, id_location))
+        conn.commit()
+        return True
+    except:
+        print("Error removing location from visited")
+        conn.rollback()
 
 def is_location_favorite(conn: sqlite3.Connection, user_id: int, location_id: int) -> bool:
     cursor = conn.cursor()
