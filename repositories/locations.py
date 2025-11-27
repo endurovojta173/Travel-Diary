@@ -505,3 +505,65 @@ def remove_my_comment_from_location(conn: sqlite3.Connection, id_user: int, id_l
     except:
         print("Error removing comment from location")
         conn.rollback()
+
+def list_my_visited_locations(conn:sqlite3.Connection, user_id: int) -> List[Dict[str, str]]:
+    cursor = conn.cursor()
+    cursor.execute("""
+                   SELECT l.id,
+                          l.name,
+                          p.url ,
+                          p.alt_text
+                   FROM visited_location v
+                            JOIN location l ON v.id_location = l.id
+                            LEFT JOIN photo p ON l.id = p.id_location
+                   WHERE v.id_user = :user_id
+                   GROUP BY l.id
+                   """, (user_id,))
+
+    locations = []
+    for row in cursor.fetchall():
+        loc_data = {
+            "id": row[0],
+            "name": row[1],
+            "photo": None
+        }
+        if row[2] is not None:
+            loc_data["photo"] = {
+                "url": row[2],
+                "alt_text": row[3]
+            }
+
+        locations.append(loc_data)
+
+    return locations
+
+def list_my_favorite_locations(conn: sqlite3.Connection, user_id: int) -> List[Dict[str, str]]:
+    cursor = conn.cursor()
+    cursor.execute("""
+                    SELECT l.id,
+                          l.name,
+                          p.url ,
+                          p.alt_text
+                    FROM favorite_location f
+                            JOIN location l ON f.id_location = l.id
+                            LEFT JOIN photo p ON l.id = p.id_location
+                    WHERE f.id_user = :user_id
+                    GROUP BY l.id
+                   """,(user_id,))
+
+    locations = []
+    for row in cursor.fetchall():
+        loc_data = {
+            "id": row[0],
+            "name": row[1],
+            "photo": None
+        }
+        if row[2] is not None:
+            loc_data["photo"] = {
+                "url": row[2],
+                "alt_text": row[3]
+            }
+
+        locations.append(loc_data)
+
+    return locations

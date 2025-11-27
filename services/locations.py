@@ -21,6 +21,9 @@ from repositories.locations import remove_location_from_favorite as repo_remove_
 from repositories.locations import list_comments as repo_list_comments
 from repositories.locations import add_comment_to_location as repo_add_comment_to_location
 from repositories.locations import remove_my_comment_from_location as repo_remove_my_comment_from_location
+from repositories.locations import list_my_visited_locations as repo_list_my_visited_locations
+from repositories.locations import list_my_favorite_locations as repo_list_my_favorite_locations
+
 
 class LocationService:
     def __init__(self, conn: sqlite3.Connection):
@@ -85,3 +88,9 @@ class LocationService:
 
     def list_comments(self, id_location:int) -> List[Dict[str, Any]]:
         return repo_list_comments(self.conn, id_location)
+
+    def list_my_favorite_locations(self, user_id:int) -> List[Dict[str, Any]]:
+        return repo_list_my_favorite_locations(self.conn, user_id)
+
+    def list_my_visited_locations(self, user_id:int) -> List[Dict[str, Any]]:
+        return repo_list_my_visited_locations(self.conn, user_id)
