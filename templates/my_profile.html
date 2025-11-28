@@ -102,10 +102,8 @@
             <p>Žádné lokace čekající na schválení.</p>
         {% endif %}
     </div>
-
-
-    {% if request.session.user.role  == 2 %}
-        <button>Schválit lokaci</button>
+    {% if request.session.user.role  <= 2%}
+        <a href="{{ url_for('approve_location_page') }}"><button>Schválit lokaci</button></a>
         {% if request.session.user.role == 1 %}
             <button>Vytvořit uživatele</button>
             <button>Zobrazit všechny uživatele</button>

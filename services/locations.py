@@ -3,8 +3,7 @@ from typing import List, Dict, Any, Optional
 
 from repositories.locations import list_locations as repo_list_locations
 from repositories.locations import list_locations_with_photos_and_rating as repo_list_locations_with_photos_and_rating
-from repositories.locations import \
-    get_location_by_id_with_photos_and_rating as repo_get_location_by_id_with_photos_and_rating
+from repositories.locations import get_location_by_id_with_photos_and_rating as repo_get_location_by_id_with_photos_and_rating
 from repositories.locations import get_five_random_locations as repo_get_five_random_locations
 from repositories.locations import get_most_favorite_location as repo_get_most_favorite_location
 from repositories.locations import get_newest_location as repo_get_newest_location
@@ -25,7 +24,8 @@ from repositories.locations import remove_my_comment_from_location as repo_remov
 from repositories.locations import list_my_visited_locations as repo_list_my_visited_locations
 from repositories.locations import list_my_favorite_locations as repo_list_my_favorite_locations
 from repositories.locations import list_my_locations_with_pending_status as repo_list_my_locations_with_pending_status
-
+from repositories.locations import list_pending_locations as repo_list_pending_locations
+from repositories.locations import get_pending_location_detail as repo_get_pending_location_detail
 class LocationService:
     def __init__(self, conn: sqlite3.Connection):
         self.conn = conn
@@ -98,3 +98,9 @@ class LocationService:
 
     def list_my_locations_with_pending_status(self, user_id: int) -> List[Dict[str, Any]]:
         return repo_list_my_locations_with_pending_status(self.conn, user_id)
+
+    def list_pending_locations(self) -> List[Dict[str, Any]]:
+        return repo_list_pending_locations(self.conn)
+
+    def get_pending_location_detail(self, location_id: int) -> Dict[str, Any]:
+        return repo_get_pending_location_detail(self.conn, location_id)

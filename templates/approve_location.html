@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    {% if pending_locations %}
+        <table>
+            <tr>
+                <th>ID lokace</th>
+                <th>Název lokace</th>
+                <th>Náhled lokace</th>
+                <th>Zobrazit detail</th>
+            </tr>
+            {% for loc in pending_locations %}
+                <tr>
+                    <td>{{ loc['id'] }}</td>
+                    <td>{{ loc['name'] }}</td>
+                <td>
+                    {% if loc['photo'] %}
+                        <img alt="{{ loc['photo']['alt_text']}}" src= "/database/{{loc['photo']['url']}}" style="width: 30vh">
+                    {% else %}
+                        <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}" style="width: 30vh">
+                    {% endif %}
+                </td>
+                    <td> <a href="{{url_for('approve_location_detail',  location_id=loc['id']) }}">Zobrazit detail lokace</a></td>
+                </tr>
+
+            {% endfor %}
+
+        </table>
+    {% else %}
+        <p>Žádné lokace čekající na schválení</p>
+    {% endif %}
+
+{% endblock %}

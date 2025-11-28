@@ -1,0 +1,26 @@
+{% extends "base.html" %}
+<!--Title-->
+{% block title %}{{ title }}{% endblock %}
+
+
+<body>
+
+{% block content %}
+    <h1>{{ title }}</h1>
+    {% if location['photos'] %}
+        <img alt="{{ location['photos'][0]['alt_text'] }}" src="/database/{{ location['photos'][0]['url'] }}">
+    {% else %}
+        <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}">
+    {% endif %}
+    <div>
+        <!--Add/Remove favorite-->
+        <button type=>Přidat do oblíbených</button>
+        <!--Add/Remove visited-->
+        <button>Přidat do navštívených</button>
+    </div>
+    {{ location['avg_rating'] }}<br>
+    {{ location['date_location_added'] }}<br>
+    {{ location['description']  | safe }}
+
+{% endblock %}
+</body>

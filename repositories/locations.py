@@ -593,15 +593,18 @@ def list_my_favorite_locations(conn: sqlite3.Connection, user_id: int) -> List[D
 
 def list_my_locations_with_pending_status(conn: sqlite3.Connection, user_id: int) -> List[Dict[str, str]]:
     cursor = conn.cursor()
+    # OPRAVA:
+    # 1. Odstraněn zbytečný JOIN na user (máme user_id)
+    # 2. Použit zástupný znak ? místo :user_id (pro tuple)
     cursor.execute("""
                    SELECT l.id,
                           l.name,
                           p.url,
                           p.alt_text
-                   FROM favorite_location f
-                            JOIN location l ON f.id_location = l.id
+                   FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
-                   WHERE f.id_user = :user_id AND l.status = 'pending'
+                   WHERE l.id_user = ?
+                     AND l.status = 'pending'
                    GROUP BY l.id
                    """, (user_id,))
 
@@ -617,7 +620,87 @@ def list_my_locations_with_pending_status(conn: sqlite3.Connection, user_id: int
                 "url": row[2],
                 "alt_text": row[3]
             }
+        locations.append(loc_data)
+
+    return locations
+
+
+def list_pending_locations(conn: sqlite3.Connection) -> List[Dict[str, str]]:
+    cursor = conn.cursor()
+    cursor.execute("""
+                   SELECT l.id,
+                          l.name,
+                          p.url,
+                          p.alt_text,
+                          u.name AS author_name
+                   FROM location l
+                            JOIN user u ON l.id_user = u.id
+                            LEFT JOIN photo p ON l.id = p.id_location
+                   WHERE l.status = 'pending'
+                   GROUP BY l.id
+                   """)
+
+    locations = []
+    for row in cursor.fetchall():
+        loc_data = {
+            "id": row[0],
+            "name": row[1],
+            "photo": None,
+            "author": row[4]  # Jméno autora
+        }
+
+        if row[2] is not None:
+            loc_data["photo"] = {
+                "url": row[2],
+                "alt_text": row[3]
+            }
 
         locations.append(loc_data)
 
     return locations
+
+
+def get_pending_location_detail(conn: sqlite3.Connection, location_id: int) -> Dict[str, Any]:
+    cursor = conn.cursor()
+    # SQL
+    cursor.execute("""
+                   SELECT l.id                  AS loc_id,
+                          l.name                AS loc_name,
+                          l.description         AS loc_description,
+                          l.date_location_added AS loc_date_location_added,
+                          p.id                  AS photo_id,
+                          p.alt_text            AS photo_alt_text,
+                          p.url                 AS photo_url,
+                          r.avg_rating          AS avg_rating
+                   FROM location l
+                            LEFT JOIN photo p ON l.id = p.id_location
+                            LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating
+                                       FROM rating
+                                       GROUP BY id_location) r ON l.id = r.id_location
+                   WHERE l.id = :id
+                     AND l.status = 'pending'
+                   ORDER BY l.id
+                   """, {"id": location_id})
+
+    # Inicializace slovníku
+    location = {}
+
+    for row in cursor.fetchall():
+        location = {
+            "id": row[0],
+            "name": row[1],
+            "description": row[2],
+            "date_location_added": row[3],
+            "photos": [],
+            "avg_rating": row[7]
+        }
+
+        # pokud je přiřazená fotka, přidáme ji do seznamu
+        if row[4] is not None:
+            location["photos"].append({
+                "id": row[4],
+                "alt_text": row[5],
+                "url": row[6]
+            })
+
+    return location
