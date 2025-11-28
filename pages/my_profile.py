@@ -21,7 +21,7 @@ async def my_profile_page(request: Request, svc_location: LocationService = Depe
     my_visited_locations = svc_location.list_my_visited_locations(user_id)
     my_pending_locations = svc_location.list_my_locations_with_pending_status(user_id)
     #Users
-    all_users = svc_user.list_all_users()
+    user_stats = svc_user.get_user_statistics(user_id)
     return request.app.state.templates.TemplateResponse(
         "my_profile.html",
         {
@@ -31,5 +31,6 @@ async def my_profile_page(request: Request, svc_location: LocationService = Depe
             "my_favorite_locations": my_favorite_locations,
             "my_visited_locations": my_visited_locations,
             "my_pending_locations": my_pending_locations,
+            "user_stats": user_stats
         }
     )

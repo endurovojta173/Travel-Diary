@@ -61,3 +61,30 @@ def list_all_users(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
         users.append(user_data)
 
     return users
+
+
+def get_user_statistics(conn: sqlite3.Connection, user_id: int) -> Dict[str, int]:
+    cursor = conn.cursor()
+
+    cursor.execute("""
+                   SELECT (SELECT COUNT(id) FROM location WHERE id_user = :uid)                  AS added_count,
+
+                          (SELECT COUNT(*) FROM visited_location WHERE id_user = :uid)           AS visited_count,
+
+                          -- Použijeme DISTINCT, abychom počítali unikátní lokace, ne počet hvězdiček
+                          (SELECT COUNT(DISTINCT id_location) FROM rating WHERE id_user = :uid)  AS rated_count,
+
+                          -- Opět DISTINCT, pokud uživatel napsal 3 komenty k jedné lokaci, počítá se to jako 1 lokace
+                          (SELECT COUNT(DISTINCT id_location) FROM comment WHERE id_user = :uid) AS commented_count
+                   """, {"uid": user_id})
+
+    row = cursor.fetchone()
+    if not row:
+        return {"added": 0, "visited": 0, "rated": 0, "commented": 0}
+
+    return {
+        "added": row[0],
+        "visited": row[1],
+        "rated": row[2],
+        "commented": row[3]
+    }

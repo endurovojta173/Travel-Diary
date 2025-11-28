@@ -12,10 +12,10 @@
     {% elif request.session.user.role == 1 %}
          <span>Role: Administrátor</span><br>
     {% endif %}
-    <span>Počet přidaných lokací: </span><br>
-    <span>Počet navštívených lokací: </span><br>
-    <span>Počet hodnocených lokací: </span><br>
-    <span>Počet komentovaných lokací: </span><br>
+    <span>Počet přidaných lokací: {{ user_stats['added'] }} </span><br>
+    <span>Počet navštívených lokací: {{ user_stats['visited'] }}</span><br>
+    <span>Počet hodnocených lokací: {{ user_stats['rated'] }}</span><br>
+    <span>Počet komentovaných lokací: {{ user_stats['commented'] }}</span><br>
     <!--Show added locations-->
     <button class="toggle-btn" onclick="toggleSection('added_locations-box', this)">Moje přidané lokace <span class="arrow">▼</span></button>
     <div id="added_locations-box" class="toggle-content" style="display: none;">
