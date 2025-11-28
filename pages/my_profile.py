@@ -12,9 +12,11 @@ async def my_profile_page(request: Request , svc: LocationService = Depends(loca
         return RedirectResponse(url="/login", status_code=303)
 
     #Locations added by this user
-    my_added_locations = svc.list_locations_added_by_concrete_user(request.session.get('user')['id'])
-    my_favorite_locations = svc.list_my_favorite_locations(request.session.get('user')['id'])
-    my_visited_locations = svc.list_my_visited_locations(request.session.get('user')['id'])
+    user_id =  request.session.get('user')['id']
+    my_added_locations = svc.list_locations_added_by_concrete_user(user_id)
+    my_favorite_locations = svc.list_my_favorite_locations(user_id)
+    my_visited_locations = svc.list_my_visited_locations(user_id)
+    my_pending_locations = svc.list_my_locations_with_pending_status(user_id)
     return request.app.state.templates.TemplateResponse(
         "my_profile.html",
         {
@@ -22,6 +24,7 @@ async def my_profile_page(request: Request , svc: LocationService = Depends(loca
             "title": "Můj profil",
             "my_added_locations": my_added_locations,
             "my_favorite_locations": my_favorite_locations,
-            "my_visited_locations": my_visited_locations
+            "my_visited_locations": my_visited_locations,
+            "my_pending_locations": my_pending_locations
         }
     )

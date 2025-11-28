@@ -297,13 +297,13 @@ def list_locations_by_newest(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
 def list_locations_by_most_comments(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
     cursor = conn.cursor()
     cursor.execute("""
-                   SELECT l.id,          
-                          l.name,        
-                          l.description, 
-                          p.id,          
-                          p.alt_text,    
-                          p.url,         
-                          r.avg_rating  
+                   SELECT l.id,
+                          l.name,
+                          l.description,
+                          p.id,
+                          p.alt_text,
+                          p.url,
+                          r.avg_rating
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
                             LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating FROM rating GROUP BY id_location) r
@@ -333,6 +333,7 @@ def list_locations_by_most_comments(conn: sqlite3.Connection) -> List[Dict[str, 
         locations.append(loc_data)
 
     return locations
+
 
 def list_locations_added_by_concrete_user(conn: sqlite3.Connection, id_user: int) -> List[Dict[str, Any]]:
     cursor = conn.cursor()
@@ -365,7 +366,8 @@ def list_locations_added_by_concrete_user(conn: sqlite3.Connection, id_user: int
     return locations
 
 
-def add_new_location(conn: sqlite3.Connection, id_user: int, name: str, description: str, photos: Optional[List[Dict[str, str]]] = None) -> Optional[int]:
+def add_new_location(conn: sqlite3.Connection, id_user: int, name: str, description: str,
+                     photos: Optional[List[Dict[str, str]]] = None) -> Optional[int]:
     cursor = conn.cursor()
     try:
         cursor.execute("""
@@ -378,16 +380,17 @@ def add_new_location(conn: sqlite3.Connection, id_user: int, name: str, descript
         return new_location_id
     except:
         print("Error adding new location")
-        conn.rollback()  #Vrátíme změny
+        conn.rollback()  # Vrátíme změny
         return None
+
 
 def add_location_to_favorites(conn: sqlite3.Connection, id_user: int, id_location: int) -> Optional[int]:
     cursor = conn.cursor()
     try:
         cursor.execute("""
-            INSERT INTO favorite_location(id_user, id_location)
-                VALUES (?,?)
-        """,(id_user, id_location))
+                       INSERT INTO favorite_location(id_user, id_location)
+                       VALUES (?, ?)
+                       """, (id_user, id_location))
 
         new_location_id = cursor.lastrowid
         conn.commit()
@@ -396,14 +399,15 @@ def add_location_to_favorites(conn: sqlite3.Connection, id_user: int, id_locatio
         print("Error adding location to favorites")
         conn.rollback()  # Vrátíme změny
         return None
+
 
 def add_location_to_visited(conn: sqlite3.Connection, id_user: int, id_location: int) -> Optional[int]:
     cursor = conn.cursor()
     try:
         cursor.execute("""
-            INSERT INTO visited_location(id_user, id_location)
-                VALUES (?,?)
-        """,(id_user, id_location))
+                       INSERT INTO visited_location(id_user, id_location)
+                       VALUES (?, ?)
+                       """, (id_user, id_location))
 
         new_location_id = cursor.lastrowid
         conn.commit()
@@ -413,29 +417,38 @@ def add_location_to_visited(conn: sqlite3.Connection, id_user: int, id_location:
         conn.rollback()  # Vrátíme změny
         return None
 
+
 def remove_location_from_favorite(conn: sqlite3.Connection, id_user: int, id_location: int) -> Optional[int]:
     cursor = conn.cursor()
     try:
         cursor.execute("""
-            DELETE FROM favorite_location WHERE id_user = ? AND id_location = ?
-        """, (id_user, id_location))
+                       DELETE
+                       FROM favorite_location
+                       WHERE id_user = ?
+                         AND id_location = ?
+                       """, (id_user, id_location))
         conn.commit()
         return True
     except:
         print("Error removing location from favorites")
         conn.rollback()
 
+
 def remove_location_from_visited(conn: sqlite3.Connection, id_user: int, id_location: int) -> Optional[int]:
     cursor = conn.cursor()
     try:
         cursor.execute("""
-        DELETE FROM visited_location WHERE id_user = ? AND id_location = ?
+                       DELETE
+                       FROM visited_location
+                       WHERE id_user = ?
+                         AND id_location = ?
                        """, (id_user, id_location))
         conn.commit()
         return True
     except:
         print("Error removing location from visited")
         conn.rollback()
+
 
 def is_location_favorite(conn: sqlite3.Connection, user_id: int, location_id: int) -> bool:
     cursor = conn.cursor()
@@ -459,13 +472,14 @@ def is_location_visited(conn: sqlite3.Connection, user_id: int, location_id: int
 
     return cursor.fetchone() is not None
 
-def list_comments(conn:sqlite3.Connection, id_location: int) -> List[Dict[str, str]]:
+
+def list_comments(conn: sqlite3.Connection, id_location: int) -> List[Dict[str, str]]:
     cursor = conn.cursor()
     cursor.execute("""
-                   SELECT   c.id,   
-                            u.name,
-                            c.comment_time,
-                            c.text
+                   SELECT c.id,
+                          u.name,
+                          c.comment_time,
+                          c.text
                    FROM comment c
                             JOIN user u ON c.id_user = u.id
                    WHERE c.id_location = ?
@@ -483,35 +497,42 @@ def list_comments(conn:sqlite3.Connection, id_location: int) -> List[Dict[str, s
 
     return comments
 
-def add_comment_to_location(conn: sqlite3.Connection, id_user: int, id_location: int, comment_text: str) -> Optional[int]:
+
+def add_comment_to_location(conn: sqlite3.Connection, id_user: int, id_location: int, comment_text: str) -> Optional[
+    int]:
     cursor = conn.cursor()
     try:
         cursor.execute("""
-        INSERT INTO comment(id_user, id_location, text)
-            VALUES (?, ?, ?)
+                       INSERT INTO comment(id_user, id_location, text)
+                       VALUES (?, ?, ?)
                        """, (id_user, id_location, comment_text))
         conn.commit()
     except:
         print("Error adding comment to location")
         conn.rollback()
 
+
 def remove_my_comment_from_location(conn: sqlite3.Connection, id_user: int, id_location: int) -> Optional[int]:
     cursor = conn.cursor()
     try:
         cursor.execute("""
-        DELETE FROM comment WHERE id_user = ? AND id_location = ?
-                       """,(id_user, id_location))
+                       DELETE
+                       FROM comment
+                       WHERE id_user = ?
+                         AND id_location = ?
+                       """, (id_user, id_location))
         conn.commit()
     except:
         print("Error removing comment from location")
         conn.rollback()
 
-def list_my_visited_locations(conn:sqlite3.Connection, user_id: int) -> List[Dict[str, str]]:
+
+def list_my_visited_locations(conn: sqlite3.Connection, user_id: int) -> List[Dict[str, str]]:
     cursor = conn.cursor()
     cursor.execute("""
                    SELECT l.id,
                           l.name,
-                          p.url ,
+                          p.url,
                           p.alt_text
                    FROM visited_location v
                             JOIN location l ON v.id_location = l.id
@@ -537,19 +558,52 @@ def list_my_visited_locations(conn:sqlite3.Connection, user_id: int) -> List[Dic
 
     return locations
 
+
 def list_my_favorite_locations(conn: sqlite3.Connection, user_id: int) -> List[Dict[str, str]]:
     cursor = conn.cursor()
     cursor.execute("""
-                    SELECT l.id,
+                   SELECT l.id,
                           l.name,
-                          p.url ,
+                          p.url,
                           p.alt_text
-                    FROM favorite_location f
+                   FROM favorite_location f
                             JOIN location l ON f.id_location = l.id
                             LEFT JOIN photo p ON l.id = p.id_location
-                    WHERE f.id_user = :user_id
-                    GROUP BY l.id
-                   """,(user_id,))
+                   WHERE f.id_user = :user_id
+                   GROUP BY l.id
+                   """, (user_id,))
+
+    locations = []
+    for row in cursor.fetchall():
+        loc_data = {
+            "id": row[0],
+            "name": row[1],
+            "photo": None
+        }
+        if row[2] is not None:
+            loc_data["photo"] = {
+                "url": row[2],
+                "alt_text": row[3]
+            }
+
+        locations.append(loc_data)
+
+    return locations
+
+
+def list_my_locations_with_pending_status(conn: sqlite3.Connection, user_id: int) -> List[Dict[str, str]]:
+    cursor = conn.cursor()
+    cursor.execute("""
+                   SELECT l.id,
+                          l.name,
+                          p.url,
+                          p.alt_text
+                   FROM favorite_location f
+                            JOIN location l ON f.id_location = l.id
+                            LEFT JOIN photo p ON l.id = p.id_location
+                   WHERE f.id_user = :user_id AND l.status = 'pending'
+                   GROUP BY l.id
+                   """, (user_id,))
 
     locations = []
     for row in cursor.fetchall():

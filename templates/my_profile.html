@@ -16,6 +16,7 @@
     <span>Počet navštívených lokací: </span><br>
     <span>Počet hodnocených lokací: </span><br>
     <span>Počet komentovaných lokací: </span><br>
+    <!--Show added locations-->
     <button class="toggle-btn" onclick="toggleSection('added_locations-box', this)">Moje přidané lokace <span class="arrow">▼</span></button>
     <div id="added_locations-box" class="toggle-content" style="display: none;">
         {% if my_added_locations %}
@@ -23,7 +24,7 @@
                 {% for loc in my_added_locations %}
                     <li><a href="{{url_for('location_detail',  location_id=loc['id']) }}">{{ loc.name }}</a>
                     {% if loc['photo'] %}
-                        <a href="{{url_for('location_detail',  location_id=loc['id']) }}">{{ loc.name }}>
+                        <a href="{{url_for('location_detail',  location_id=loc['id']) }}">
                             <img alt="{{ loc['photo']['alt_text'] }}" src="/database/{{ loc['photo']['url'] }}">
                         </a>
                         {% else %}
@@ -33,9 +34,10 @@
                 {% endfor %}
             </ul>
         {% else %}
-            <p>Žádné lokace.</p>
+            <p>Žádné přidané lokace.</p>
         {% endif %}
     </div>
+    <!--Show visited locations-->
     <button class="toggle-btn" onclick="toggleSection('visited_locations-box', this)">Moje navštívené lokace <span class="arrow">▼</span></button>
     <div id="visited_locations-box" class="toggle-content" style="display: none;">
         {% if my_visited_locations %}
@@ -53,9 +55,10 @@
                 {% endfor %}
             </ul>
         {% else %}
-            <p>Žádné lokace.</p>
+            <p>Žádné navštívené lokace</p>
         {% endif %}
     </div>
+    <!--Show favorite locations-->
     <button class="toggle-btn" onclick="toggleSection('favorite_locations-box', this)">Moje oblíbené lokace <span class="arrow">▼</span></button>
     <div id="favorite_locations-box" class="toggle-content" style="display: none;">
         {% if my_favorite_locations %}
@@ -73,11 +76,34 @@
                 {% endfor %}
             </ul>
         {% else %}
-            <p>Žádné lokace.</p>
+            <p>Žádné oblíbené lokace</p>
         {% endif %}
     </div>
-    <button>Přidat lokaci</button>
-    <button>Lokace čekající na schválení</button>
+    <!--Add location-->
+    <a href="{{ url_for('add_location_page') }}"><button>Přidat novou lokaci</button></a>
+    <!--My pending locaitons-->
+     <button class="toggle-btn" onclick="toggleSection('pending_locations-box', this)">Moje lokace čekající na schválení <span class="arrow">▼</span></button>
+    <div id="pending_locations-box" class="toggle-content" style="display: none;">
+        {% if my_pending_locations %}
+            <ul>
+                {% for loc in my_pending_locations %}
+                    <li><a href="{{url_for('location_detail',  location_id=loc['id']) }}">{{ loc.name }}</a>
+                        {% if loc['photo'] %}
+                            <a href="{{url_for('location_detail',  location_id=loc['id']) }}">
+                            <img alt="{{ loc['photo']['alt_text'] }}" src="/database/{{ loc['photo']['url'] }}">
+                            </a>
+                        {% else %}
+                            <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}">
+                        {% endif %}
+                    </li>
+                {% endfor %}
+            </ul>
+        {% else %}
+            <p>Žádné lokace čekající na schválení.</p>
+        {% endif %}
+    </div>
+
+
     {% if request.session.user.role  == 2 %}
         <button>Schválit lokaci</button>
         {% if request.session.user.role == 1 %}
