@@ -11,7 +11,6 @@ from repositories.locations import list_locations_by_newest as repo_list_locatio
 from repositories.locations import list_locations_by_avg_rating as repo_list_locations_by_avg_rating
 from repositories.locations import list_locations_by_most_comments as repo_list_locations_by_most_comments
 from repositories.locations import list_locations_added_by_concrete_user as repo_list_locations_added_by_concrete_user
-from repositories.locations import add_new_location as repo_add_new_location
 from repositories.locations import add_location_to_favorites as repo_add_location_to_favorites
 from repositories.locations import add_location_to_visited as repo_add_location_to_visited
 from repositories.locations import is_location_visited as repo_is_location_visited
@@ -26,6 +25,7 @@ from repositories.locations import list_my_favorite_locations as repo_list_my_fa
 from repositories.locations import list_my_locations_with_pending_status as repo_list_my_locations_with_pending_status
 from repositories.locations import list_pending_locations as repo_list_pending_locations
 from repositories.locations import get_pending_location_detail as repo_get_pending_location_detail
+
 class LocationService:
     def __init__(self, conn: sqlite3.Connection):
         self.conn = conn
@@ -59,9 +59,6 @@ class LocationService:
 
     def list_locations_added_by_concrete_user(self, id_user: int) -> List[Dict[str, Any]]:
         return repo_list_locations_added_by_concrete_user(self.conn, id_user)
-
-    def add_new_location(self, location_name: str, location_description: str, id_user: int) -> Optional[int]:
-        return repo_add_new_location(self.conn, id_user, location_name, location_description)
 
     def add_location_to_favorite(self, id_user: int, id_location: int) -> Optional[int]:
         return repo_add_location_to_favorites(self.conn, id_user, id_location)

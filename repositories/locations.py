@@ -366,22 +366,7 @@ def list_locations_added_by_concrete_user(conn: sqlite3.Connection, id_user: int
     return locations
 
 
-def add_new_location(conn: sqlite3.Connection, id_user: int, name: str, description: str,
-                     photos: Optional[List[Dict[str, str]]] = None) -> Optional[int]:
-    cursor = conn.cursor()
-    try:
-        cursor.execute("""
-                       INSERT INTO location(name, description, id_user, status)
-                       VALUES (?, ?, ?, 'pending')
-                       """, (name, description, id_user))
 
-        new_location_id = cursor.lastrowid
-        conn.commit()
-        return new_location_id
-    except:
-        print("Error adding new location")
-        conn.rollback()  # Vrátíme změny
-        return None
 
 
 def add_location_to_favorites(conn: sqlite3.Connection, id_user: int, id_location: int) -> Optional[int]:

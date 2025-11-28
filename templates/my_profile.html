@@ -25,7 +25,7 @@
                     <li><a href="{{url_for('location_detail',  location_id=loc['id']) }}">{{ loc.name }}</a>
                     {% if loc['photo'] %}
                         <a href="{{url_for('location_detail',  location_id=loc['id']) }}">
-                            <img alt="{{ loc['photo']['alt_text'] }}" src="/database/{{ loc['photo']['url'] }}">
+                            <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
                         </a>
                         {% else %}
                             <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}">
@@ -46,7 +46,7 @@
                     <li><a href="{{url_for('location_detail',  location_id=loc['id']) }}">{{ loc.name }}</a>
                     {% if loc['photo'] %}
                         <a href="{{url_for('location_detail',  location_id=loc['id']) }}">
-                        <img alt="{{ loc['photo']['alt_text'] }}" src="/database/{{ loc['photo']['url'] }}">
+                        <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
                         </a>
                     {% else %}
                         <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}">
@@ -67,7 +67,7 @@
                     <li><a href="{{url_for('location_detail',  location_id=loc['id']) }}">{{ loc.name }}</a>
                         {% if loc['photo'] %}
                             <a href="{{url_for('location_detail',  location_id=loc['id']) }}">
-                            <img alt="{{ loc['photo']['alt_text'] }}" src="/database/{{ loc['photo']['url'] }}">
+                            <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
                             </a>
                         {% else %}
                             <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}">
@@ -90,7 +90,7 @@
                     <li><a href="{{url_for('location_detail',  location_id=loc['id']) }}">{{ loc.name }}</a>
                         {% if loc['photo'] %}
                             <a href="{{url_for('location_detail',  location_id=loc['id']) }}">
-                            <img alt="{{ loc['photo']['alt_text'] }}" src="/database/{{ loc['photo']['url'] }}">
+                            <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
                             </a>
                         {% else %}
                             <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}">

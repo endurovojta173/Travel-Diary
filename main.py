@@ -3,7 +3,6 @@ from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
 #Pro session
 from starlette.middleware.sessions import SessionMiddleware
-
 from starlette.templating import Jinja2Templates
 from pages.home import router as home_router
 from pages.locations import router as locations_router
