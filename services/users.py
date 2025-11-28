@@ -4,6 +4,7 @@ from fastapi import HTTPException, status
 from passlib.context import CryptContext
 from repositories.users import register_user as repo_register_user
 from repositories.users import get_user_by_email as repo_get_user_by_email
+from repositories.users import list_all_users as repo_list_all_users
 
 #Nastavení hashování na argon2
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
@@ -43,3 +44,7 @@ class UserService:
 
         #Success
         return user
+
+
+    def list_all_users(self) -> List[Dict[str, Any]]:
+        return repo_list_all_users(self.conn)

@@ -106,7 +106,7 @@
         <a href="{{ url_for('approve_location_page') }}"><button>Schválit lokaci</button></a>
         {% if request.session.user.role == 1 %}
             <button>Vytvořit uživatele</button>
-            <button>Zobrazit všechny uživatele</button>
+            <a href="{{ url_for('all_users_page') }}"><button>Zobrazit všechny uživatele</button></a>
         {% endif %}
     {% endif %}
 

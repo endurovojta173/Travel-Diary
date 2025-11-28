@@ -41,3 +41,23 @@ def get_user_by_email(conn: sqlite3.Connection, email: str) -> Optional[Dict[str
         "password_hash": row[3],
         "id_role": row[4]
     }
+
+def list_all_users(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
+    cursor = conn.cursor()
+    cursor.execute("""
+                    SELECT id, name, email, id_role
+                    FROM user
+                   """)
+    users = []
+
+    for row in cursor.fetchall():
+        user_data = {
+            "id": row[0],
+            "name": row[1],
+            "email": row[2],
+            "id_role": row[3]
+        }
+
+        users.append(user_data)
+
+    return users

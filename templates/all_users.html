@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    {% if all_users %}
+        <table>
+            <tr>
+                <th>ID</th>
+                <th>Přezdívka/Jméno</th>
+                <th>Email</th>
+                <th>Role</th>
+                <th>Upravit roli uživatele</th>
+            </tr>
+            {% for user in all_users %}
+                <tr>
+                    <td>{{ user['id'] }}</td>
+                    <td>{{ user['name'] }}</td>
+                    <td>{{ user['email'] }}</td>
+                    {% if user['id_role'] == 1 %}
+                    <td>Administrátor</td>
+                    {% elif user['id_role'] == 2 %}
+                        <td>Redaktor</td>
+                    {% elif user['id_role'] == 3 %}
+                        <td>Uživatel</td>
+                    {% endif%}
+                    <td>Upravit roli</td>
+                </tr>
+            {% endfor %}
+        </table>
+    {% else %}
+        <p>Žádní uživatelé</p>
+    {% endif %}
+
+{% endblock %}
