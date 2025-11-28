@@ -19,7 +19,7 @@ class UserService:
         hashed_password = pwd_context.hash(password)
         #Ověření zda uživatel už není zaregistrován
         new_id = repo_register_user(self.conn,name,email,hashed_password)
-        if new_id is not None:
+        if new_id is None:
             raise HTTPException(
                 status_code=status.HTTP_400_BAD_REQUEST,
                 detail="Uživatel s tímto e-mailem již existuje."
@@ -31,7 +31,6 @@ class UserService:
             "email": email
         }
 
-        # Do třídy UserService přidej metodu:
 
     def authenticate_user(self, email: str, password: str) -> Optional[Dict[str, Any]]:
         #Vytáhne usera z db
