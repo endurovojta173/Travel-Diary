@@ -6,6 +6,7 @@ from repositories.users import register_user as repo_register_user
 from repositories.users import get_user_by_email as repo_get_user_by_email
 from repositories.users import list_all_users as repo_list_all_users
 from repositories.users import get_user_statistics as repo_get_user_statistics
+from repositories.users import create_user as repo_create_user
 
 #Nastavení hashování na argon2
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
@@ -20,15 +21,27 @@ class UserService:
         #Ověření zda uživatel už není zaregistrován
         new_id = repo_register_user(self.conn,name,email,hashed_password)
         if new_id is None:
-            raise HTTPException(
-                status_code=status.HTTP_400_BAD_REQUEST,
-                detail="Uživatel s tímto e-mailem již existuje."
-            )
+            raise ValueError("Uživatel s tímto e-mailem již existuje.")
 
         return {
             "id": new_id,
             "name": name,
             "email": email
+        }
+
+    def create_user(self, name: str, email: str, password: str, role:int) -> Dict[str, Any]:
+        hashed_password = pwd_context.hash(password)
+        # Ověření zda uživatel už není zaregistrován
+        new_id = repo_create_user(self.conn, name, email, hashed_password, role)
+
+        if new_id is None:
+            raise ValueError("Uživatel s tímto e-mailem již existuje.")
+
+        return {
+            "id": new_id,
+            "name": name,
+            "email": email,
+            "role": role
         }
 
 

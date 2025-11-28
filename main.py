@@ -16,6 +16,7 @@ from pages.my_profile import router as my_profile_router
 from pages.terms_and_conditions import router as terms_and_conditions_router
 from pages.approve_location import router as approve_location_router
 from pages.all_users import router as all_users_router
+from pages.create_user import router as create_user_router
 
 def create_app() -> FastAPI:
     app = FastAPI(title = "FastAPI")
@@ -43,6 +44,7 @@ def create_app() -> FastAPI:
     app.include_router(terms_and_conditions_router)
     app.include_router(approve_location_router)
     app.include_router(all_users_router)
+    app.include_router(create_user_router)
 
     # DEBUG: vypiš zaregistrované cesty - Pro ladění
     #print("=== ROUTES ===")

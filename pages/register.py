@@ -30,7 +30,8 @@ async def register_page(request: Request):
 
 
 @router.post("/register")
-async def register_user(request: Request, form_data: dict = Depends(get_register_form), svc: UserService = Depends(user_service), ):
+async def register_user(request: Request, form_data: dict = Depends(get_register_form),
+                        svc: UserService = Depends(user_service), ):
     try:
         user_model = UserCreate(
             name=form_data['name'],
@@ -44,13 +45,21 @@ async def register_user(request: Request, form_data: dict = Depends(get_register
         )
 
         return RedirectResponse(url="/login", status_code=303)
-    #Chyba z pydantic verifikace
+    # Chyba z pydantic verifikace
     except ValidationError as e:
         error_msg = e.errors()[0]['msg'].replace("Value error, ", "")
 
         return request.app.state.templates.TemplateResponse("register.html", {
             "request": request,
             "error_message": error_msg,
+            "name_value": form_data['name'],
+            "email_value": form_data['email']
+        })
+    #Uživatel s tímto emailem již existuje
+    except ValueError as e:
+        return request.app.state.templates.TemplateResponse("create_user.html", {
+            "request": request,
+            "error_message": str(e),
             "name_value": form_data['name'],
             "email_value": form_data['email']
         })

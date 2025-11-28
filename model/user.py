@@ -26,6 +26,9 @@ class UserCreate(UserBase):
 
         return validate_password
 
+class UserCreateWithRole(UserCreate):
+    role: int
+    model_config = ConfigDict(from_attributes=True)
 
 class UserLogin(BaseModel):
     email: EmailStr
@@ -35,5 +38,5 @@ class UserLogin(BaseModel):
 class UserOut(UserBase):
     id: int
     id_role: int
-    # Díky tomuto můžu přistupovat k user.atribut a ne jen jako k dict
+    #Díky tomuto můžu přistupovat k user.atribut a ne jen jako k dict
     model_config = ConfigDict(from_attributes=True)

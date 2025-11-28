@@ -16,6 +16,20 @@ def register_user(conn: sqlite3.Connection, name:str, email:str, password_hash:s
 
         return None
 
+def create_user(conn: sqlite3.Connection, name:str, email:str, password_hash:str, role:int) -> Optional[int]:
+    cursor = conn.cursor()
+    try:
+        #??? jsou ochrana proti sql injection, 3 je user role
+        cursor.execute("""
+                       INSERT INTO user (name, email, password_hash, id_role)
+                       VALUES (?, ?, ?, ?) 
+                       """, (name, email, password_hash, role))
+
+        conn.commit()
+    except sqlite3.IntegrityError:
+
+        return None
+
 
 def get_user_by_email(conn: sqlite3.Connection, email: str) -> Optional[Dict[str, Any]]:
     cursor = conn.cursor()
@@ -65,13 +79,8 @@ def get_user_statistics(conn: sqlite3.Connection, user_id: int) -> Dict[str, int
 
     cursor.execute("""
                    SELECT (SELECT COUNT(id) FROM location WHERE id_user = :uid)                  AS added_count,
-
                           (SELECT COUNT(*) FROM visited_location WHERE id_user = :uid)           AS visited_count,
-
-                          -- Použijeme DISTINCT, abychom počítali unikátní lokace, ne počet hvězdiček
                           (SELECT COUNT(DISTINCT id_location) FROM rating WHERE id_user = :uid)  AS rated_count,
-
-                          -- Opět DISTINCT, pokud uživatel napsal 3 komenty k jedné lokaci, počítá se to jako 1 lokace
                           (SELECT COUNT(DISTINCT id_location) FROM comment WHERE id_user = :uid) AS commented_count
                    """, {"uid": user_id})
 
