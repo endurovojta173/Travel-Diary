@@ -3,9 +3,22 @@
 {% block title %}{{ title }}{% endblock %}
 
 
-<body>
-
 {% block content %}
+
+    <div>
+    <h3>Schválení lokace</h3>
+    <div>
+        <form action="/approve_location/{{ location.id }}/approve" method="post">
+            <button type="submit" >Schválit</button>
+        </form>
+        <form action="/approve_location/{{ location.id }}/reject" method="post">
+            <button type="submit">Zamítnout</button>
+        </form>
+
+    </div>
+</div>
+
+
     <h1>{{ title }}</h1>
     {% if location['photos'] %}
         <img alt="{{ location['photos'][0]['alt_text'] }}" src="/{{ location['photos'][0]['url'] }}">
@@ -23,4 +36,3 @@
     {{ location['description']  | safe }}
 
 {% endblock %}
-</body>

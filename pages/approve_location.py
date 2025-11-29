@@ -1,7 +1,9 @@
-from fastapi import APIRouter,Request, Depends
+from fastapi import APIRouter, Request, Depends, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
+from dependencies import approve_location_service
 from dependencies import locations_service
 from services.locations import LocationService
+from services.approve_location import ApproveLocationService
 router = APIRouter()
 
 #Router for displaying my profile page
@@ -38,3 +40,21 @@ async def location_detail(request: Request, location_id:int, svc: LocationServic
             "location": location,
         },
     )
+
+
+@router.post("/approve_location/{location_id}/approve")
+async def approve_location_action(location_id: int, request: Request,svc: ApproveLocationService = Depends(approve_location_service)):
+    if not request.session.get("user"):
+        return RedirectResponse(url="/login", status_code=303)
+    svc.approve_location(location_id)
+    print(1111111111111111111111111)
+    return RedirectResponse(url="/approve_location", status_code=303)
+
+@router.post("/approve_location/{location_id}/reject")
+async def approve_location_action(location_id: int, request: Request,svc: ApproveLocationService = Depends(approve_location_service)):
+    if not request.session.get("user"):
+        return RedirectResponse(url="/login", status_code=303)
+    svc.reject_location(location_id)
+    print(222222222222222222222222222)
+
+    return RedirectResponse(url="/approve_location", status_code=303)
