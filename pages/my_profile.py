@@ -2,7 +2,7 @@ from fastapi import APIRouter,Request, Depends
 from fastapi.responses import HTMLResponse, RedirectResponse
 from dependencies import locations_service
 from dependencies import user_service
-from services.locations import LocationService
+from services.list_locations import LocationService
 from services.users import UserService
 router = APIRouter()
 

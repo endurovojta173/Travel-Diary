@@ -1,8 +1,9 @@
 from fastapi import Request, APIRouter, Depends,Form
 from fastapi.responses import HTMLResponse, RedirectResponse
 from dependencies import locations_service
-from model import location
-from services.locations import LocationService
+from dependencies import location_comments_service
+from services.list_locations import LocationService
+from services.location_comments import LocationCommentsService
 
 router = APIRouter()
 
@@ -25,19 +26,17 @@ async def list_locations_with_photos_rating(request: Request,svc: LocationServic
     )
 
 @router.get("/locations/{location_id}", name="location_detail", response_class=HTMLResponse)
-async def location_detail(request: Request, location_id:int, svc: LocationService = Depends(locations_service)):
-    location = svc.get_location_by_id_with_photos_and_rating(location_id)
-    comments = svc.list_comments(location_id)
-
+async def location_detail(request: Request, location_id:int, svc_location: LocationService = Depends(locations_service), svc_comments: LocationCommentsService = Depends(location_comments_service)):
+    location = svc_location.get_location_by_id_with_photos_and_rating(location_id)
+    comments = svc_comments.list_comments(location_id)
     user_status = {"is_favorite":False, "is_visited":False}
 
     user = request.session.get("user")
 
     if user:
-        user_status = svc.get_user_interaction_status(user["id"], location_id)
+        user_status = svc_location.get_user_interaction_status(user["id"], location_id)
 
-    tpl = request.app.state.templates
-    return tpl.TemplateResponse(
+    return request.app.state.templates.TemplateResponse(
         "location-detail.html",
         {
             "request": request,
@@ -88,6 +87,6 @@ async def remove_from_visited(location_id:int, request: Request, svc: LocationSe
         return RedirectResponse(url=f"/locations/{location_id}", status_code=303)
 
 @router.post("/locations/{location_id}/add_comment")
-async def add_comment(location_id:int ,request: Request, svc: LocationService = Depends(locations_service), comment_text:str = Form(...)):
+async def add_comment(location_id:int ,request: Request, svc: LocationCommentsService = Depends(location_comments_service), comment_text:str = Form(...)):
     svc.add_comment_to_location(request.session["user"]["id"], location_id, comment_text)
     return RedirectResponse(url=f"/locations/{location_id}", status_code=303)

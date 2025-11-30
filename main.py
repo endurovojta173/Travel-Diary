@@ -25,7 +25,7 @@ def create_app() -> FastAPI:
     #Mount for images of locations in database
     app.mount("/database", StaticFiles(directory="database"), name="database")
     #Pro session na šifrování
-    app.add_middleware(SessionMiddleware, secret_key="super-tajny-klic-ktery-nikdo-neuhadneiujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoabvdsdggasdgadf489849456dfhs648fhgda468fhgad648+hfgd468gdfhsg468f")
+    app.add_middleware(SessionMiddleware, secret_key="super-tajny-klic-ktery-nikdo-neuhadneiujoaujoaujoaujoaujoaujoaujoasfgjjgsdfjgdf.ujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoaujoabvds.dggasdgadf489849456dfhs648fhgda468fhgad648+hfgd468gdfhsg468f")
 
     app.state.templates = Jinja2Templates(directory="templates")
 
@@ -45,14 +45,7 @@ def create_app() -> FastAPI:
     app.include_router(all_users_router)
     app.include_router(create_user_router)
 
-    # DEBUG: vypiš zaregistrované cesty - Pro ladění
-    #print("=== ROUTES ===")
-    #for r in app.routes:
-    #    #print(repr(r.name), r.path)
-    #    try:
-    #        print(getattr(r, "methods", ""), getattr(r, "path", ""))
-    #    except Exception:
-    #        pass
+
     return app
 
 app = create_app()

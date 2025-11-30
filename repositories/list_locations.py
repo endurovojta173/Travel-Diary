@@ -9,8 +9,6 @@ def list_locations(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
 
 def list_locations_with_photos_and_rating(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
     cursor = conn.cursor()
-
-    # SQL dotaz - LEFT JOIN pro fotky, subquery pro průměrné hodnocení
     cursor.execute("""
                    SELECT l.id          AS loc_id,
                           l.name        AS loc_name,
@@ -29,23 +27,20 @@ def list_locations_with_photos_and_rating(conn: sqlite3.Connection) -> List[Dict
                    ORDER BY l.id
                    """)
 
-    # Inicializace slovníku
     locations: Dict[int, Dict[str, Any]] = {}
 
     for row in cursor.fetchall():
         loc_id = row[0]
 
-        # pokud ještě není lokace přidána, vytvoříme ji
         if loc_id not in locations:
             locations[loc_id] = {
                 "id": loc_id,
                 "name": row[1],
                 "description": row[2],
                 "photos": [],
-                "avg_rating": row[7]  # průměrné hodnocení
+                "avg_rating": row[7]
             }
 
-        # pokud je přiřazená fotka, přidáme ji do seznamu
         if row[4] is not None:
             locations[loc_id]["photos"].append({
                 "id": row[4],
@@ -78,7 +73,6 @@ def get_location_by_id_with_photos_and_rating(conn: sqlite3.Connection, location
                    ORDER BY l.id
                    """, {"id": location_id})
 
-    # Inicializace slovníku
     location = {}
 
     for row in cursor.fetchall():
@@ -91,7 +85,6 @@ def get_location_by_id_with_photos_and_rating(conn: sqlite3.Connection, location
             "avg_rating": row[7]
         }
 
-        # pokud je přiřazená fotka, přidáme ji do seznamu
         if row[4] is not None:
             location["photos"].append({
                 "id": row[4],
@@ -366,9 +359,6 @@ def list_locations_added_by_concrete_user(conn: sqlite3.Connection, id_user: int
     return locations
 
 
-
-
-
 def add_location_to_favorites(conn: sqlite3.Connection, id_user: int, id_location: int) -> Optional[int]:
     cursor = conn.cursor()
     try:
@@ -456,60 +446,6 @@ def is_location_visited(conn: sqlite3.Connection, user_id: int, location_id: int
                    """, (user_id, location_id))
 
     return cursor.fetchone() is not None
-
-
-def list_comments(conn: sqlite3.Connection, id_location: int) -> List[Dict[str, str]]:
-    cursor = conn.cursor()
-    cursor.execute("""
-                   SELECT c.id,
-                          u.name,
-                          c.comment_time,
-                          c.text
-                   FROM comment c
-                            JOIN user u ON c.id_user = u.id
-                   WHERE c.id_location = ?
-                   ORDER BY c.id DESC
-                   """, (id_location,))
-
-    comments = []
-    for row in cursor.fetchall():
-        comments.append({
-            "comment_id": row[0],
-            "author": row[1],
-            "date": row[2],
-            "text": row[3],
-        })
-
-    return comments
-
-
-def add_comment_to_location(conn: sqlite3.Connection, id_user: int, id_location: int, comment_text: str) -> Optional[
-    int]:
-    cursor = conn.cursor()
-    try:
-        cursor.execute("""
-                       INSERT INTO comment(id_user, id_location, text)
-                       VALUES (?, ?, ?)
-                       """, (id_user, id_location, comment_text))
-        conn.commit()
-    except:
-        print("Error adding comment to location")
-        conn.rollback()
-
-
-def remove_my_comment_from_location(conn: sqlite3.Connection, id_user: int, id_location: int) -> Optional[int]:
-    cursor = conn.cursor()
-    try:
-        cursor.execute("""
-                       DELETE
-                       FROM comment
-                       WHERE id_user = ?
-                         AND id_location = ?
-                       """, (id_user, id_location))
-        conn.commit()
-    except:
-        print("Error removing comment from location")
-        conn.rollback()
 
 
 def list_my_visited_locations(conn: sqlite3.Connection, user_id: int) -> List[Dict[str, str]]:
