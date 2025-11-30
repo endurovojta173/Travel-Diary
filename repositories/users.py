@@ -66,7 +66,7 @@ def list_all_users(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
             "id": row[0],
             "name": row[1],
             "email": row[2],
-            "id_role": row[3]
+            "role": row[3]
         }
 
         users.append(user_data)
@@ -94,3 +94,19 @@ def get_user_statistics(conn: sqlite3.Connection, user_id: int) -> Dict[str, int
         "rated": row[2],
         "commented": row[3]
     }
+
+def update_user_role(conn: sqlite3.Connection, user_id: int, role_id: int) -> Optional[int]:
+
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+                       UPDATE user
+                       SET id_role = ?
+                       WHERE id = ?
+                       """, (role_id, user_id))
+        conn.commit()
+        return True
+    except:
+        conn.rollback()
+        return None
+

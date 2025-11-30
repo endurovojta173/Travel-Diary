@@ -47,7 +47,6 @@ async def approve_location_action(location_id: int, request: Request,svc: Approv
     if not request.session.get("user"):
         return RedirectResponse(url="/login", status_code=303)
     svc.approve_location(location_id)
-    print(1111111111111111111111111)
     return RedirectResponse(url="/approve_location", status_code=303)
 
 @router.post("/approve_location/{location_id}/reject")
@@ -55,6 +54,5 @@ async def approve_location_action(location_id: int, request: Request,svc: Approv
     if not request.session.get("user"):
         return RedirectResponse(url="/login", status_code=303)
     svc.reject_location(location_id)
-    print(222222222222222222222222222)
 
     return RedirectResponse(url="/approve_location", status_code=303)

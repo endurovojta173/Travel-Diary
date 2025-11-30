@@ -10,21 +10,24 @@
                 <th>Přezdívka/Jméno</th>
                 <th>Email</th>
                 <th>Role</th>
-                <th>Upravit roli uživatele</th>
             </tr>
             {% for user in all_users %}
                 <tr>
                     <td>{{ user['id'] }}</td>
                     <td>{{ user['name'] }}</td>
                     <td>{{ user['email'] }}</td>
-                    {% if user['id_role'] == 1 %}
-                    <td>Administrátor</td>
-                    {% elif user['id_role'] == 2 %}
-                        <td>Redaktor</td>
-                    {% elif user['id_role'] == 3 %}
-                        <td>Uživatel</td>
-                    {% endif%}
-                    <td>Upravit roli</td>
+
+                    <td>
+                        <form action="/all_users/update" method="post">
+                            <input type="hidden" name="user_id" value="{{ user['id'] }}">
+                            <select name="role" style="padding: 5px; border-radius: 4px;">
+                                <option value="1" {% if user['role'] == 1 %}selected{% endif %}>Administrátor</option>
+                                <option value="2" {% if user['role'] == 2 %}selected{% endif %}>Redaktor</option>
+                                <option value="3" {% if user['role'] == 3 %}selected{% endif %}>Uživatel</option>
+                            </select>
+                            <button type="submit" title="Uložit změnu role">✏️</button>
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </table>
