@@ -23,7 +23,7 @@
     {% if location['photos'] %}
         <img alt="{{ location['photos'][0]['alt_text'] }}" src="/{{ location['photos'][0]['url'] }}">
     {% else %}
-        <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}">
+        <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}" class="noImage">
     {% endif %}
     <div>
         <!--Add/Remove favorite-->

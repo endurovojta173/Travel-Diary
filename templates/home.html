@@ -11,7 +11,7 @@
         {% if loc['photo'] %}
                 <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}" style="width: 200px">
         {% else %}
-                <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}" style="width: 200px">
+                <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}"  class="noImage">
         {% endif %}
         </a>
     {% endfor %}
@@ -25,7 +25,7 @@
         </a>
     {% else %}
         <a href="{{url_for('location_detail',  location_id=newest_location['id']) }}">
-            <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}"></a>
+            <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}" class="noImage"></a>
         </a>
     {% endif %}
     <!--Most favorite location-->
@@ -37,7 +37,7 @@
         </a>
     {% else %}
         <a href="{{url_for('location_detail',  location_id=favorite_location['id']) }}">
-            <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}">
+            <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}" class="noImage">
         </a>
     {% endif %}
 {% endblock %}

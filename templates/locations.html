@@ -19,7 +19,7 @@
                     <img alt="{{ loc['photos'][0]['alt_text'] }}" src="/{{ loc['photos'][0]['url'] }}">
                 </a>
             {% else %}
-                <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}">
+                <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}"  class="noImage">
             {% endif %}
         </div>
 

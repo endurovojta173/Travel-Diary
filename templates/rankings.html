@@ -31,7 +31,7 @@
         {% if loc['photo'] %}
             <img alt="{{ loc['photo']['alt_text'] }}" src="/{{loc['photo']['url']}}" style="width: 200px">
         {% else %}
-            <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}" style="width: 200px">
+            <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}"  class="noImage">
         {% endif %}
         <h2>{{ loc['name'] }}</h2>
         <div class="loc-rating">
