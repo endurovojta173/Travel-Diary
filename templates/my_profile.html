@@ -87,9 +87,9 @@
         {% if my_pending_locations %}
             <ul>
                 {% for loc in my_pending_locations %}
-                    <li><a href="{{url_for('location_detail',  location_id=loc['id']) }}">{{ loc.name }}</a>
+                    <li><a href="{{url_for('approve_location_detail',  location_id=loc['id']) }}">{{ loc.name }}</a>
                         {% if loc['photo'] %}
-                            <a href="{{url_for('location_detail',  location_id=loc['id']) }}">
+                            <a href="{{url_for('approve_location_detail',  location_id=loc['id']) }}">
                             <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
                             </a>
                         {% else %}

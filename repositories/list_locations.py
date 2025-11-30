@@ -625,3 +625,60 @@ def get_pending_location_detail(conn: sqlite3.Connection, location_id: int) -> D
             })
 
     return location
+
+
+def search_locations(conn: sqlite3.Connection, query: str) -> List[Dict[str, Any]]:
+    cursor = conn.cursor()
+    like_query = f"%{query}%"
+
+    # 2. Pro počítání výskytů potřebujeme čisté slovo malé: "hrad"
+    # (SQLite funkce REPLACE je case-sensitive, proto musíme vše převést na LOWER)
+    clean_query = query.lower()
+
+    cursor.execute("""
+                   SELECT l.id,
+                          l.name,
+                          l.description,
+                          p.url,
+                          p.alt_text,
+                          r.avg_rating,
+
+                          --VÝPOČET RELEVANCE (SKÓRE)
+                          (
+                              --Skóre v názvu: (Původní délka - Délka po odstranění slova)
+                              (LENGTH(LOWER(l.name)) - LENGTH(REPLACE(LOWER(l.name), ?, '')))
+                                  +
+                                  --Skóre v popisu (ošetřeno IFNULL, kdyby popis chyběl)
+                              (LENGTH(LOWER(IFNULL(l.description, ''))) -
+                               LENGTH(REPLACE(LOWER(IFNULL(l.description, '')), ?, '')))
+                              ) AS relevance_score
+
+                   FROM location l
+                            LEFT JOIN photo p ON l.id = p.id_location
+                            LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating FROM rating GROUP BY id_location) r
+                                      ON l.id = r.id_location
+
+                   WHERE l.status = 'approved'
+                     AND (l.name LIKE ? OR l.description LIKE ?)
+
+                   GROUP BY l.id
+
+                   -- Řadíme podle skóre od nejvyššího
+                   ORDER BY relevance_score DESC
+                   """, (clean_query, clean_query, like_query, like_query))
+
+    locations = []
+    for row in cursor.fetchall():
+        loc_data = {
+            "id": row[0],
+            "name": row[1],
+            "description": row[2],
+            "avg_rating": round(row[5], 1) if row[5] else 0,
+            "photo": None
+        }
+        if row[3] is not None:
+            loc_data["photo"] = {"url": row[3], "alt_text": row[4]}
+
+        locations.append(loc_data)
+
+    return locations

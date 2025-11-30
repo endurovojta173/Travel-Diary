@@ -1,11 +1,11 @@
 <!DOCTYPE html>
 <html lang="cs">
 <head>
-  <meta charset="utf-8" />
+    <meta charset="utf-8"/>
     <!--Title-->
     <title>{% block title %}Cestovní deník{% endblock %}</title>
     <!--Favicon-->
-    <link rel="icon" href="{{url_for('static', path='img/web/favicon.ico') }}" type="image/x-icon">
+    <link rel="icon" href="{{ url_for('static', path='img/web/favicon.ico') }}" type="image/x-icon">
     <!--Styles-->
     <link rel="stylesheet" href="{{ url_for('static', path='css/style.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/header.css') }}">
@@ -13,47 +13,55 @@
     <link rel="stylesheet" href="{{ url_for('static', path='css/icon.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/location.css') }}">
     <!-- Icon fonty -->
-    <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+    <link rel="stylesheet"
+          href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200"/>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
     <!--Meta datas-->
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="viewport" content="width=device-width, initial-scale=1"/>
 </head>
 <body>
 <!--Header-->
-<div class = "header">
-    <div class = "upper-nav">
+<div class="header">
+    <div class="upper-nav">
         {% if request.session.get('user') %}
-            <a href="{{url_for('logout') }}" class="upper-nav-items">Odhlásit se</a>
-            <a href="{{url_for('my_profile_page') }}" class="upper-nav-items"><span class="material-symbols-outlined">account_circle</span></a>
+            <a href="{{ url_for('logout') }}" class="upper-nav-items">Odhlásit se</a>
+            <a href="{{ url_for('my_profile_page') }}" class="upper-nav-items"><span class="material-symbols-outlined">account_circle</span></a>
         {% else %}
-            <a href="{{url_for('register_page') }}" class="upper-nav-items">Zaregistrovat se</a>
-            <a href="{{url_for('login_page') }}" class="upper-nav-items"><span class="material-symbols-outlined">account_circle</span></a>
+            <a href="{{ url_for('register_page') }}" class="upper-nav-items">Zaregistrovat se</a>
+            <a href="{{ url_for('login_page') }}" class="upper-nav-items"><span class="material-symbols-outlined">account_circle</span></a>
         {% endif %}
     </div>
     <div class="lower-nav">
-        <div class="lower-nav-logo"><a href="{{url_for('landing_page') }}"><img alt="logo" src="{{url_for('static', path='img/web/logo.webp') }}"></a></div>
+        <div class="lower-nav-logo"><a href="{{ url_for('landing_page') }}"><img alt="logo"
+                                                                                 src="{{ url_for('static', path='img/web/logo.webp') }}"></a>
+        </div>
         <div class="lower-nav-items">
-            <a href="{{url_for('landing_page') }}" class="lower-nav-item">Domů</a>
-            <a href="{{url_for('list_locations_with_photos_rating') }}" class="lower-nav-item">Lokace</a>
-            <a href="{{url_for('rankings_page') }}" class="lower-nav-item">Žebříčky</a>
-            <a href="{{url_for('add_location_page') }}" class="lower-nav-item">Přidat lokaci</a>
+            <a href="{{ url_for('landing_page') }}" class="lower-nav-item">Domů</a>
+            <a href="{{ url_for('list_locations_with_photos_rating') }}" class="lower-nav-item">Lokace</a>
+            <a href="{{ url_for('rankings_page') }}" class="lower-nav-item">Žebříčky</a>
+            <a href="{{ url_for('add_location_page') }}" class="lower-nav-item">Přidat lokaci</a>
+            <form action="/search" method="get" class="lower-nav-item">
+                <input type="text" name="search_term" placeholder="Hledat hrad, zámek..." required>
+                <button type="submit">Vyhledat</button>
+            </form>
         </div>
     </div>
 </div>
 <!--Main content -->
-    {% block content %}{% endblock %}
+{% block content %}{% endblock %}
 <!--Footer-->
 <footer class="footer">
     <div class="footer-top">
         <div class="footer-logo">
-            <a href="{{url_for('landing_page') }}"><img alt="logo" src="{{url_for('static', path='img/web/logo.webp') }}"></a>
+            <a href="{{ url_for('landing_page') }}"><img alt="logo"
+                                                         src="{{ url_for('static', path='img/web/logo.webp') }}"></a>
         </div>
 
         <nav class="footer-nav">
-            <a href="{{url_for('landing_page') }}" class="footer-nav-item">Domů</a>
-            <a href="{{url_for('list_locations_with_photos_rating') }}" class="footer-nav-item">Lokace</a>
-            <a href="{{url_for('rankings_page') }}" class="footer-nav-item">Žebříčky</a>
-            <a href="{{url_for('add_location_page') }}" class="footer-nav-item">Přidat lokaci</a>
+            <a href="{{ url_for('landing_page') }}" class="footer-nav-item">Domů</a>
+            <a href="{{ url_for('list_locations_with_photos_rating') }}" class="footer-nav-item">Lokace</a>
+            <a href="{{ url_for('rankings_page') }}" class="footer-nav-item">Žebříčky</a>
+            <a href="{{ url_for('add_location_page') }}" class="footer-nav-item">Přidat lokaci</a>
         </nav>
         <div class="footer-icons">
             <i class="fa-brands fa-facebook"></i>
