@@ -5,6 +5,7 @@ def list_comments(conn: sqlite3.Connection, id_location: int) -> List[Dict[str, 
     cursor = conn.cursor()
     cursor.execute("""
                    SELECT c.id,
+                          u.id,
                           u.name,
                           c.comment_time,
                           c.text
@@ -17,10 +18,11 @@ def list_comments(conn: sqlite3.Connection, id_location: int) -> List[Dict[str, 
     comments = []
     for row in cursor.fetchall():
         comments.append({
-            "comment_id": row[0],
-            "author": row[1],
-            "date": row[2],
-            "text": row[3],
+            "id": row[0],
+            "user_id": row[1],
+            "author": row[2],
+            "date": row[3],
+            "text": row[4],
         })
 
     return comments
@@ -40,16 +42,16 @@ def add_comment_to_location(conn: sqlite3.Connection, id_user: int, id_location:
         conn.rollback()
 
 
-def remove_my_comment_from_location(conn: sqlite3.Connection, id_user: int, id_location: int) -> Optional[int]:
+def remove_comment_from_location(conn: sqlite3.Connection, id_comment) -> Optional[int]:
     cursor = conn.cursor()
     try:
         cursor.execute("""
                        DELETE
                        FROM comment
-                       WHERE id_user = ?
-                         AND id_location = ?
-                       """, (id_user, id_location))
+                       WHERE id = ?
+                       """, (id_comment,))
         conn.commit()
     except:
         print("Error removing comment from location")
         conn.rollback()
+

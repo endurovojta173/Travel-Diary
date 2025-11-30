@@ -90,3 +90,8 @@ async def remove_from_visited(location_id:int, request: Request, svc: LocationSe
 async def add_comment(location_id:int ,request: Request, svc: LocationCommentsService = Depends(location_comments_service), comment_text:str = Form(...)):
     svc.add_comment_to_location(request.session["user"]["id"], location_id, comment_text)
     return RedirectResponse(url=f"/locations/{location_id}", status_code=303)
+
+@router.post("/locations/{location_id}/delete_comment")
+async def remove_comment(location_id:int, svc: LocationCommentsService = Depends(location_comments_service),comment_id:int = Form(...)):
+    svc.remove_comment_from_location(comment_id)
+    return RedirectResponse(url=f"/locations/{location_id}", status_code=303)
