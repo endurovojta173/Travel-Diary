@@ -23,7 +23,8 @@ from repositories.list_locations import list_my_locations_with_pending_status as
 from repositories.list_locations import list_pending_locations as repo_list_pending_locations
 from repositories.list_locations import get_pending_location_detail as repo_get_pending_location_detail
 from repositories.list_locations import search_locations as repo_search_locations
-
+from repositories.list_locations import get_location_with_photos_pending_or_approved_status as repo_get_location_with_photos_pending_or_approved_status
+from repositories.list_locations import get_location_status as repo_get_location_status
 class LocationService:
     def __init__(self, conn: sqlite3.Connection):
         self.conn = conn
@@ -94,3 +95,9 @@ class LocationService:
 
     def search_locations(self, search_term: str) -> List[Dict[str, Any]]:
         return repo_search_locations(self.conn, search_term)
+
+    def get_location_with_photos_pending_or_approved_status(self, location_id: int) -> Dict[str, Any]:
+        return repo_get_location_with_photos_pending_or_approved_status(self.conn, location_id)
+
+    def get_location_status(self, location_id: int) -> str:
+        return repo_get_location_status(self.conn, location_id)

@@ -113,7 +113,7 @@ async def remove_comment(location_id: int, svc: LocationCommentsService = Depend
 @router.get("/locations/{location_id}/edit_location")
 async def edit_location_page(location_id: int, request: Request, svc: LocationService = Depends(locations_service)):
     if request.session.get("user"):
-        location = svc.get_location_by_id_with_photos_and_rating(location_id)
+        location = svc.get_location_with_photos_pending_or_approved_status(location_id)
 
         return request.app.state.templates.TemplateResponse(
             "edit_location.html",
@@ -127,9 +127,14 @@ async def edit_location_page(location_id: int, request: Request, svc: LocationSe
         return RedirectResponse(url=f"/locations/{location_id}", status_code=303)
 
 @router.post("/locations/{location_id}/edit_location/post")
-async def edit_location_post(location_id: int, request: Request,svc: EditLocationService = Depends(edit_location_service), name:str = Form(...), description:str = Form(...)):
+async def edit_location_post(location_id: int, request: Request,svc_edit: EditLocationService = Depends(edit_location_service), svc_location: LocationService = Depends(locations_service), name:str = Form(...), description:str = Form(...)):
     if request.session.get("user"):
-        svc.update_location_details(location_id, name, description)
-        return RedirectResponse(url=f"/locations/{location_id}", status_code=303)
+        svc_edit.update_location_details(location_id, name, description)
+        status = svc_location.get_location_status(location_id)
+        print(status)
+        if(status == "approved"):
+            return RedirectResponse(url=f"/locations/{location_id}", status_code=303)
+        elif status == "pending":
+            return RedirectResponse(url=f"/approve_location/{location_id}", status_code=303)
     else:
-        return RedirectResponse(url=f"/locations/{location_id}", status_code=303)
+        return RedirectResponse(url="/login", status_code=303)

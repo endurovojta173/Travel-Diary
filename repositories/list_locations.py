@@ -682,3 +682,49 @@ def search_locations(conn: sqlite3.Connection, query: str) -> List[Dict[str, Any
         locations.append(loc_data)
 
     return locations
+
+
+def get_location_with_photos_pending_or_approved_status(conn: sqlite3.Connection, location_id: int) -> Dict[str, Any]:
+    cursor = conn.cursor()
+    cursor.execute("""
+                   SELECT l.id                  AS loc_id,
+                          l.name                AS loc_name,
+                          l.description         AS loc_description,
+                          l.date_location_added AS loc_date_location_added,
+                          p.id                  AS photo_id,
+                          p.alt_text            AS photo_alt_text,
+                          p.url                 AS photo_url
+                   FROM location l
+                            LEFT JOIN photo p ON l.id = p.id_location
+                   WHERE l.id = :id AND status IN ('approved', 'pending')
+                   ORDER BY l.id
+                   """, {"id": location_id})
+
+    location = {}
+
+    for row in cursor.fetchall():
+        location = {
+            "id": row[0],
+            "name": row[1],
+            "description": row[2],
+            "date_location_added": row[3],
+            "photos": [],
+        }
+
+        if row[4] is not None:
+            location["photos"].append({
+                "id": row[4],
+                "alt_text": row[5],
+                "url": row[6]
+            })
+
+    return location
+
+def get_location_status(conn: sqlite3.Connection, location_id: int) -> str:
+        cursor = conn.cursor()
+        cursor.execute("""
+                       SELECT status
+                       FROM location
+                       WHERE id = ?
+                       """, (location_id,))
+        return cursor.fetchone()[0]
