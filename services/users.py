@@ -1,6 +1,6 @@
+import os
 from typing import List, Dict, Any, Optional
 import sqlite3
-import uuid
 import secrets
 from passlib.context import CryptContext
 from repositories.users import register_user as repo_register_user
@@ -9,6 +9,8 @@ from repositories.users import list_all_users as repo_list_all_users
 from repositories.users import get_user_statistics as repo_get_user_statistics
 from repositories.users import create_user as repo_create_user
 from repositories.users import update_user_role as repo_update_user_role
+from repositories.users import get_user_photo_paths as repo_get_user_photo_paths
+from repositories.users import delete_user as repo_delete_user
 
 #Nastavení hashování na argon2
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
@@ -90,3 +92,26 @@ class UserService:
 
     def update_user_role(self, user_id: int, role_id: int) -> Optional[int]:
         return repo_update_user_role(self.conn,user_id,role_id)
+
+    def delete_account(self, user_id: int):
+        photo_urls = repo_get_user_photo_paths(self.conn, user_id)
+        # Delete photos from physical
+        for relative_path in photo_urls:
+            full_path = os.path.join("/", relative_path)
+            if os.path.exists(full_path):
+                try:
+                    os.remove(full_path)
+                    print(f"Smazán soubor: {full_path}")
+
+                    directory = os.path.dirname(full_path)
+                    # Delete folder if empty
+                    if not os.listdir(directory):
+                        os.rmdir(directory)
+                        print(f"Smazána prázdná složka: {directory}")
+                except Exception as e:
+                    print(f"Chyba při mazání souboru {full_path}: {e}")
+
+        # 3. Teď teprve smažeme uživatele z DB
+        success = repo_delete_user(self.conn, user_id)
+        if not success:
+            raise ValueError("Nepodařilo se smazat účet z databáze.")

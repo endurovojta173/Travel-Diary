@@ -10,7 +10,6 @@ def add_new_location(conn: sqlite3.Connection,id_user: int,name: str,description
                        VALUES (?, ?, ?, 2)
                        """, (name, description, id_user))
         new_location_id = cursor.lastrowid
-
         if photos:
             photos_data = []
             for photo in photos:
@@ -26,9 +25,11 @@ def add_new_location(conn: sqlite3.Connection,id_user: int,name: str,description
                                """, photos_data)
 
         conn.commit()
+        print(222222222222222222222222222222)
         return new_location_id
 
     except sqlite3.Error as e:
+        print(33333333333333333333333333333333)
         print(f"Error adding new location: {e}")
         conn.rollback()
         return None

@@ -1,6 +1,9 @@
 # app/main.py
+import os
+
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
+from dotenv import load_dotenv
 #Pro session
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.templating import Jinja2Templates
@@ -30,7 +33,7 @@ def create_app() -> FastAPI:
     #Pro session
     app.add_middleware(
         SessionMiddleware,
-        secret_key="980bbafcb11174b5ec89120cc3f94f57fe7d8706092a412b2c92fdce6f755359126833ec4cf57c78662e5342deb35a0a6ea195a72add0fba9233697dc1ed0c23",
+        secret_key= os.getenv("SECRET_KEY"), #Beru klic z .env kterou neverzuji skrze safety
         max_age = 86400, #Po jednom dni se smaže cookies
         same_site="lax", #Ochrana proti Cross-Site Request Forgery
     )

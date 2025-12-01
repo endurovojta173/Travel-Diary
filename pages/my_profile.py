@@ -34,3 +34,18 @@ async def my_profile_page(request: Request, svc_location: LocationService = Depe
             "user_stats": user_stats
         }
     )
+
+@router.post("/my_profile/delete")
+async def delete_my_account(request: Request,svc: UserService = Depends(user_service)):
+    user = request.session.get("user")
+    if not user:
+        return RedirectResponse("/login", status_code=303)
+
+    try:
+        svc.delete_account(user["id"])
+        request.session.clear()
+
+        return RedirectResponse("/", status_code=303)
+
+    except ValueError as e:
+        return HTMLResponse(f"Chyba: {str(e)} <a href='/my_profile'>Zpět</a>")

@@ -20,12 +20,12 @@
                     <td>
                         <form action="/all_users/update" method="post">
                             <input type="hidden" name="user_id" value="{{ user['id'] }}">
-                            <select name="role" style="padding: 5px; border-radius: 4px;">
+                            <select name="role">
                                 <option value="1" {% if user['role'] == 1 %}selected{% endif %}>Administrátor</option>
                                 <option value="2" {% if user['role'] == 2 %}selected{% endif %}>Redaktor</option>
                                 <option value="3" {% if user['role'] == 3 %}selected{% endif %}>Uživatel</option>
                             </select>
-                            <button type="submit" title="Uložit změnu role">✏️</button>
+                            <button type="submit" title="Uložit změnu role">Upravit</button>
                         </form>
                     </td>
                 </tr>

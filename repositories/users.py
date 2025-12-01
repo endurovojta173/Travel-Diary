@@ -97,7 +97,9 @@ def get_user_statistics(conn: sqlite3.Connection, user_id: int) -> Dict[str, int
     }
 
 def update_user_role(conn: sqlite3.Connection, user_id: int, role_id: int) -> Optional[int]:
-
+    print(2222222222222222222222222222)
+    print(user_id)
+    print(role_id)
     cursor = conn.cursor()
     try:
         cursor.execute("""
@@ -107,7 +109,35 @@ def update_user_role(conn: sqlite3.Connection, user_id: int, role_id: int) -> Op
                        """, (role_id, user_id))
         conn.commit()
         return True
-    except:
+    except sqlite3.Error as e:
+        print(33333333333333333333333333)
+        print(e)
+        print(user_id)
+        print(role_id)
         conn.rollback()
         return None
 
+
+def get_user_photo_paths(conn: sqlite3.Connection, user_id: int) -> List[str]:
+    cursor = conn.cursor()
+    cursor.execute("""
+                   SELECT p.url
+                   FROM photo p
+                            JOIN location l ON p.id_location = l.id
+                   WHERE l.id_user = ?
+                   """, (user_id,))
+
+    # Vrátí seznam: ['img/locations/uuid/1.webp', 'img/locations/uuid/2.webp']
+    return [row[0] for row in cursor.fetchall()]
+
+def delete_user(conn: sqlite3.Connection, user_id: int) -> bool:
+    cursor = conn.cursor()
+    try:
+        # Pokud máš v DB nastavené cizí klíče s ON DELETE CASCADE
+        cursor.execute("DELETE FROM user WHERE id = ?", (user_id,))
+        conn.commit()
+        return True
+    except sqlite3.Error as e:
+        print(f"Chyba při mazání uživatele: {e}")
+        conn.rollback()
+        return False

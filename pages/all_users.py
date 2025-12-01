@@ -23,11 +23,16 @@ async def all_users_page(request: Request, svc: UserService = Depends(user_servi
     )
 
 @router.post("/all_users/update")
-async def approve_location_action(request: Request, svc: UserService = Depends(user_service), user_id:int = Form(...), role:int = Form(...)):
-
-    if not request.session.get("user"):
+async def update_user_role(request: Request,user_id: int = Form(...),role: int = Form(...),svc: UserService = Depends(user_service)):
+    user = request.session.get("user")
+    if not user:
         return RedirectResponse(url="/login", status_code=303)
 
-    svc.update_user_role(user_id, role)
+    if user["role"] != 1:
+        return RedirectResponse(url="/", status_code=303)
 
+    svc.update_user_role(user_id, role)
+    print(1111111111111111111111)
+    print (user_id)
+    print(role)
     return RedirectResponse(url="/all_users", status_code=303)

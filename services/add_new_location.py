@@ -58,6 +58,9 @@ class AddNewLocationService:
                 except Exception as e:
                     print(f"Chyba při ukládání {file.filename}: {e}")
                     continue
+        print(11111111111111111111111)
+        print(id_user)
+        print(location_name)
         return repo_add_new_location(
             self.conn,
             id_user,

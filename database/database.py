@@ -14,6 +14,7 @@ def open_connection() -> Iterator[sqlite3.Connection]:
     )
     conn.row_factory = sqlite3.Row
     conn.set_trace_callback(print)
+    #Povolí mazat kaskádově
     conn.execute("PRAGMA foreign_keys = ON")
     conn.execute("PRAGMA journal_mode = WAL")
 
