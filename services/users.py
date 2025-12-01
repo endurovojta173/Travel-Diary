@@ -22,8 +22,8 @@ class UserService:
     def register_user(self, name: str, email: str, password: str) -> Dict[str, Any]:
 
         hashed_password = pwd_context.hash(password)
-        #Ověření zda uživatel už není zaregistrován
-        new_id = repo_register_user(self.conn,name,email,hashed_password)
+        #Ověření zda uživatel už není zaregistrován, auth provider je 1 - local
+        new_id = repo_register_user(self.conn,name,email,hashed_password,1)
         if new_id is None:
             raise ValueError("Uživatel s tímto e-mailem již existuje.")
 
@@ -42,8 +42,8 @@ class UserService:
 
         random_password = secrets.token_urlsafe(32)
         hashed_password = pwd_context.hash(random_password)
-
-        new_id = repo_register_user(self.conn, google_name, google_email, hashed_password)
+        #auth provider je 2 - google
+        new_id = repo_register_user(self.conn, google_name, google_email, hashed_password, 2)
 
         if not new_id:
             raise ValueError("Chyba při vytváření Google uživatele")
