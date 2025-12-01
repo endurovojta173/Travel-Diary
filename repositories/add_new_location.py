@@ -6,8 +6,8 @@ def add_new_location(conn: sqlite3.Connection,id_user: int,name: str,description
     cursor = conn.cursor()
     try:
         cursor.execute("""
-                       INSERT INTO location(name, description, id_user, status)
-                       VALUES (?, ?, ?, 'pending')
+                       INSERT INTO location(name, description, id_user, id_status)
+                       VALUES (?, ?, ?, 2)
                        """, (name, description, id_user))
         new_location_id = cursor.lastrowid
 

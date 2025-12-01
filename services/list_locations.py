@@ -1,7 +1,6 @@
 import sqlite3
 from typing import List, Dict, Any, Optional
 
-from repositories.list_locations import list_locations as repo_list_locations
 from repositories.list_locations import list_locations_with_photos_and_rating as repo_list_locations_with_photos_and_rating
 from repositories.list_locations import get_location_by_id_with_photos_and_rating as repo_get_location_by_id_with_photos_and_rating
 from repositories.list_locations import get_five_random_locations as repo_get_five_random_locations
@@ -28,9 +27,6 @@ from repositories.list_locations import get_location_status as repo_get_location
 class LocationService:
     def __init__(self, conn: sqlite3.Connection):
         self.conn = conn
-
-    def list_locations(self) -> List[Dict[str, Any]]:
-        return repo_list_locations(self.conn)
 
     def list_locations_with_photos_rating(self) -> List[Dict[str, Any]]:
         return repo_list_locations_with_photos_and_rating(self.conn)
@@ -99,5 +95,5 @@ class LocationService:
     def get_location_with_photos_pending_or_approved_status(self, location_id: int) -> Dict[str, Any]:
         return repo_get_location_with_photos_pending_or_approved_status(self.conn, location_id)
 
-    def get_location_status(self, location_id: int) -> str:
+    def get_location_status(self, location_id: int) -> int:
         return repo_get_location_status(self.conn, location_id)

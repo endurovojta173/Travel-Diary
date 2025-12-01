@@ -23,13 +23,7 @@ class AddNewLocationService:
                 os.makedirs(full_path, exist_ok=True)
                 return dir_uuid, full_path
 
-    def add_new_location(
-            self,
-            location_name: str,
-            location_description: str,
-            id_user: int,
-            files: List[UploadFile]
-    ) -> Optional[int]:
+    def add_new_location(self,location_name: str,location_description: str,id_user: int,files: List[UploadFile]) -> Optional[int]:
 
         dir_uuid, save_dir = self._prepare_upload_directory()
         photos_data_for_db = []

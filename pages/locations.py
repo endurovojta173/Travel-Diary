@@ -38,6 +38,9 @@ async def location_detail(request: Request, location_id: int,
     user_status = {"is_favorite": False, "is_visited": False}
 
     user = request.session.get("user")
+    print(1111111111111111111111111111111111111111111111111111)
+    print(location)
+    print(1111111111111111111111111111111111111111111111111111)
 
     if user:
         user_status = svc_location.get_user_interaction_status(user["id"], location_id)
@@ -120,7 +123,7 @@ async def edit_location_page(location_id: int, request: Request, svc: LocationSe
             {
                 "request": request,
                 "title": "Editace lokace: " + location["name"],
-                "location": location,  # Všechny informace o lokaci
+                "location": location
             },
         )
     else:
@@ -132,9 +135,10 @@ async def edit_location_post(location_id: int, request: Request,svc_edit: EditLo
         svc_edit.update_location_details(location_id, name, description)
         status = svc_location.get_location_status(location_id)
         print(status)
-        if(status == "approved"):
+        if status == 1:
             return RedirectResponse(url=f"/locations/{location_id}", status_code=303)
-        elif status == "pending":
+        elif status == 2:
             return RedirectResponse(url=f"/approve_location/{location_id}", status_code=303)
+        return RedirectResponse(url="/login", status_code=303)
     else:
         return RedirectResponse(url="/login", status_code=303)

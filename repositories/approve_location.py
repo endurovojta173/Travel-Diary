@@ -7,8 +7,8 @@ def approve_location(conn: sqlite3.Connection, location_id) -> Optional[int]:
     try:
         cursor.execute("""
                        UPDATE location
-                       SET status = 'approved'
-                       WHERE id = :location_id
+                       SET id_status = 2
+                       WHERE id = ?
                        """, (location_id,))
 
         conn.commit()
@@ -24,7 +24,7 @@ def reject_location(conn: sqlite3.Connection, location_id) -> Optional[int]:
     try:
         cursor.execute("""
                        UPDATE location
-                       SET status = 'rejected'
+                       SET id_status = 3
                        WHERE id = :location_id
                        """, (location_id,))
 
