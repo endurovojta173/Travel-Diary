@@ -7,6 +7,7 @@ from services.users import UserService
 from services.add_new_location import AddNewLocationService
 from services.approve_location import ApproveLocationService
 from services.location_comments import LocationCommentsService
+from services.edit_location import EditLocationService
 
 
 
@@ -28,3 +29,6 @@ def approve_location_service(conn: sqlite3.Connection = Depends(get_conn)) -> Ap
 
 def location_comments_service(conn: sqlite3.Connection = Depends(get_conn)) -> LocationCommentsService:
     return LocationCommentsService(conn)
+
+def edit_location_service(conn: sqlite3.Connection = Depends(get_conn)) -> EditLocationService:
+    return EditLocationService(conn)

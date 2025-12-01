@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %} {{ title }} {% endblock %}
+{% block content %}
+<h1>{{ title }}</h1>
+
+    <!--Tiny mce setup-->
+<script src="https://cdn.tiny.cloud/1/f7nx8mu5zvkkalck8e5a48fprg4lrdmg5p7hr7mf8gjy6zan/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
+<script>
+  tinymce.init({
+    selector: '#description', //Napojí se na textarea s id="description"
+    height: 300,
+    menubar: false,
+    plugins: [
+      'advlist autolink lists link charmap print preview anchor',
+      'searchreplace visualblocks code fullscreen',
+      'insertdatetime media table paste code help wordcount'
+    ],
+    toolbar: 'undo redo | styles | ' +
+             'bold italic backcolor | ' + //Styles of text
+             'alignleft aligncenter alignright alignjustify | ' + //Aligns
+             'bullist numlist outdent indent | ' +  //Tabs
+             'hr' //Horizontal line
+  });
+</script>
+<!--Diky enctype odesle realne souborz a ne jen nazvy-->
+<form method="post" action="/locations/{{location['id']}}/edit_location/post" enctype="multipart/form-data">
+    <div>
+        <label for="name">Název lokace:</label><br>
+        <input type="text" id="name" name="name" required value="{{ location['name'] }}">
+    </div>
+    <br>
+    <div>
+        <label for="description">Popis:</label><br>
+        <textarea id="description" name="description">{{ location['description'] }}</textarea>
+    </div>
+    <br>
+    <button type="submit">Upravit lokaci</button>
+</form>
+
+{% endblock %}

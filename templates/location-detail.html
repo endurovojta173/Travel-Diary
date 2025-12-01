@@ -7,6 +7,14 @@
 
 {% block content %}
     <h1>{{ title }}</h1>
+    <!--Editace lokace-->
+    {% if request.session.get("user") and request.session.user.role <= 2 %}
+        <a href="/locations/{{ location.id }}/edit_location">
+            <button type="button" style="background-color: orange; color: white; cursor: pointer;">
+                ✏️ Upravit lokaci
+            </button>
+        </a>
+    {% endif %}
     {% if location['photos'] %}
         <img alt="{{ location['photos'][0]['alt_text'] }}" src="/{{ location['photos'][0]['url'] }}">
     {% else %}
@@ -61,9 +69,10 @@
                 {{ com["date"] }}
                 {{ com["text"] | safe }}
             </div>
-            {% if com["user_id"] == request.session.user.id or request.session.user.role <= 2%}
+            {% if com["user_id"] == request.session.user.id or request.session.user.role <= 2 %}
                 <div>
-                    <form method="post" action="/locations/{{location.id}}/delete_comment" onsubmit="return confirm('Opravdu chceš smazat tento komentář?');">
+                    <form method="post" action="/locations/{{ location.id }}/delete_comment"
+                          onsubmit="return confirm('Opravdu chceš smazat tento komentář?');">
                         <input type="hidden" name="comment_id" value="{{ com['id'] }}">
                         <button type="submit" title="Smazat komentář">Smazat koment</button>
                     </form>
