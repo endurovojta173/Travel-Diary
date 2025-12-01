@@ -96,22 +96,21 @@ class UserService:
     def delete_account(self, user_id: int):
         photo_urls = repo_get_user_photo_paths(self.conn, user_id)
         # Delete photos from physical
-        for relative_path in photo_urls:
-            full_path = os.path.join("/", relative_path)
-            if os.path.exists(full_path):
-                try:
-                    os.remove(full_path)
-                    print(f"Smazán soubor: {full_path}")
+        for path in photo_urls:
 
-                    directory = os.path.dirname(full_path)
+            if os.path.exists(path):
+                try:
+                    os.remove(path)
+                    print(f"Smazán soubor: {path}")
+
+                    directory = os.path.dirname(path)
                     # Delete folder if empty
                     if not os.listdir(directory):
                         os.rmdir(directory)
                         print(f"Smazána prázdná složka: {directory}")
                 except Exception as e:
-                    print(f"Chyba při mazání souboru {full_path}: {e}")
+                    print(f"Chyba při mazání souboru {path}: {e}")
 
-        # 3. Teď teprve smažeme uživatele z DB
         success = repo_delete_user(self.conn, user_id)
         if not success:
             raise ValueError("Nepodařilo se smazat účet z databáze.")

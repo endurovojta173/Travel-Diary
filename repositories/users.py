@@ -97,9 +97,6 @@ def get_user_statistics(conn: sqlite3.Connection, user_id: int) -> Dict[str, int
     }
 
 def update_user_role(conn: sqlite3.Connection, user_id: int, role_id: int) -> Optional[int]:
-    print(2222222222222222222222222222)
-    print(user_id)
-    print(role_id)
     cursor = conn.cursor()
     try:
         cursor.execute("""
@@ -110,10 +107,7 @@ def update_user_role(conn: sqlite3.Connection, user_id: int, role_id: int) -> Op
         conn.commit()
         return True
     except sqlite3.Error as e:
-        print(33333333333333333333333333)
         print(e)
-        print(user_id)
-        print(role_id)
         conn.rollback()
         return None
 
