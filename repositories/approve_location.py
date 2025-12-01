@@ -7,7 +7,7 @@ def approve_location(conn: sqlite3.Connection, location_id) -> Optional[int]:
     try:
         cursor.execute("""
                        UPDATE location
-                       SET id_status = 2
+                       SET id_status = 1
                        WHERE id = ?
                        """, (location_id,))
 

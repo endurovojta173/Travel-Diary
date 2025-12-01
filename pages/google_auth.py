@@ -51,7 +51,7 @@ async def auth_google(
             "id": user["id"],
             "name": user["name"],
             "email": user["email"],
-            "role": user.get("role", 3)  # Pozor na klíč role v DB vs objektu
+            "role": user.get("id_role", 3)
         }
 
         return RedirectResponse("/", status_code=303)
