@@ -6,16 +6,16 @@
 {% block content %}
     {% if request.session.get("user")['role']<3 %}
         <!--Editace lokace-->
-        <a href="/locations/{{ location.id }}/edit_location"><button type="button">Upravit lokaci</button></a>
+        <a href="/locations/{{ location.id }}/edit_location"><button type="button"><i class="fa-solid fa-pencil"></i></button></a>
         <!--Toto vidí jen admin a redaktor-->
         <div>
             <h3>Schválení lokace</h3>
             <div>
                 <form action="/approve_location/{{ location.id }}/approve" method="post">
-                    <button type="submit">Schválit</button>
+                    <button type="submit">Schválit <i class="fa-solid fa-check"></i></button>
                 </form>
                 <form action="/approve_location/{{ location.id }}/reject" method="post">
-                    <button type="submit">Zamítnout</button>
+                    <button type="submit">Zamítnout <i class="fa-solid fa-xmark"></i></button>
                 </form>
 
             </div>
@@ -31,11 +31,19 @@
     {% endif %}
     <div>
         <!--Add/Remove favorite-->
-        <button type=>Přidat do oblíbených</button>
+        <button type=>Přidat do oblíbených <i class="fa-solid fa-star"></i></button>
         <!--Add/Remove visited-->
-        <button>Přidat do navštívených</button>
+        <button>Přidat do navštívených <i class="fa-solid fa-globe"></i></button>
     </div>
-    {{ location['avg_rating'] }}<br>
+    {% if location['avg_rating'] == None %}
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+        <i class="fa-solid fa-star"></i>
+    {% else %}
+        {{ location['avg_rating'] }}
+    {% endif %}
     {{ location['date_location_added'] }}<br>
     {{ location['description']  | safe }}
 

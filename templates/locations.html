@@ -1,49 +1,65 @@
 {% extends "base.html" %}
-<!--Title-->
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/rating.css') }}">
+{% endblock %}
 {% block title %}{{ title }}{% endblock %}
-
-
 <body>
 
 {% block content %}
 
-<h1>{{ title }}</h1>
+    <h1>{{ title }}</h1>
 
-<div class="locations-list">
-    {% for loc in locations %}
-    <div class="location-card">
-        <!--Photo-->
-        <div class="loc-thumb">
-            {% if loc['photos'] %}
-                <a href="{{url_for('location_detail',  location_id=loc['id']) }}">
-                    <img alt="{{ loc['photos'][0]['alt_text'] }}" src="/{{ loc['photos'][0]['url'] }}">
-                </a>
-            {% else %}
-                <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}"  class="noImage">
-            {% endif %}
-        </div>
+    <div class="locations-list">
+        {% for loc in locations %}
+            <div class="location-card">
+                <!--Photo-->
+                <div class="loc-thumb">
+                    {% if loc['photos'] %}
+                        <a href="{{ url_for('location_detail',  location_id=loc['id']) }}">
+                            <img alt="{{ loc['photos'][0]['alt_text'] }}" src="/{{ loc['photos'][0]['url'] }}">
+                        </a>
+                    {% else %}
+                        <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}" class="noImage">
+                    {% endif %}
+                </div>
 
-        <div class="loc-body">
-            <!--Name-->
-            <a href="{{url_for('location_detail',  location_id=loc['id']) }}">
-            <h2 class="loc-title">{{ loc['name'] }}</h2>
-            </a>
-            <!--Rating-->
-            <div class="loc-rating">
-                {% set filled = (loc['avg_rating'] | default(0)) | int %}
-                {% for i in range(1,6) %}
-                    <span class="star {% if i <= filled %}filled{% endif %}">★</span>
-                {% endfor %}
+                <div class="loc-body">
+                    <!--Name-->
+                    <a href="{{ url_for('location_detail',  location_id=loc['id']) }}">
+                        <h2 class="loc-title">{{ loc['name'] }}</h2>
+                    </a>
+                    <!--Rating-->
+                    <div class="rating-stars" title="Průměrné hodnocení: {{ (loc['avg_rating'] or 0) | round(1) }}">
+
+                        {# --- Výpočet --- #}
+                        {# Převedení na int zaokrouhlí dolů #}
+                        {% set active_stars = loc['avg_rating'] | int %}
+                        {# Zbytek do 5 jsou neaktivní #}
+                        {% set inactive_stars = 5 - active_stars %}
+                        {% for i in range(active_stars) %}
+                            <i class="fa-solid fa-star star-active"></i>
+                        {% endfor %}
+                        {% for i in range(inactive_stars) %}
+                            <i class="fa-solid fa-star star-inactive"></i>
+                        {% endfor %}
+                        <span class="rating-value">
+        {% if loc['avg_rating'] %}
+            {{ loc['avg_rating'] | round(1) }}
+        {% else %}
+            0.0
+        {% endif %}
+    </span>
+
+                    </div>
+                    <!--Description-->
+                    <p class="loc-desc">
+                        {{ loc['description'] | truncate(250, True, '...') | safe }}
+                        <a href="{{ url_for('location_detail',  location_id=loc['id']) }}" class="more">Více...</a>
+                    </p>
+                </div>
             </div>
-            <!--Description-->
-            <p class="loc-desc">
-                {{ loc['description'] | truncate(250, True, '...') | safe}}
-                <a href="{{url_for('location_detail',  location_id=loc['id']) }}" class="more">Více...</a>
-            </p>
-        </div>
+        {% endfor %}
     </div>
-    {% endfor %}
-</div>
 
 
 

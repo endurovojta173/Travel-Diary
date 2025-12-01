@@ -1,8 +1,9 @@
 {% extends "base.html" %}
-<!--Title-->
+{# Title #}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/rating.css') }}">
+{% endblock %}
 {% block title %}{{ title }}{% endblock %}
-
-
 <body>
 
 {% block content %}
@@ -10,7 +11,7 @@
     <!--Editace lokace-->
     {% if request.session.get("user") and request.session.user.role <= 2 %}
         <a href="/locations/{{ location.id }}/edit_location">
-            <button type="button">Upravit lokaci</button>
+            <button type="button"><i class="fa-solid fa-pencil"></i></button>
         </a>
     {% endif %}
     {% if location['photos'] %}
@@ -22,29 +23,46 @@
         <!--Add/Remove favorite-->
         {% if user_status.is_favorite %}
             <form action="/locations/{{ location["id"] }}/favorite/remove" method="post">
-                <button type="submit">
-                    Oblíbené (Odebrat)
-                </button>
+                <button type="submit">Oblíbené (Odebrat) <i class="fa-solid fa-xmark"></i></button>
             </form>
         {% else %}
             <form action="/locations/{{ location["id"] }}/favorite/add" method="post">
-                <button type="submit">
-                    Přidat do oblíbených
-                </button>
+                <button type="submit">Přidat do oblíbených <i class="fa-solid fa-star"></i></button>
             </form>
         {% endif %}
         <!--Add/Remove visited-->
         {% if user_status.is_visited %}
             <form action="/locations/{{ location["id"] }}/visited/remove" method="post">
-                <button type="submit">Navštíveno (Odebrat)</button>
+                <button type="submit">Navštíveno (Odebrat) <i class="fa-solid fa-xmark"></i></button>
             </form>
         {% else %}
             <form action="/locations/{{ location["id"] }}/visited/add" method="post">
-                <button type="submit">Přidat do navštívených</button>
+                <button type="submit">Přidat do navštívených <i class="fa-solid fa-globe"></i></button>
             </form>
         {% endif %}
     </div>
-    {{ location['avg_rating'] }}<br>
+    <div class="rating-stars" title="Průměrné hodnocení: {{ (location['avg_rating'] or 0) | round(1) }}">
+
+        {# --- Výpočet --- #}
+        {# Převedení na int zaokrouhlí dolů #}
+        {% set active_stars = location['avg_rating'] | int %}
+        {# Zbytek do 5 jsou neaktivní #}
+        {% set inactive_stars = 5 - active_stars %}
+        {% for i in range(active_stars) %}
+            <i class="fa-solid fa-star star-active"></i>
+        {% endfor %}
+        {% for i in range(inactive_stars) %}
+            <i class="fa-solid fa-star star-inactive"></i>
+        {% endfor %}
+        <span class="rating-value">
+        {% if location['avg_rating'] %}
+            {{ location['avg_rating'] | round(1) }}
+        {% else %}
+            0.0
+        {% endif %}
+    </span>
+
+    </div>
     {{ location['date_location_added'] }}<br>
     {{ location['description']  | safe }}
 
@@ -73,7 +91,8 @@
                         <form method="post" action="/locations/{{ location.id }}/delete_comment"
                               onsubmit="return confirm('Opravdu chceš smazat tento komentář?');">
                             <input type="hidden" name="comment_id" value="{{ com['id'] }}">
-                            <button type="submit" title="Smazat komentář">Smazat koment</button>
+                            <button type="submit" title="Smazat komentář">Smazat komentář <i
+                                    class="fa-solid fa-trash"></i></button>
                         </form>
                     </div>
                 {% endif %}
