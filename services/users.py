@@ -1,5 +1,7 @@
 from typing import List, Dict, Any, Optional
 import sqlite3
+import uuid
+import secrets
 from passlib.context import CryptContext
 from repositories.users import register_user as repo_register_user
 from repositories.users import get_user_by_email as repo_get_user_by_email
@@ -28,10 +30,31 @@ class UserService:
             "name": name,
             "email": email
         }
+    #Ověřuje jestli uživatel už není zaregistrovaný, potom případně vytvoří nového google usera
+    def get_or_create_google_user(self, google_email: str, google_name: str) -> Dict[str, Any]:
+        #Zkusíme najít uživatele
+        user = repo_get_user_by_email(self.conn, google_email)
+
+        if user:
+            return user  # Uživatel už existuje, vrátíme ho (login)
+
+        random_password = secrets.token_urlsafe(32)
+        hashed_password = pwd_context.hash(random_password)
+
+        new_id = repo_register_user(self.conn, google_name, google_email, hashed_password)
+
+        if not new_id:
+            raise ValueError("Chyba při vytváření Google uživatele")
+
+        return {
+            "id": new_id,
+            "name": google_name,
+            "email": google_email,
+            "role": 3  # Default user
+        }
 
     def create_user(self, name: str, email: str, password: str, role:int) -> Dict[str, Any]:
         hashed_password = pwd_context.hash(password)
-        # Ověření zda uživatel už není zaregistrován
         new_id = repo_create_user(self.conn, name, email, hashed_password, role)
 
         if new_id is None:

@@ -36,12 +36,7 @@ async def location_detail(request: Request, location_id: int,
     location = svc_location.get_location_by_id_with_photos_and_rating(location_id)
     comments = svc_comments.list_comments(location_id)
     user_status = {"is_favorite": False, "is_visited": False}
-
     user = request.session.get("user")
-    print(1111111111111111111111111111111111111111111111111111)
-    print(location)
-    print(1111111111111111111111111111111111111111111111111111)
-
     if user:
         user_status = svc_location.get_user_interaction_status(user["id"], location_id)
 

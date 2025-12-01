@@ -1,7 +1,7 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
-<h1>{{ title }}</h1>
+    <h1>{{ title }}</h1>
     {% if error_message %}
         <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 10px;">
             <strong>Chyba:</strong> {{ error_message }}
@@ -25,9 +25,17 @@
             <small>(Min. 8 znaků a z toho 1 znak velkým písmem, 1 číslo, 1 speciální znak !@#$%^&*()-_=+)</small>
         </div>
         <br>
-        <input type="checkbox" id="consent" name = "consent" required>
-        <label for="consent"><a href="{{ url_for('terms_and_conditions_page') }}" target="_blank">Souhlasím s podmínkami o zpracování osobních údajů</a></label>
+        <input type="checkbox" id="consent" name="consent" required>
+        <label for="consent"><a href="{{ url_for('privacy_policy_page') }}" target="_blank">Souhlasím s podmínkami
+            o zpracování osobních údajů</a></label>
         <br>
         <button type="submit">Zaregistrovat se</button>
     </form>
+
+    <hr>
+    <div>
+        <a href="/login/google">
+            <button type="button">Google login</button>
+        </a>
+    </div>
 {% endblock %}

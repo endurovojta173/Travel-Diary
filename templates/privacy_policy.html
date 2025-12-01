@@ -1,0 +1,30 @@
+{% extends "base.html" %}
+
+
+{% block content %}
+<h1>{{ title }}</h1>
+<div>
+    <h3>1. Kdo jsme</h3>
+    <p>Správcem osobních údajů je provozovatel aplikace Travel Diary (Vojtěch Břenek).</p>
+
+    <h3>2. Jaké údaje sbíráme</h3>
+    <ul>
+        <li><strong>Email:</strong> Pro účely přihlášení a unikátní identifikace uživatele.</li>
+        <li><strong>Jméno:</strong> Pro zobrazení v profilu a u komentářů.</li>
+        <li><strong>Heslo:</strong> Ukládáme pouze v šifrované podobě (hash), nikoliv v čitelném textu.</li>
+        <li><strong>Fotografie a lokace:</strong> Data, která sami nahrajete.</li>
+    </ul>
+
+    <h3>3. Proč údaje sbíráme</h3>
+    <p>Údaje zpracováváme výhradně za účelem poskytování služby – vedení cestovatelského deníku, sdílení lokací a komentování.</p>
+
+    <h3>4. Vaše práva</h3>
+    <p>V souladu s nařízením GDPR máte právo na:</p>
+    <ul>
+        <li>Přístup ke svým údajům (vidíte je ve svém profilu).</li>
+        <li>Opravu údajů (můžete je změnit v profilu).</li>
+        <li><strong>Výmaz údajů (právo být zapomenut)</strong> – svůj účet můžete kdykoliv smazat v nastavení profilu.</li>
+    </ul>
+</div>
+
+{% endblock %}

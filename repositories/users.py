@@ -12,6 +12,7 @@ def register_user(conn: sqlite3.Connection, name:str, email:str, password_hash:s
                        """, (name, email, password_hash, 3))
 
         conn.commit()
+        return cursor.lastrowid
     except sqlite3.IntegrityError:
 
         return None

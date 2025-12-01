@@ -1,23 +1,29 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
-<h1>{{ title }}</h1>
+    <h1>{{ title }}</h1>
 
-<form method="post" action="/login">
+    <form method="post" action="/login">
+        <div>
+            <label id="email">Email</label><br>
+            <input type="email" id="email" name="email" value="{{ email_value or '' }}" required>
+        </div>
+        <div>
+            <label id="password">Heslo</label><br>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div>
+            <a href="{{ url_for('reset_password_page') }}">Zapomenuté heslo</a>
+        </div>
+        <div>
+            <button type="submit">Přihlásit se</button>
+        </div>
+    </form>
+    <hr>
     <div>
-        <label id = "email" >Email</label><br>
-        <input type="email" id="email" name="email" value="{{ email_value or '' }}" required>
+        <a href="/login/google">
+            <button type="button">Google Login</button>
+        </a>
     </div>
-    <div>
-        <label id="password">Heslo</label><br>
-        <input type="password" id="password" name="password" required>
-    </div>
-    <div>
-    <a href="{{ url_for('reset_password_page') }}">Zapomenuté heslo</a>
-    </div>
-    <div>
-        <button type="submit">Přihlásit se</button>
-    </div>
-</form>
 
 {% endblock %}
