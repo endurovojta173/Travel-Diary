@@ -138,5 +138,15 @@
         </form>
     </div>
 
+    <div>
+        <form action="/my_profile/update" method="post">
+            <div>
+                <label for="name" style="font-weight: bold;">Jméno:</label><br>
+                <input type="text" id="name" name="name" value="{{ request.session.user.name }}" required>
+            </div>
+            <button type="submit">Změnit jméno</button>
+        </form>
+    </div>
+
     <script src="/static/js/my_profile.js"></script>
 {% endblock %}

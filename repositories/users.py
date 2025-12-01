@@ -135,3 +135,18 @@ def delete_user(conn: sqlite3.Connection, user_id: int) -> bool:
         print(f"Chyba při mazání uživatele: {e}")
         conn.rollback()
         return False
+
+def update_user_name(conn: sqlite3.Connection, user_id: int, name: str) -> bool:
+    cursor = conn.cursor()
+    try:
+        cursor.execute("""
+                       UPDATE user
+                       SET name = ?
+                       WHERE id = ?
+                    """, (name, user_id))
+        conn.commit()
+        return True
+    except sqlite3.Error as e:
+        print(e)
+        conn.rollback()
+        return False

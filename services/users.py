@@ -11,6 +11,7 @@ from repositories.users import create_user as repo_create_user
 from repositories.users import update_user_role as repo_update_user_role
 from repositories.users import get_user_photo_paths as repo_get_user_photo_paths
 from repositories.users import delete_user as repo_delete_user
+from repositories.users import update_user_name as repo_update_user_name
 
 #Nastavení hashování na argon2
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
@@ -114,3 +115,6 @@ class UserService:
         success = repo_delete_user(self.conn, user_id)
         if not success:
             raise ValueError("Nepodařilo se smazat účet z databáze.")
+
+    def update_user_name(self, user_id: int, name: str) -> bool:
+        return repo_update_user_name(self.conn,user_id,name)
