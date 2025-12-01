@@ -1,45 +1,48 @@
 {% extends "base.html" %}
 {% block title %} {{ title }} {% endblock %}
 {% block content %}
-<h1>{{ title }}</h1>
+    <h1>{{ title }}</h1>
 
     <!--Tiny mce setup-->
-<script src="https://cdn.tiny.cloud/1/f7nx8mu5zvkkalck8e5a48fprg4lrdmg5p7hr7mf8gjy6zan/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-<script>
-  tinymce.init({
-    selector: '#description', //Napojí se na textarea s id="description"
-    height: 300,
-    menubar: false,
-    plugins: [
-      'advlist autolink lists link charmap print preview anchor',
-      'searchreplace visualblocks code fullscreen',
-      'insertdatetime media table paste code help wordcount'
-    ],
-    toolbar: 'undo redo | styles | ' +
-             'bold italic backcolor | ' + //Styles of text
-             'alignleft aligncenter alignright alignjustify | ' + //Aligns
-             'bullist numlist outdent indent | ' +  //Tabs
-             'hr' //Horizontal line
-  });
-</script>
-<!--Diky enctype odesle realne souborz a ne jen nazvy-->
-<form method="post" action="/add_location" enctype="multipart/form-data">
-    <div>
-        <label for="name">Název lokace:</label><br>
-        <input type="text" id="name" name="name" required>
-    </div>
-    <br>
-    <div>
-        <label for="description">Popis:</label><br>
-        <textarea id="description" name="description"></textarea>
-    </div>
-    <br>
-    <div>
-        <label for="files">Fotky (Můžete vložit více, 1. fotka bude použita jako náhled lokace):</label><br>
-        <input type="file" id="files" name="files" multiple accept="image/*">
-    </div>
-    <br>
-    <button type="submit">Vložit lokaci</button>
-</form>
+    <script src="https://cdn.tiny.cloud/1/f7nx8mu5zvkkalck8e5a48fprg4lrdmg5p7hr7mf8gjy6zan/tinymce/6/tinymce.min.js"
+            referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#description', //Napojí se na textarea s id="description"
+            height: 300,
+            menubar: false,
+            plugins: [
+                'advlist autolink link charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste code help wordcount'
+            ],
+            block_formats: 'Odstavec=p;Nadpis 2=h2;Nadpis 3=h3;Nadpis 4=h4;Nadpis 5=h5;Nadpis 6=h6',
+
+            toolbar: 'undo redo | blocks | ' +
+                'bold italic backcolor | ' + //Styles of text
+                'alignleft aligncenter alignright alignjustify | ' + //Aligns
+                'bullist numlist outdent indent | ' +  //Tabs
+                'hr' //Horizontal line
+        });
+    </script>
+    <!--Diky enctype odesle realne souborz a ne jen nazvy-->
+    <form method="post" action="/add_location" enctype="multipart/form-data">
+        <div>
+            <label for="name">Název lokace:</label><br>
+            <input type="text" id="name" name="name" required>
+        </div>
+        <br>
+        <div>
+            <label for="description">Popis:</label><br>
+            <textarea id="description" name="description"></textarea>
+        </div>
+        <br>
+        <div>
+            <label for="files">Fotky (Můžete vložit více, 1. fotka bude použita jako náhled lokace):</label><br>
+            <input type="file" id="files" name="files" multiple accept="image/*">
+        </div>
+        <br>
+        <button type="submit">Vložit lokaci</button>
+    </form>
 
 {% endblock %}
