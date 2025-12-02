@@ -12,6 +12,8 @@ from repositories.users import update_user_role as repo_update_user_role
 from repositories.users import get_user_photo_paths as repo_get_user_photo_paths
 from repositories.users import delete_user as repo_delete_user
 from repositories.users import update_user_name as repo_update_user_name
+from repositories.users import get_user_rating_for_location as repo_get_user_rating_for_location
+from repositories.users import rate_location as repo_rate_location
 
 #Nastavení hashování na argon2
 pwd_context = CryptContext(schemes=["argon2"], deprecated="auto")
@@ -118,3 +120,8 @@ class UserService:
 
     def update_user_name(self, user_id: int, name: str) -> bool:
         return repo_update_user_name(self.conn,user_id,name)
+
+    def get_user_rating_for_location(self, location_id: int, stars: int) -> Optional[int]:
+        return repo_get_user_rating_for_location(self.conn,location_id,stars)
+    def rate_location(self, location_id: int,user_id:int, stars: int) -> Optional[int]:
+        return repo_rate_location(self.conn,location_id,user_id, stars)

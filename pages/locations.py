@@ -1,11 +1,12 @@
 from fastapi import Request, APIRouter, Depends, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
-from dependencies import locations_service
+from dependencies import locations_service, user_service
 from dependencies import location_comments_service
 from dependencies import edit_location_service
 from services.list_locations import LocationService
 from services.location_comments import LocationCommentsService
 from services.edit_location import EditLocationService
+from services.users import UserService
 
 router = APIRouter()
 
@@ -32,13 +33,19 @@ async def list_locations_with_photos_rating(request: Request, svc: LocationServi
 @router.get("/locations/{location_id}", name="location_detail", response_class=HTMLResponse)
 async def location_detail(request: Request, location_id: int,
                           svc_location: LocationService = Depends(locations_service),
-                          svc_comments: LocationCommentsService = Depends(location_comments_service)):
+                          svc_comments: LocationCommentsService = Depends(location_comments_service),
+                          svc_user:UserService = Depends(user_service)
+                          ):
+
     location = svc_location.get_location_by_id_with_photos_and_rating(location_id)
     comments = svc_comments.list_comments(location_id)
     user_status = {"is_favorite": False, "is_visited": False}
+    #Nacte usera z sessionu pro dalsi pouziti
     user = request.session.get("user")
+    user_rating = 0
     if user:
         user_status = svc_location.get_user_interaction_status(user["id"], location_id)
+        user_rating = svc_user.get_user_rating_for_location(user["id"], location_id)
 
     return request.app.state.templates.TemplateResponse(
         "location-detail.html",
@@ -47,7 +54,8 @@ async def location_detail(request: Request, location_id: int,
             "title": location["name"],
             "location": location,  # Všechny informace o lokaci
             "comments": comments,
-            "user_status": user_status  # Informace zda uživatel má přidanou lokaci do favorite/visited
+            "user_status": user_status,  # Informace zda uživatel má přidanou lokaci do favorite/visited
+            "my_rating": user_rating #Vraci rating uzivatele, pokud nehodnotil, tak 0
         },
     )
 
@@ -137,3 +145,18 @@ async def edit_location_post(location_id: int, request: Request,svc_edit: EditLo
         return RedirectResponse(url="/login", status_code=303)
     else:
         return RedirectResponse(url="/login", status_code=303)
+
+
+@router.post("/locations/{location_id}/rate")
+async def rate_location(
+        location_id: int,
+        request: Request,
+        stars: int = Form(...),
+        svc: UserService = Depends(user_service),
+):
+    user = request.session.get("user")
+    if not user: return RedirectResponse("/login", 303)
+    svc.rate_location(location_id,user["id"],  stars)
+
+    return RedirectResponse(url=f"/locations/{location_id}", status_code=303)
+

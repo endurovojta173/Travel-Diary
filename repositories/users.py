@@ -150,3 +150,50 @@ def update_user_name(conn: sqlite3.Connection, user_id: int, name: str) -> bool:
         print(e)
         conn.rollback()
         return False
+
+def get_user_rating_for_location(conn: sqlite3.Connection, location_id: int, user_id) -> Optional[int]:
+    cursor = conn.cursor()
+    cursor.execute("""
+                   SELECT rating
+                   FROM rating
+                   WHERE id_location = ?
+                     AND id_user = ?
+                   """, (location_id, user_id))
+    row = cursor.fetchone()
+    if row is None:
+        return 0  # Uživatel ještě nehlasoval 0
+
+    return row[0]
+
+def rate_location(conn: sqlite3.Connection, location_id: int, user_id: int, rating:int) -> Optional[int]:
+        cursor = conn.cursor()
+        try:
+            # Uživatel tuto lokaci hodnotil
+            cursor.execute("""
+                           SELECT 1
+                           FROM rating
+                           WHERE id_user = ?
+                             AND id_location = ?
+                           """, (user_id, location_id))
+
+            exists = cursor.fetchone()
+
+            if exists:
+                cursor.execute("""
+                               UPDATE rating
+                               SET rating = ?
+                               WHERE id_user = ?
+                                 AND id_location = ?
+                               """, (rating, user_id, location_id))
+            else:
+                cursor.execute("""
+                               INSERT INTO rating (id_user, id_location, rating)
+                               VALUES (?, ?, ?)
+                               """, (user_id, location_id, rating))
+            conn.commit()
+            return True
+
+        except sqlite3.Error as e:
+            print(f"Chyba při hodnocení: {e}")
+            conn.rollback()
+            return False

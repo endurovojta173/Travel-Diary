@@ -24,3 +24,22 @@
     color: #666;
     font-size: 0.9em;
 }
+/* Globální průměr - Statické, menší */
+.global-rating i {
+    font-size: 1rem;
+    cursor: default;
+}
+/* Uživatelské hodnocení - Větší, klikací */
+.star-buttons button i {
+    transition: transform 0.2s, color 0.2s;
+}
+
+.star-btn:hover i {
+    transform: scale(1.3);
+    color: red;
+}
+
+.active-star{
+    color: yellow;
+}
+

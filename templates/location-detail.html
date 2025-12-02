@@ -41,6 +41,8 @@
             </form>
         {% endif %}
     </div>
+
+    {# Average rating #}
     <div class="rating-stars" title="Průměrné hodnocení: {{ (location['avg_rating'] or 0) | round(1) }}">
 
         {# --- Výpočet --- #}
@@ -65,7 +67,25 @@
     </div>
     {{ location['date_location_added'] }}<br>
     {{ location['description']  | safe }}
-
+    {# Hodnoceni uzivatele #}
+    {% if request.session.get("user") %}
+        <div class="user-rating-section">
+            <h4>{% if my_rating > 0 %}Tvoje hodnocení:{% else %}Ohodnoť tuto lokaci:{% endif %}</h4>
+            <form action="/locations/{{ location.id }}/rate" method="post">
+                <div class="star-buttons">
+                    {% for i in range(1, 6) %}
+                        <button type="submit" name="stars" value="{{ i }}"
+                                class="star-btn active"
+                                title="Dát {{ i }} hvězd">
+                            <i class="fa-solid fa-star {% if i <= my_rating %}active-star{% endif %}"></i>
+                        </button>
+                    {% endfor %}
+                </div>
+            </form>
+        </div>
+    {% endif %}
+    <hr>
+    {# Komentáře #}
     <div>
         <h2>Komentáře</h2>
         {% if request.session.get("user") %}
