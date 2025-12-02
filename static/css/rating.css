@@ -2,19 +2,19 @@
 .rating-stars {
     display: inline-flex;
     align-items: center;
-    gap: 2px; /* Malá mezera mezi hvězdami */
-    font-size: 1.1em; /* Trochu je zvětšíme */
+    gap: 2px;
+    font-size: 1.1em;
 }
 
 /* Aktivní hvězda - Zlatá/Žlutá */
 .star-active {
-    color: #ffc107; /* Standardní "zlatá" barva pro rating */
+    color: #ffc107;
     filter: drop-shadow(0 0 1px rgba(0,0,0,0.2));
 }
 
 /* Neaktivní hvězda - Bledá šedá */
 .star-inactive {
-    color: #e4e5e9; /* Světle šedá, aby byla vidět, ale nerušila */
+    color: #e4e5e9;
 }
 
 /* Číselná hodnota vedle hvězd (volitelné) */
@@ -36,10 +36,10 @@
 
 .star-btn:hover i {
     transform: scale(1.3);
-    color: red;
+    color: yellow;
 }
 
 .active-star{
-    color: yellow;
+    color: #ffc107;
 }
 

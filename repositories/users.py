@@ -151,7 +151,7 @@ def update_user_name(conn: sqlite3.Connection, user_id: int, name: str) -> bool:
         conn.rollback()
         return False
 
-def get_user_rating_for_location(conn: sqlite3.Connection, location_id: int, user_id) -> Optional[int]:
+def get_user_rating_for_location(conn: sqlite3.Connection, user_id, location_id: int) -> Optional[int]:
     cursor = conn.cursor()
     cursor.execute("""
                    SELECT rating
@@ -161,8 +161,8 @@ def get_user_rating_for_location(conn: sqlite3.Connection, location_id: int, use
                    """, (location_id, user_id))
     row = cursor.fetchone()
     if row is None:
-        return 0  # Uživatel ještě nehlasoval 0
-
+        print(4444444444444)
+        return 0  # Uživatel ještě nehlasoval
     return row[0]
 
 def rate_location(conn: sqlite3.Connection, location_id: int, user_id: int, rating:int) -> Optional[int]:
