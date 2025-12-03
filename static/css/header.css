@@ -1,5 +1,5 @@
 .header{
-    width: 100%;
+    overflow: visible;
     position: sticky;
     top: 0;
     z-index: 1000;
@@ -9,10 +9,9 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    width: 100%;
     background-color: var(--footer-background-color);
     justify-content: flex-end;
-    font-size: 0.9rem;
+    font-size: 1rem;
     padding: 1vh 0 1vh 0;
 }
 .upper-nav-items{
@@ -32,9 +31,7 @@
     align-items: center;
     max-height: 10vh;
     justify-content: space-between;
-    width: 100%;
     background-color: var(--navbar-background-color, #333);
-
 
 }
 
@@ -42,7 +39,7 @@
 /* Logo vlevo */
 .lower-nav-logo {
     width: 60px;
-    height: 60px;
+    height: auto;
 }
 
 .lower-nav-logo img {
@@ -68,6 +65,7 @@
     font-weight: 500;
 }
 
-.lower-nav-item:hover {
+.lower-nav-item:hover ,
+.lower-nav-item-active{
     text-decoration: underline;
 }
