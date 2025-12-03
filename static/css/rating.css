@@ -1,4 +1,4 @@
-/* Kontejner pro hvězdy, aby byly hezky vedle sebe */
+/* Kontejner pro hvězdy */
 .rating-stars {
     display: inline-flex;
     align-items: center;
@@ -6,40 +6,60 @@
     font-size: 1.1em;
 }
 
-/* Aktivní hvězda - Zlatá/Žlutá */
+/* Aktivní hvězda - Zlatá */
 .star-active {
     color: #ffc107;
     filter: drop-shadow(0 0 1px rgba(0,0,0,0.2));
 }
 
-/* Neaktivní hvězda - Bledá šedá */
+/* Neaktivní hvězda - Šedá */
 .star-inactive {
     color: #e4e5e9;
 }
 
-/* Číselná hodnota vedle hvězd (volitelné) */
+/* Číslo vedle hvězd */
 .rating-value {
-    margin-left: 5px;
+    margin-left: 8px;
     font-weight: bold;
     color: #666;
     font-size: 0.9em;
 }
-/* Globální průměr - Statické, menší */
-.global-rating i {
-    font-size: 1rem;
-    cursor: default;
-}
-/* Uživatelské hodnocení - Větší, klikací */
-.star-buttons button i {
-    transition: transform 0.2s, color 0.2s;
+
+
+   /*INTERAKTIVNÍ HODNOCENÍ */
+
+/* Kontejner: ROW-REVERSE trik
+   Otočí pořadí prvků, takže v HTML je to 5-4-3-2-1,
+   ale uživatel vidí 1-2-3-4-5.
+   Díky tomu funguje selektor '~' na "předchozí" hvězdy.
+*/
+.rating-reverse {
+    display: inline-flex;
+    flex-direction: row-reverse;
+    justify-content: flex-end;
 }
 
-.star-btn:hover i {
-    transform: scale(1.3);
-    color: yellow;
+/* Základní styl tlačítka */
+.star-btn {
+    background: none;
+    border: none;
+    padding: 0 4px; /* Větší plocha pro kliknutí */
+    cursor: pointer;
+    font-size: 1.5rem; /* Velké hvězdy */
+    color: #ddd;     /* Výchozí šedá */
+    transition: transform 0.2s, color 0.2s; /* Animace */
 }
 
-.active-star{
+.star-btn:focus {
+    outline: none;
+}
+/* Aplikuje se na ikonku <i>, pokud má třídu .active-star */
+.star-btn i.active-star {
     color: #ffc107;
 }
 
+.rating-reverse .star-btn:hover i,
+.rating-reverse .star-btn:hover ~ .star-btn i {
+    color: orange !important; /* !important zajistí, že to přebije zlatou */
+    transform: scale(1.2);    /* Zvětšení */
+}
