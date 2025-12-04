@@ -1,10 +1,9 @@
 <footer class="footer">
     <div class="footer-top">
         <div class="footer-logo">
-            <a href="{{ url_for('landing_page') }}"><img alt="logo"
-                                                         src="{{ url_for('static', path='img/web/logo.webp') }}"></a>
+            <a href="{{ url_for('landing_page') }}">
+                <img alt="logo" src="{{ url_for('static', path='img/web/logo.webp') }}"></a>
         </div>
-
         <nav class="footer-nav">
             <a href="{{ url_for('landing_page') }}" class="footer-nav-item">Domů</a>
             <a href="{{ url_for('list_locations_with_photos_rating') }}" class="footer-nav-item">Lokace</a>
@@ -18,7 +17,8 @@
     </div>
 
     <div class="footer-bottom">
-        <span>Copyright © 2025</span>
+        {# Script zajišťuje, aby se vždy ukazovalo aktuální datum #}
+        <span>Copyright ©2025 - <script>document.write(new Date().getFullYear())</script></span>
         <span><a href="{{ url_for('privacy_policy_page') }}">Zásady ochrany osobních údajů</a></span>
         <span><a href="{{ url_for('contact_page') }}">Kontaktní údaje</a></span>
     </div>

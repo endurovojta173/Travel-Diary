@@ -12,6 +12,11 @@ html, body {
     padding: 0;
     background: var(--background-color);
 }
+body{
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
 
 h1 {
     font-size: 3em;

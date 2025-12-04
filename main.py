@@ -1,9 +1,8 @@
 # app/main.py
+import datetime
 import os
-
 from fastapi import FastAPI
 from fastapi.staticfiles import StaticFiles
-from dotenv import load_dotenv
 #Pro session
 from starlette.middleware.sessions import SessionMiddleware
 from starlette.templating import Jinja2Templates
@@ -39,6 +38,7 @@ def create_app() -> FastAPI:
     )
 
     app.state.templates = Jinja2Templates(directory="templates")
+    app.state.templates.env.globals['now'] = datetime.datetime.now()
 
 
 
