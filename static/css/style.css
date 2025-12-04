@@ -5,6 +5,9 @@
     --light-green-color: #669900;
     --dark-green-color: #3c4e23;
     --white-text-color: white;
+    --neutral-gray-color: #afafaf;
+    --shadow-gray-color: #c8c8c8;
+    --star-gold-color: #ffc107;
     font-size: 16px;
 }
 html, body {
@@ -20,6 +23,7 @@ body{
 
 h1 {
     font-size: 3em;
+    text-align: center;
 }
 
 .noImage{

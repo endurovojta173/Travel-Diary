@@ -8,13 +8,13 @@
 
 /* Aktivní hvězda - Zlatá */
 .star-active {
-    color: #ffc107;
+    color: var(--star-gold-color);
     filter: drop-shadow(0 0 1px rgba(0,0,0,0.2));
 }
 
 /* Neaktivní hvězda - Šedá */
 .star-inactive {
-    color: #e4e5e9;
+    color: var(--neutral-gray-color);
 }
 
 /* Číslo vedle hvězd */
@@ -45,17 +45,17 @@
     border: none;
     padding: 0 4px; /* Větší plocha pro kliknutí */
     cursor: pointer;
-    font-size: 1.5rem; /* Velké hvězdy */
-    color: #ddd;     /* Výchozí šedá */
-    transition: transform 0.2s, color 0.2s; /* Animace */
+    font-size: 1.5rem;
+    color: var(--neutral-gray-color);
+    transition: transform 0.2s, color 0.2s;
 }
 
 .star-btn:focus {
     outline: none;
 }
-/* Aplikuje se na ikonku <i>, pokud má třídu .active-star */
+
 .star-btn i.active-star {
-    color: #ffc107;
+    color: var(--star-gold-color);
 }
 
 .rating-reverse .star-btn:hover i,
