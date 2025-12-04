@@ -148,6 +148,8 @@ def get_most_favorite_location(conn: sqlite3.Connection) -> Dict[str, Any]:
                    """)
     # Zpracuje pouze první výskyt
     row = cursor.fetchone()
+    if row is None:
+        return None
 
     location = {
         "id": row[0],
@@ -182,6 +184,9 @@ def get_newest_location(conn: sqlite3.Connection) -> Dict[str, Any]:
                    """)
     # Zpracuje pouze první výskyt
     row = cursor.fetchone()
+
+    if row is None:
+        return None
 
     location = {
         "id": row[0],
