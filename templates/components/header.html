@@ -1,0 +1,42 @@
+<div class="header">
+
+    <!--Upper nav-->
+    <div class="upper-nav">
+        <div class="upper-nav-items">
+            {% if request.session.get('user') %}
+                <a href="{{ url_for('logout') }}" class="upper-nav-item">Odhlásit se</a>
+                <a href="{{ url_for('my_profile_page') }}" class="upper-nav-item"><i class="fa-solid fa-user"></i></a>
+            {% else %}
+                <a href="{{ url_for('register_page') }}" class="upper-nav-item">Zaregistrovat se</a>
+                <a href="{{ url_for('login_page') }}" class="upper-nav-item"><i class="fa-regular fa-user"></i></a>
+            {% endif %}
+        </div>
+    </div>
+
+    <!--Lower nav-->
+    <div class="lower-nav">
+        <div class="lower-nav-logo">
+            <a href="{{ url_for('landing_page') }}">
+                <img alt="logo" src="{{ url_for('static', path='img/web/logo.webp') }}">
+            </a>
+        </div>
+        <!--Hamburger-->
+        <button class="nav-toggle" id="navToggle">
+            <i class="fa-solid fa-bars"></i>
+        </button>
+        <!--Lower nav items-->
+        <div class="lower-nav-items" id="navLinks">
+            <a href="{{ url_for('landing_page') }}" class="lower-nav-item {% if request.url.path == '/' %}active{% endif %}">Domů</a>
+            <a href="{{ url_for('list_locations_with_photos_rating') }} " class="lower-nav-item {% if request.url.path == '/locations' %}active{% endif %}">Lokace</a>
+            <a href="{{ url_for('rankings_page') }}" class="lower-nav-item {% if request.url.path == '/rankings' %}active{% endif %}">Žebříčky</a>
+            <a href="{{ url_for('add_location_page') }}" class="lower-nav-item {% if request.url.path == '/add_location' %}active{% endif %}">Přidat lokaci</a>
+
+            <form action="/search" method="get" class="lower-nav-search">
+                <input type="text" name="search_term" placeholder="Hledat..." required>
+                <button type="submit"><i class="fa-solid fa-magnifying-glass"></i></button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script src="{{ url_for('static', path='js/responsive_navigation.js') }}"></script>

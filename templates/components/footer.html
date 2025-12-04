@@ -1,0 +1,25 @@
+<footer class="footer">
+    <div class="footer-top">
+        <div class="footer-logo">
+            <a href="{{ url_for('landing_page') }}"><img alt="logo"
+                                                         src="{{ url_for('static', path='img/web/logo.webp') }}"></a>
+        </div>
+
+        <nav class="footer-nav">
+            <a href="{{ url_for('landing_page') }}" class="footer-nav-item">Domů</a>
+            <a href="{{ url_for('list_locations_with_photos_rating') }}" class="footer-nav-item">Lokace</a>
+            <a href="{{ url_for('rankings_page') }}" class="footer-nav-item">Žebříčky</a>
+            <a href="{{ url_for('add_location_page') }}" class="footer-nav-item">Přidat lokaci</a>
+        </nav>
+        <div class="footer-icons">
+            <a href="https://www.facebook.com/endurovojta173/" target="_blank"> <i class="fa-brands fa-facebook"></i></a>
+            <a href="https://www.instagram.com/endurovojta173/" target="_blank"> <i class="fa-brands fa-instagram"></i></a>
+        </div>
+    </div>
+
+    <div class="footer-bottom">
+        <span>Copyright © 2025</span>
+        <span><a href="{{ url_for('privacy_policy_page') }}">Zásady ochrany osobních údajů</a></span>
+        <span><a href="{{ url_for('contact_page') }}">Kontaktní údaje</a></span>
+    </div>
+</footer>

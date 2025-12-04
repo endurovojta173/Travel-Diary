@@ -2,8 +2,8 @@
     font-family: system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
     --background-color: white;
     --text-color: black;
-    --navbar-background-color: #669900;
-    --footer-background-color: #3c4e23;
+    --light-green-color: #669900;
+    --dark-green-color: #3c4e23;
     --white-text-color: white;
     font-size: 16px;
 }
