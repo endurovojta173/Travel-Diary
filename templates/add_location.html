@@ -1,5 +1,8 @@
 {% extends "base.html" %}
 {% block title %} {{ title }} {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/add-location.css') }}">
+{% endblock %}
 {% block content %}
     <h1>{{ title }}</h1>
 
@@ -25,24 +28,18 @@
                 'hr' //Horizontal line
         });
     </script>
+
     <!--Diky enctype odesle realne souborz a ne jen nazvy-->
-    <form method="post" action="/add_location" enctype="multipart/form-data">
-        <div>
-            <label for="name">Název lokace:</label><br>
-            <input type="text" id="name" name="name" required>
-        </div>
-        <br>
-        <div>
-            <label for="description">Popis:</label><br>
-            <textarea id="description" name="description"></textarea>
-        </div>
-        <br>
-        <div>
-            <label for="files">Fotky (Můžete vložit více, 1. fotka bude použita jako náhled lokace):</label><br>
-            <input type="file" id="files" name="files" multiple accept="image/*">
-        </div>
-        <br>
-        <button type="submit">Vložit lokaci <i class="fa-solid fa-floppy-disk"></i></button>
-    </form>
+    <div class="container">
+        <form method="post" action="/add_location" enctype="multipart/form-data" class="form">
+            <label for="name" class="form-label">Název lokace:</label><br>
+            <input type="text" id="name" name="name" required class="form-input">
+            <label for="files" class="form-label">Fotky (Můžete vložit více fotografií najednou)</label><br>
+            <input type="file" id="files" name="files" multiple accept="image/*" class="form-foto-button">
+            <label for="description" class="form-label">Popis:</label><br>
+            <textarea id="description" name="description" class="form-tiny-mce"></textarea>
+            <button type="submit" class="form-button">Vložit lokaci <i class="fa-solid fa-floppy-disk"></i></button>
+        </form>
+    </div>
 
 {% endblock %}

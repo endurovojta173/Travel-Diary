@@ -1,9 +1,10 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
-{% block content %}
-    {% block head %}
+{% block head %}
         <link rel="stylesheet" href="{{ url_for('static', path='css/register-and-login.css') }}">
     {% endblock %}
+{% block content %}
+
     <h1>{{ title }}</h1>
     <div class="container">
         <div class="form">
