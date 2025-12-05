@@ -1,41 +1,54 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/register-and-login.css') }}">
+{% endblock %}
 {% block content %}
     <h1>{{ title }}</h1>
-    {% if error_message %}
-        <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 10px;">
-            <strong>Chyba:</strong> {{ error_message }}
-        </div>
-    {% endif %}
 
-    <form method="post" action="/register">
-        <div>
-            <label for="name">Přezdívka/Jméno:</label><br>
-            <input type="text" id="name" name="name" value="{{ name_value or '' }}" required minlength="1">
-        </div>
-        <br>
-        <div>
-            <label for="email">E-mail:</label><br>
-            <input type="email" id="email" name="email" value="{{ email_value or '' }}" required>
-        </div>
-        <br>
-        <div>
-            <label for="password">Heslo:</label><br>
-            <input type="password" id="password" name="password" required minlength="8">
-            <small>(Min. 8 znaků a z toho 1 znak velkým písmem, 1 číslo, 1 speciální znak !@#$%^&*()-_=+)</small>
-        </div>
-        <br>
-        <input type="checkbox" id="consent" name="consent" required>
-        <label for="consent"><a href="{{ url_for('privacy_policy_page') }}" target="_blank">Souhlasím s podmínkami
-            o zpracování osobních údajů</a></label>
-        <br>
-        <button type="submit">Registrovat se <i class="fa-solid fa-right-to-bracket"></i></button>
-    </form>
+    <div class="container">
+        <div class="form">
+            {% if error_message %}
+                <div>
+                    <strong>Chyba:</strong> {{ error_message }}
+                </div>
+            {% endif %}
 
-    <hr>
-    <div>
-        <a href="/login/google">
-            <button type="button">Registrovat se pomocí <i class="fa-brands fa-google"></i></button>
-        </a>
+            <form method="post" action="/register">
+                <div>
+                    <label for="name" class="input-label">Přezdívka/Jméno:</label><br>
+                    <input type="text" id="name" name="name" value="{{ name_value or '' }}" required minlength="1"
+                           class="text-input">
+                </div>
+                <br>
+                <div>
+                    <label for="email" class="input-label">E-mail:</label><br>
+                    <input type="email" id="email" name="email" value="{{ email_value or '' }}" required
+                           class="text-input">
+                </div>
+                <br>
+                <div>
+                    <label for="password" class="input-label">Heslo:</label><br>
+                    <input type="password" id="password" name="password" required minlength="8" class="text-input">
+                    <small class="password-info">(Min. 8 znaků - 1 znak velkým písmem, 1 číslo, 1 speciální znak
+                        !@#$%^&*()-_=+)</small>
+                </div>
+                <br>
+                <input type="checkbox" id="consent" name="consent" required>
+                <label for="consent"><a href="{{ url_for('privacy_policy_page') }}" target="_blank"
+                                        class="consent-text">Souhlasím s
+                    podmínkami
+                    o zpracování osobních údajů</a></label>
+                <br>
+                <button type="submit" class="register-button">Registrovat se <i class="fa-solid fa-right-to-bracket"></i></button>
+            </form>
+
+            <hr>
+            <div>
+                <a href="/login/google" class="google-button-a">
+                    <button type="button" class="google-button">Registrovat se pomocí <i class="fa-brands fa-google"></i></button>
+                </a>
+            </div>
+        </div>
     </div>
 {% endblock %}

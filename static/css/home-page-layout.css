@@ -9,15 +9,17 @@
     margin-top: 20px;
     max-height: 70vh;
     object-fit: cover;
+    width: 90%;
 }
 
 /* Levý sloupec (Slider) */
 .location-slider {
     max-height: 70vh;     /* Vyplní celou výšku */
-    width: 100%;
+    margin-left: 15vh;
+    width: 90%;
     border: 1px solid #ccc;
     background-color: #fff;
-    padding: 0;         /* Padding u slideru obvykle nechceme, aby byla fotka až ke kraji */
+    /*padding: 0;         /* Padding u slideru obvykle nechceme, aby byla fotka až ke kraji */
     overflow: hidden;   /* Aby nic nelezlo ven */
     position: relative;
     border-radius: 8px;
@@ -25,7 +27,9 @@
 
 /* Pravý sloupec (Kontejner pro dva boxy) */
 .locations-container {
+    margin-left: 5vh;
     max-height: 70vh;
+    width: 100%;
     display: flex;
     flex-direction: column; /* Pod sebe */
     gap: 20px;
@@ -67,10 +71,12 @@
    ABOUT US (3 sloupce)
    ========================================= */
 .about-us-grid {
+    margin-left: 15vh;
+    width: 85%;
     display: grid;
     grid-template-columns: 1fr 1fr 1fr; /* 3 stejné sloupce */
     gap: 20px;
-    margin-top: 40px;
+    margin-top: 20px;
     margin-bottom: 40px;
 }
 
