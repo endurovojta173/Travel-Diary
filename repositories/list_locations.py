@@ -230,7 +230,8 @@ def list_locations_by_avg_rating(conn: sqlite3.Connection) -> List[Dict[str, Any
             "id": row[0],
             "name": row[1],
             "description": row[2],
-            "photo": None
+            "photo": None,
+            "avg_rating": row[6]
         }
 
         if row[3] is not None:
@@ -271,7 +272,8 @@ def list_locations_by_newest(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
             "id": row[0],
             "name": row[1],
             "description": row[2],
-            "photo": None
+            "photo": None,
+            "avg_rating": row[6]
         }
 
         if row[3] is not None:
@@ -313,7 +315,8 @@ def list_locations_by_most_comments(conn: sqlite3.Connection) -> List[Dict[str, 
             "id": row[0],
             "name": row[1],
             "description": row[2],
-            "photo": None
+            "photo": None,
+            "avg_rating": row[6]
         }
 
         if row[3] is not None:

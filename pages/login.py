@@ -19,7 +19,7 @@ async def login_page(request: Request):
         "login.html",
         {
             "request": request,
-            "title": "Přihlásit se"
+            "title": "Přihlášení"
         }
     )
 

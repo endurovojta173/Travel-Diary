@@ -8,7 +8,6 @@
 .location-card{
     display: grid;
     grid-template-columns: 1fr 3fr;
-    background-color: white;
     border: 1px solid var(--neutral-gray-color);
     border-radius: 5px;
     overflow: hidden;
