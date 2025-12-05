@@ -1,9 +1,10 @@
-.container{
+.container {
     display: grid;
     grid-template-columns: 1fr;
     min-height: 50vh;
     place-items: center;
 }
+
 .form {
     display: flex;
     flex-direction: column;
@@ -15,33 +16,50 @@
     border: 1px solid var(--neutral-gray-color);
     margin-bottom: 50px;
 }
-.input-label{
+
+.input-label {
     font-weight: bold;
 }
-.text-input{
+
+.text-input {
     width: 100%;
     border-radius: 5px;
     border: 1px solid var(--neutral-gray-color);
     padding: 10px;
     box-sizing: border-box;
 }
-.password-info{
+
+.password-info {
     font-size: 12px;
     font-style: italic;
 }
-.consent-text{
+
+.consent-text {
     font-size: 14px;
     font-style: italic;
     color: var(--dark-green-color);
 }
-.consent-text:hover{
+
+.reset-password {
+    font-size: 14px;
+    font-style: italic;
+    color: var(--dark-green-color);
+}
+
+.reset-password:hover {
     color: var(--light-green-color);
 }
-input[type="checkbox"]{
+
+.consent-text:hover {
+    color: var(--light-green-color);
+}
+
+input[type="checkbox"] {
     accent-color: var(--light-green-color); /* Tvoje zelená barva */
     cursor: pointer;
 }
-.register-button{
+
+.register-button {
     width: 100%;
     padding: 12px;
     margin-top: 15px;
@@ -57,9 +75,11 @@ input[type="checkbox"]{
     justify-content: center;
     gap: 10px;
 }
+
 .register-button:hover {
     filter: brightness(0.9);
 }
+
 .google-button {
     width: 100%;
     padding: 12px;
@@ -76,13 +96,33 @@ input[type="checkbox"]{
     justify-content: center;
     gap: 10px; /* Mezera mezi textem a logem */
 }
+
 .google-button:hover {
     filter: brightness(0.9);
 }
-.google-button-a{
+
+.google-button-a {
     text-decoration: none;
 }
+
 /* Barva Google ikonky */
 .google-button .fa-google {
-    color:white;
+    color: white;
+}
+
+@media (max-width: 700px) {
+    .container {
+        height: auto; /* Výška se přizpůsobí obsahu */
+    }
+
+    .form {
+        width: 70%;
+
+    }
+
+    .text-input {
+        padding: 5px;
+    }
+
+
 }

@@ -1,29 +1,35 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
+    {% block head %}
+        <link rel="stylesheet" href="{{ url_for('static', path='css/register-and-login.css') }}">
+    {% endblock %}
     <h1>{{ title }}</h1>
-
-    <form method="post" action="/login">
-        <div>
-            <label id="email">Email</label><br>
-            <input type="email" id="email" name="email" value="{{ email_value or '' }}" required>
+    <div class="container">
+        <div class="form">
+            <form method="post" action="/login">
+                <div>
+                    <label id="email" class="input-label">Email</label><br>
+                    <input type="email" id="email" name="email" value="{{ email_value or '' }}" required class="text-input">
+                </div>
+                <div>
+                    <label id="password" class="input-label">Heslo</label><br>
+                    <input type="password" id="password" name="password" required class="text-input">
+                </div>
+                <div>
+                    <a href="{{ url_for('reset_password_page') }}" class="reset-password">Zapomenuté heslo</a>
+                </div>
+                <div>
+                    <button type="submit" class="register-button">Přihlásit se <i class="fa-solid fa-right-to-bracket"></i></button>
+                </div>
+            </form>
+            <hr>
+            <div>
+                <a href="/login/google" class="google-button-a">
+                    <button type="button" class="google-button">Příhlásit se pomocí <i class="fa-brands fa-google"></i></button>
+                </a>
+            </div>
         </div>
-        <div>
-            <label id="password">Heslo</label><br>
-            <input type="password" id="password" name="password" required>
-        </div>
-        <div>
-            <a href="{{ url_for('reset_password_page') }}">Zapomenuté heslo</a>
-        </div>
-        <div>
-            <button type="submit">Přihlásit se <i class="fa-solid fa-right-to-bracket"></i></button>
-        </div>
-    </form>
-    <hr>
-    <div>
-        <a href="/login/google">
-            <button type="button">Příhlásit se pomocí <i class="fa-brands fa-google"></i></button>
-        </a>
     </div>
 
 {% endblock %}
