@@ -16,7 +16,7 @@
     <div class="home-grid">
         {% for loc in locations %}
             <!--Photo-->
-            <div class="location-card">
+            <div class="action-card">
                 <div class="card-img">
                     {% if loc['photos'] %}
                         <a href="{{ url_for('location_detail',  location_id=loc['id']) }}">

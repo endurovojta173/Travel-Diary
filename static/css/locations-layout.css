@@ -5,14 +5,14 @@
     padding: 40px;
 }
 
-.location-card{
+.action-card{
     display: grid;
     grid-template-columns: 1fr 3fr;
     border: 1px solid var(--neutral-gray-color);
     border-radius: 5px;
     overflow: hidden;
 }
-.location-card:hover{
+.action-card:hover{
     box-shadow: 5px 5px 5px 5px var(--shadow-gray-color);
 }
 
@@ -56,7 +56,7 @@ a.more:hover{
 }
 /*RESPONZIVITA PRO MOBILY*/
 @media (max-width: 600px) {
-    .location-card {
+    .action-card {
         grid-template-columns: 1fr; /* Jen jeden sloupec */
         grid-template-rows: 200px auto; /* Fixní výška pro fotku */
     }

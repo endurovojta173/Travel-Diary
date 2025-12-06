@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/my-profile.css') }}">
+{% endblock %}
+{% block content %}
+    <h1>{{ title }}</h1>
+
+    <!--Show added locations-->
+    {% if locations %}
+        {% for loc in locations %}
+            <a href="{{ url_for('location_detail',  location_id=loc['id']) }}">{{ loc.name }}</a>
+            {% if loc['photo'] %}
+                <a href="{{ url_for('location_detail',  location_id=loc['id']) }}">
+                    <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
+                </a>
+            {% else %}
+                <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}"
+                     class="noImage">
+            {% endif %}
+        {% endfor %}
+    {% else %}
+        <p>Žádné přidané lokace.</p>
+    {% endif %}
+{% endblock %}

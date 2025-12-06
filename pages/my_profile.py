@@ -35,6 +35,65 @@ async def my_profile_page(request: Request, svc_location: LocationService = Depe
             "user_stats": user_stats
         }
     )
+#My profile locations routers
+@router.get("/my_profile_added_locations", response_class=HTMLResponse)
+async def my_profile_added_locations(request: Request, svc_location: LocationService = Depends(locations_service)):
+    if not request.session.get("user"):
+        return RedirectResponse(url="/login", status_code=303)
+    user_id = request.session.get('user')['id']
+    my_added_locations = svc_location.list_locations_added_by_concrete_user(user_id)
+    return request.app.state.templates.TemplateResponse(
+        "my_profile_locations.html",
+        {
+            "request": request,
+            "title": "Moje přidané lokace",
+            "locations": my_added_locations,
+        }
+    )
+@router.get("/my_profile_visited_locations", response_class=HTMLResponse)
+async def my_profile_visited_locations(request: Request, svc_location: LocationService = Depends(locations_service)):
+    if not request.session.get("user"):
+        return RedirectResponse(url="/login", status_code=303)
+    user_id = request.session.get('user')['id']
+    locations = svc_location.list_my_visited_locations(user_id)
+    return request.app.state.templates.TemplateResponse(
+        "my_profile_locations.html",
+        {
+            "request": request,
+            "title": "Moje navštívené lokace",
+            "locations": locations,
+        }
+    )
+@router.get("/my_profile_favorite_locations", response_class=HTMLResponse)
+async def my_profile_favorite_locations(request: Request, svc_location: LocationService = Depends(locations_service)):
+    if not request.session.get("user"):
+        return RedirectResponse(url="/login", status_code=303)
+    user_id = request.session.get('user')['id']
+    locations = svc_location.list_my_favorite_locations(user_id)
+    return request.app.state.templates.TemplateResponse(
+        "my_profile_locations.html",
+        {
+            "request": request,
+            "title": "Moje oblíbené lokace",
+            "locations": locations,
+        }
+    )
+
+@router.get("/my_profile_pending_locations", response_class=HTMLResponse)
+async def my_profile_pending_locations(request: Request, svc_location: LocationService = Depends(locations_service)):
+    if not request.session.get("user"):
+        return RedirectResponse(url="/login", status_code=303)
+    user_id = request.session.get('user')['id']
+    locations = svc_location.list_my_locations_with_pending_status(user_id)
+    return request.app.state.templates.TemplateResponse(
+        "my_profile_locations.html",
+        {
+            "request": request,
+            "title": "Moje lokace čekající na schválení",
+            "locations": locations,
+        }
+    )
+
 
 
 @router.post("/my_profile/delete")

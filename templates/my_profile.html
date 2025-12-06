@@ -1,150 +1,94 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/my-profile.css') }}">
+{% endblock %}
 {% block content %}
     <h1>{{ title }}</h1>
-
-    <span>Jméno: {{ request.session.user.name }}</span><br>
-    <span>Email: {{ request.session.user.email }}</span><br>
-    {% if request.session.user.role == 3 %}
-        <span>Role: Uživatel</span><br>
-    {% elif request.session.user.role == 2 %}
-        <span>Role: Redaktor</span><br>
-    {% elif request.session.user.role == 1 %}
-        <span>Role: Administrátor</span><br>
-    {% endif %}
-    <span>Počet přidaných lokací: {{ user_stats['added'] }} </span><br>
-    <span>Počet navštívených lokací: {{ user_stats['visited'] }}</span><br>
-    <span>Počet hodnocených lokací: {{ user_stats['rated'] }}</span><br>
-    <span>Počet komentovaných lokací: {{ user_stats['commented'] }}</span><br>
-    <!--Show added locations-->
-    <button class="toggle-btn" onclick="toggleSection('added_locations-box', this)">Moje přidané lokace <span
-            class="arrow">▼</span></button>
-    <div id="added_locations-box" class="toggle-content" style="display: none;">
-        {% if my_added_locations %}
-            <ul>
-                {% for loc in my_added_locations %}
-                    <li><a href="{{ url_for('location_detail',  location_id=loc['id']) }}">{{ loc.name }}</a>
-                        {% if loc['photo'] %}
-                            <a href="{{ url_for('location_detail',  location_id=loc['id']) }}">
-                                <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
-                            </a>
-                        {% else %}
-                            <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}"
-                                 class="noImage">
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>Žádné přidané lokace.</p>
-        {% endif %}
-    </div>
-    <!--Show visited locations-->
-    <button class="toggle-btn" onclick="toggleSection('visited_locations-box', this)">Moje navštívené lokace <span
-            class="arrow">▼</span></button>
-    <div id="visited_locations-box" class="toggle-content" style="display: none;">
-        {% if my_visited_locations %}
-            <ul>
-                {% for loc in my_visited_locations %}
-                    <li><a href="{{ url_for('location_detail',  location_id=loc['id']) }}">{{ loc.name }}</a>
-                        {% if loc['photo'] %}
-                            <a href="{{ url_for('location_detail',  location_id=loc['id']) }}">
-                                <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
-                            </a>
-                        {% else %}
-                            <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}"
-                                 class="noImage">
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>Žádné navštívené lokace</p>
-        {% endif %}
-    </div>
-    <!--Show favorite locations-->
-    <button class="toggle-btn" onclick="toggleSection('favorite_locations-box', this)">Moje oblíbené lokace <span
-            class="arrow">▼</span></button>
-    <div id="favorite_locations-box" class="toggle-content" style="display: none;">
-        {% if my_favorite_locations %}
-            <ul>
-                {% for loc in my_favorite_locations %}
-                    <li><a href="{{ url_for('location_detail',  location_id=loc['id']) }}">{{ loc.name }}</a>
-                        {% if loc['photo'] %}
-                            <a href="{{ url_for('location_detail',  location_id=loc['id']) }}">
-                                <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
-                            </a>
-                        {% else %}
-                            <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}"
-                                 class="noImage">
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>Žádné oblíbené lokace</p>
-        {% endif %}
-    </div>
-    <!--Add location-->
-    <a href="{{ url_for('add_location_page') }}">
-        <button>Přidat novou lokaci</button>
-    </a>
-    <!--My pending locaitons-->
-    <button class="toggle-btn" onclick="toggleSection('pending_locations-box', this)">Moje lokace čekající na schválení
-        <span class="arrow">▼</span></button>
-    <div id="pending_locations-box" class="toggle-content" style="display: none;">
-        {% if my_pending_locations %}
-            <ul>
-                {% for loc in my_pending_locations %}
-                    <li><a href="{{ url_for('approve_location_detail',  location_id=loc['id']) }}">{{ loc.name }}</a>
-                        {% if loc['photo'] %}
-                            <a href="{{ url_for('approve_location_detail',  location_id=loc['id']) }}">
-                                <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
-                            </a>
-                        {% else %}
-                            <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}"
-                                 class="noImage">
-                        {% endif %}
-                    </li>
-                {% endfor %}
-            </ul>
-        {% else %}
-            <p>Žádné lokace čekající na schválení.</p>
-        {% endif %}
-    </div>
-    {% if request.session.user.role  <= 2 %}
-        <a href="{{ url_for('approve_location_page') }}">
-            <button>Schválit lokaci</button>
-        </a>
-        {% if request.session.user.role == 1 %}
-            <a href="{{ url_for('create_user_page') }}">
-                <button>Vytvořit uživatele</button>
-            </a>
-            <a href="{{ url_for('all_users_page') }}">
-                <button>Zobrazit všechny uživatele</button>
-            </a>
-        {% endif %}
-    {% endif %}
-
-
-    <hr>
-
-    <div>
-        <form action="/my_profile/delete" method="post"
-              onsubmit="return confirm('Opravdu chcete SMAZAT svůj účet? Všechna vaše data (lokace, komentáře, atd...) budou navždy ztracena!');">
-            <button type="submit">Smazat můj účet <i class="fa-solid fa-trash"></i></button>
-        </form>
-    </div>
-
-    <div>
-        <form action="/my_profile/update" method="post">
-            <div>
-                <label for="name" style="font-weight: bold;">Jméno:</label><br>
-                <input type="text" id="name" name="name" value="{{ request.session.user.name }}" required>
+    <div class="container">
+        <div class="info-text-container">
+            <span>Jméno: {{ request.session.user.name }}</span><br>
+            <span>Email: {{ request.session.user.email }}</span><br>
+            {% if request.session.user.role == 3 %}
+                <span>Role: Uživatel</span><br>
+            {% elif request.session.user.role == 2 %}
+                <span>Role: Redaktor</span><br>
+            {% elif request.session.user.role == 1 %}
+                <span>Role: Administrátor</span><br>
+            {% endif %}
+            <span>Počet přidaných lokací: {{ user_stats['added'] }} </span><br>
+            <span>Počet navštívených lokací: {{ user_stats['visited'] }}</span><br>
+            <span>Počet hodnocených lokací: {{ user_stats['rated'] }}</span><br>
+            <span>Počet komentovaných lokací: {{ user_stats['commented'] }}</span>
+        </div>
+        <div class="actions-container">
+            <!--Show added locations-->
+            <div class="action-card">
+                <a href="{{ url_for('my_profile_added_locations') }}">
+                    <button>Moje přidané lokace</button>
+                </a>
             </div>
-            <button type="submit">Změnit jméno</button>
-        </form>
-    </div>
+            <div class="action-card">
+                <!--Show visited locations-->
+                <a href="{{ url_for('my_profile_visited_locations') }}">
+                    <button>Moje navštívené lokace</button>
+                </a>
+            </div>
+            <div class="action-card">
+                <!--Show favorite locations-->
+                <a href="{{ url_for('my_profile_favorite_locations') }}">
+                    <button>Moje oblíbené lokace</button>
+                </a>
+            </div>
+            <div class="action-card">
+                <!--Add location-->
+                <a href="{{ url_for('add_location_page') }}">
+                    <button>Přidat novou lokaci</button>
+                </a>
+            </div>
+            <div class="action-card">
+                <!--My pending locaitons-->
+                <a href="{{ url_for('my_profile_pending_locations') }}">
+                    <button>Moje lokace čekající na schválení</button>
+                </a>
+            </div>
 
-    <script src="/static/js/my_profile.js"></script>
+            {% if request.session.user.role  <= 2 %}
+                <div class="action-card">
+                    <a href="{{ url_for('approve_location_page') }}">
+                        <button>Schválit lokaci</button>
+                    </a>
+                </div>
+                {% if request.session.user.role == 1 %}
+                    <div class="action-card">
+                        <a href="{{ url_for('create_user_page') }}">
+                            <button>Vytvořit uživatele</button>
+                        </a>
+                    </div>
+                    <div class="action-card">
+                        <a href="{{ url_for('all_users_page') }}">
+                            <button>Zobrazit všechny uživatele</button>
+                        </a>
+                    </div>
+                {% endif %}
+            {% endif %}
+
+            <div class="action-card">
+                <form action="/my_profile/delete" method="post"
+                      onsubmit="return confirm('Opravdu chcete SMAZAT svůj účet? Všechna vaše data (lokace, komentáře, atd...) budou navždy ztracena!');">
+                    <button type="submit">Smazat můj účet <i class="fa-solid fa-trash"></i></button>
+                </form>
+            </div>
+
+            <div class="action-card">
+                <form action="/my_profile/update" method="post">
+                    <div>
+                        <label for="name" style="font-weight: bold;">Jméno:</label><br>
+                        <input type="text" id="name" name="name" value="{{ request.session.user.name }}" required>
+                    </div>
+                    <button type="submit">Změnit jméno</button>
+                </form>
+            </div>
+        </div>
+    </div>
 {% endblock %}
