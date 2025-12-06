@@ -6,27 +6,36 @@
 {% endblock %}
 {% block content %}
     <h1>{{ title }}</h1>
+    <div class="container">
+        <form action="/rankings" method="get" class="sort-container">
+            <div class="sort-by-text">
+                <label>Seřadit podle:</label>
+            </div>
+            <div class="sort-buttons">
+                <div class="sort-option">
+                    <input type="radio" id="sort_rating" name="sort" value="rating"
+                           {% if current_sort == 'rating' %}checked{% endif %}>
+                    <label for="sort_rating">Nejoblíbenější</label>
+                </div>
 
-    <form action="/rankings" method="get">
-        <label>Seřadit podle:</label><br>
-        <div>
-            <input type="radio" id="sort_rating" name="sort" value="rating"
-                   {% if current_sort == 'rating' %}checked{% endif %}>
-            <label for="sort_rating">Nejoblíbenější</label>
-        </div>
-        <div>
-            <input type="radio" id="sort_comments" name="sort" value="comments"
-                   {% if current_sort == 'comments' %}checked{% endif %}>
-            <label for="sort_comments">Nejvíce komentované</label>
-        </div>
-        <div>
-            <input type="radio" id="sort_newest" name="sort" value="newest"
-                   {% if current_sort == 'newest' %}checked{% endif %}>
-            <label for="sort_newest">Nejnovější</label>
-        </div>
-        <br>
-        <button type="submit" class="btn">Zobrazit žebříček</button>
-    </form>
+                <div class="sort-option">
+                    <input type="radio" id="sort_comments" name="sort" value="comments"
+                           {% if current_sort == 'comments' %}checked{% endif %}>
+                    <label for="sort_comments">Nejvíce komentované</label>
+                </div>
+
+                <div class="sort-option">
+                    <input type="radio" id="sort_newest" name="sort" value="newest"
+                           {% if current_sort == 'newest' %}checked{% endif %}>
+                    <label for="sort_newest">Nejnovější</label>
+                </div>
+            </div>
+            <div class="sort-spacer"></div>
+            <div class="sort-button">
+                <button type="submit" class="btn">Zobrazit žebříček</button>
+            </div>
+        </form>
+    </div>
     <div class="container">
         <div class="locations-container">
 

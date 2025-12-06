@@ -1,51 +1,151 @@
-.container{
+.container {
     display: grid;
     grid-template-columns: 1fr;
     width: 90%;
     margin: 0 auto;
 
 }
-.locations-container{
+
+.sort-container {
+    display: grid;
+    grid-template-columns: 1fr 3fr 3fr 3fr;
+}
+
+.sort-by-text {
+    display: flex;
+    font-weight: bold;
+    font-size: 1.5rem;
+}
+
+.sort-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    cursor: pointer;
+}
+
+.sort-buttons {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    font-size: 1.2rem;
+    justify-content: center;
+    padding: 5px;
+}
+
+.sort-option input[type="radio"] {
+    width: 20px;
+    height: 20px;
+    margin: 0;
+    cursor: pointer;
+    accent-color: var(--light-green-color);
+}
+
+.sort-option label {
+    cursor: pointer;
+}
+
+
+.sort-spacer {
+}
+
+.sort-button {
+    display: flex;
+}
+
+.sort-button button {
+    display: flex;
+    font-size: 1.5rem;
+    color: var(--white-text-color);
+    justify-content: center;
+    align-items: center;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    height: 40%;
+    padding: 25px;
+    border-radius: 8px;
+    border: 1px solid var(--light-green-color);
+    box-sizing: border-box;
+    align-self: end;
+    background-color: var(--light-green-color);
+}
+
+.sort-button button:hover {
+    border: 1px solid var(--dark-green-color);
+    background-color: var(--dark-green-color);
+}
+
+.locations-container {
     display: grid;
     grid-template-columns: 1fr 1fr 1fr;
-    gap:20px;
-    margin:5vh 0 5vh 0;
+    gap: 20px;
+    margin: 5vh 0 5vh 0;
 
 }
-.location-box{
+
+.location-box {
     display: flex;
     flex-direction: column;
     border: 1px solid var(--neutral-gray-color);
     border-radius: 5px;
     padding: 20px;
 }
-.location-box a{
+
+.location-box a {
     text-decoration: none;
     color: var(--text-color);
 }
-.location-box:hover{
+
+.location-box:hover {
     box-shadow: 5px 5px 5px 5px var(--shadow-gray-color);
 }
-.location-box-id{
+
+.location-box-id {
     text-align: right;
     color: var(--dark-green-color);
     font-weight: bold;
 }
-.location-box-img{
+
+.location-box-img {
     max-width: 300px;
     height: auto;
 }
-.location-box-img img{
+
+.location-box-img img {
     width: 100%;
     object-fit: cover;
 }
-.location-box-description{
-margin-top: 10px;
+
+.location-box-description {
+    margin-top: 10px;
 }
-.location-box-rating{
+
+.location-box-rating {
 
 }
-.location-box-heading{
+
+.location-box-heading {
     color: var(--dark-green-color);
     margin-bottom: -10px;
+}
+
+@media (min-width: 769px) {
+    .sort-option label:hover {
+        transition: 0.2s;
+        font-weight: bold;
+    }
+}
+
+@media (max-width: 768px) {
+    .sort-container {
+        display: grid;
+        grid-template-columns: 1fr;
+    }
+
+    .locations-container {
+        grid-template-columns: 1fr;
+        margin: 5vh 0 5vh 0;
+
+    }
 }
