@@ -333,10 +333,12 @@ def list_locations_by_most_comments(conn: sqlite3.Connection) -> List[Dict[str, 
 def list_locations_added_by_concrete_user(conn: sqlite3.Connection, id_user: int) -> List[Dict[str, Any]]:
     cursor = conn.cursor()
     cursor.execute("""
-                   SELECT l.id       AS loc_id,
-                          l.name     AS loc_name,
-                          p.alt_text AS photo_alt_text,
-                          p.url      AS photo_url
+                   SELECT l.id,
+                          l.name,
+                          l.description,
+                          p.alt_text,
+                          p.url,
+                          (SELECT AVG(rating) FROM rating WHERE id_location = l.id)
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
                    WHERE l.id_status = 1
@@ -346,15 +348,20 @@ def list_locations_added_by_concrete_user(conn: sqlite3.Connection, id_user: int
                    """, {"id_user": id_user})
     locations = []
     for row in cursor.fetchall():
+        rating = row[5] if row[5] is not None else 0
+
         loc_data = {
             "id": row[0],
             "name": row[1],
-            "photo": None
+            "description": row[2],
+            "photo": None,
+            "avg_rating": rating
         }
-        if row[2] is not None:
+
+        if row[3] is not None:
             loc_data["photo"] = {
-                "alt_text": row[2],
-                "url": row[3]
+                "alt_text": row[3],
+                "url": row[4]
             }
         locations.append(loc_data)
 
@@ -455,26 +462,34 @@ def list_my_visited_locations(conn: sqlite3.Connection, user_id: int) -> List[Di
     cursor.execute("""
                    SELECT l.id,
                           l.name,
+                          l.description,
+                          p.alt_text,
                           p.url,
-                          p.alt_text
+                          (SELECT AVG(rating) FROM rating WHERE id_location = l.id)
                    FROM visited_location v
                             JOIN location l ON v.id_location = l.id
                             LEFT JOIN photo p ON l.id = p.id_location
                    WHERE v.id_user = :user_id
                    GROUP BY l.id
+                   ORDER BY l.id DESC
                    """, (user_id,))
 
     locations = []
     for row in cursor.fetchall():
+        rating = row[5] if row[5] is not None else 0
+
         loc_data = {
             "id": row[0],
             "name": row[1],
-            "photo": None
+            "description": row[2],
+            "photo": None,
+            "avg_rating": rating
         }
-        if row[2] is not None:
+
+        if row[4] is not None:
             loc_data["photo"] = {
-                "url": row[2],
-                "alt_text": row[3]
+                "alt_text": row[3],
+                "url": row[4]
             }
 
         locations.append(loc_data)
@@ -487,26 +502,34 @@ def list_my_favorite_locations(conn: sqlite3.Connection, user_id: int) -> List[D
     cursor.execute("""
                    SELECT l.id,
                           l.name,
+                          l.description,
+                          p.alt_text,
                           p.url,
-                          p.alt_text
+                          (SELECT AVG(rating) FROM rating WHERE id_location = l.id)
                    FROM favorite_location f
                             JOIN location l ON f.id_location = l.id
                             LEFT JOIN photo p ON l.id = p.id_location
                    WHERE f.id_user = :user_id
                    GROUP BY l.id
-                   """, (user_id,))
+                   ORDER BY l.id DESC
+                   """, {"user_id": user_id})
 
     locations = []
     for row in cursor.fetchall():
+        rating = row[5] if row[5] is not None else 0
+
         loc_data = {
             "id": row[0],
             "name": row[1],
-            "photo": None
+            "description": row[2],
+            "photo": None,
+            "avg_rating": rating
         }
-        if row[2] is not None:
+
+        if row[4] is not None:
             loc_data["photo"] = {
-                "url": row[2],
-                "alt_text": row[3]
+                "alt_text": row[3],
+                "url": row[4]
             }
 
         locations.append(loc_data)
@@ -516,32 +539,37 @@ def list_my_favorite_locations(conn: sqlite3.Connection, user_id: int) -> List[D
 
 def list_my_locations_with_pending_status(conn: sqlite3.Connection, user_id: int) -> List[Dict[str, str]]:
     cursor = conn.cursor()
-    # OPRAVA:
-    # 1. Odstraněn zbytečný JOIN na user (máme user_id)
-    # 2. Použit zástupný znak ? místo :user_id (pro tuple)
     cursor.execute("""
                    SELECT l.id,
                           l.name,
+                          l.description,
+                          p.alt_text,
                           p.url,
-                          p.alt_text
+                          (SELECT AVG(rating) FROM rating WHERE id_location = l.id)
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
-                   WHERE l.id_user = ?
+                   WHERE l.id_user = :user_id
                      AND l.id_status = 2
                    GROUP BY l.id
+                   ORDER BY l.id DESC
                    """, (user_id,))
 
     locations = []
     for row in cursor.fetchall():
+        rating = row[5] if row[5] is not None else 0
+
         loc_data = {
             "id": row[0],
             "name": row[1],
-            "photo": None
+            "description": row[2],
+            "photo": None,
+            "avg_rating": rating
         }
-        if row[2] is not None:
+
+        if row[4] is not None:
             loc_data["photo"] = {
-                "url": row[2],
-                "alt_text": row[3]
+                "alt_text": row[3],
+                "url": row[4]
             }
         locations.append(loc_data)
 
