@@ -1,21 +1,38 @@
-        let slideIndex = 0;
-        showSlides();
+let currentSlideIndex = 0;
+let autoSlideInterval;
 
-        function showSlides() {
-            let i;
-            let slides = document.getElementsByClassName("mySlides");
-            let dots = document.getElementsByClassName("dot");
-            for (i = 0; i < slides.length; i++) {
-                slides[i].style.display = "none";
-            }
-            slideIndex++;
-            if (slideIndex > slides.length) {
-                slideIndex = 1
-            }
-            for (i = 0; i < dots.length; i++) {
-                dots[i].className = dots[i].className.replace(" active", "");
-            }
-            slides[slideIndex - 1].style.display = "block";
-            dots[slideIndex - 1].className += " active";
-            setTimeout(showSlides, 5000); // Change image every 2 seconds
-        }
+function changeSlide(direction) {
+    const slides = document.querySelectorAll('.slide');
+
+    slides[currentSlideIndex].classList.remove('active');
+
+    currentSlideIndex += direction;
+
+    if (currentSlideIndex >= slides.length) {
+        currentSlideIndex = 0;
+    } else if (currentSlideIndex < 0) {
+        currentSlideIndex = slides.length - 1;
+    }
+
+    slides[currentSlideIndex].classList.add('active');
+}
+
+
+// Spustí automatické posouvání každých 5000 ms (5 sekund)
+function startAutoSlide() {
+    autoSlideInterval = setInterval(() => {
+        changeSlide(1);
+    }, 5000);
+}
+
+function stopAutoSlide() {
+    clearInterval(autoSlideInterval);
+}
+
+startAutoSlide();
+const sliderContainer = document.querySelector('.simple-slider');
+
+if (sliderContainer) {
+    sliderContainer.addEventListener('mouseenter', stopAutoSlide);
+    sliderContainer.addEventListener('mouseleave', startAutoSlide);
+}

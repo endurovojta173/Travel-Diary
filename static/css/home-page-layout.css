@@ -2,7 +2,7 @@
 
 .home-grid {
     display: grid;
-    grid-template-columns: 4fr 1fr; /* 2 díly vlevo, 1 díl vpravo */
+    grid-template-columns: 4fr 1fr;
     gap: 20px;
     margin-top: 20px;
     max-height: 70vh;
@@ -12,13 +12,13 @@
 
 /* Levý sloupec (Slider) */
 .location-slider {
-    max-height: 70vh;     /* Vyplní celou výšku */
+    height: 70vh;
     margin-left: 15vh;
     width: 90%;
     border: 1px solid #ccc;
     background-color: #fff;
-    /*padding: 0;         /* Padding u slideru obvykle nechceme, aby byla fotka až ke kraji */
-    overflow: hidden;   /* Aby nic nelezlo ven */
+    padding: 0;
+    overflow: hidden;
     position: relative;
     border-radius: 8px;
 }
@@ -29,9 +29,9 @@
     max-height: 70vh;
     width: 100%;
     display: flex;
-    flex-direction: column; /* Pod sebe */
+    flex-direction: column;
     gap: 20px;
-    height: 100%; /* Vyplní celou výšku pravého sloupce */
+    height: 100%;
 }
 
 /* Jednotlivý box vpravo */
@@ -41,7 +41,7 @@
     padding: 0 15px 15px 15px ;
     background-color: #fff;
     border-radius: 8px;
-    overflow: hidden; /* Kdyby text přetékal */
+    overflow: hidden;
     max-height: 30vh;
 }
 .location-box h2{
@@ -56,23 +56,12 @@
     max-height: 200px;
 }
 
-/* Obrázky uvnitř (aby se nedeformovaly) */
-.location-slider img{
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    display: block;
-}
-
-
-/* =========================================
-   ABOUT US (3 sloupce)
-   ========================================= */
+/* ABOUT US */
 .about-us-grid {
     margin-left: 15vh;
     width: 85%;
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr; /* 3 stejné sloupce */
+    grid-template-columns: 1fr 1fr 1fr;
     gap: 20px;
     margin-top: 20px;
     margin-bottom: 40px;
@@ -80,19 +69,16 @@
 
 .about-us-box {
     display: flex;
-    flex-direction: column; /* Ikona a text pod sebe */
+    flex-direction: column;
     align-items: center;
     text-align: center;
     padding: 20px;
-    border: 1px solid #ccc;
+    border: 1px solid var(--neutral-gray-color);
     border-radius: 8px;
     background-color: #fff;
 }
 
 
-/* =========================================
-   RESPONZIVITA (Mobil)
-   ========================================= */
 @media (max-width: 900px) {
     .home-grid {
         grid-template-columns: 1fr; /* Všechno pod sebe */

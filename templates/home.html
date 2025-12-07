@@ -9,22 +9,29 @@
     <div class="home-grid">
         <!--Slider s lokacemi-->
         <div class="location-slider">
-            <img src="/{{ random_locations[0]['photo']['url'] }}" style="width: 300px">
-            <h3>{{ random_locations[0]['name'] }}</h3>
-        </div>
-        {#
-        {% for loc in random_locations %}
-            <a href="{{ url_for('location_detail', location_id=loc['id']) }}">
+            <div class="simple-slider">
+                {% for loc in random_locations %}
+                    <div class="slide {% if loop.first %}active{% endif %}">
 
-                {% if loc['photo'] %}
-                    <img src="/{{ loc['photo']['url'] }}" style="width: 100%">
-                {% else %}
-                    <img src="{{ url_for('static', path='img/web/noImage.webp') }}" style="width: 100%">
-                {% endif %}
-                <h3>{{ loc['name'] }}</h3>
-            </a>
-        {% endfor %}
-          #}
+                        {% if loc['photo'] %}
+                            <img src="/{{ loc['photo']['url'] }}" alt="{{ loc['name'] }}">
+                        {% else %}
+                            <img src="{{ url_for('static', path='img/web/noImage.webp') }}" alt="Bez fotky">
+                        {% endif %}
+
+                        <div class="slide-caption">
+                           <a href="{{ url_for('location_detail', location_id=loc['id']) }}">
+                               <h2>{{ loc['name'] }}</h2>
+                           </a>
+                        </div>
+
+                    </div> {% endfor %}
+
+                <button type="button" class="slider-btn prev" onclick="changeSlide(-1)">❮</button>
+                <button type="button" class="slider-btn next" onclick="changeSlide(1)">❯</button>
+            </div>
+        </div>
+
         <!--Newest location-->
         <div class="locations-container">
             <div class="location-box">
@@ -62,10 +69,11 @@
         </div>
     </div>
 
-    <h2 style="text-align: center">O nás</h2>
+    <h2>O nás</h2>
     <div class="about-us-grid">
         <div class="about-us-box">box1</div>
         <div class="about-us-box">box2</div>
         <div class="about-us-box">box3</div>
     </div>
+    <script src="{{ url_for('static', path='js/slider.js') }}"></script>
 {% endblock %}

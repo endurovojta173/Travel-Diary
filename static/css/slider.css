@@ -1,0 +1,96 @@
+
+.simple-slider {
+    position: relative;
+    width: 100%;
+    height: 100%;
+}
+
+.slide {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: none !important;
+}
+
+/* Aktivní slide zobrazím */
+.slide.active {
+    display: block !important;
+    animation: fade 0.5s;
+}
+
+/* Stylování obrázku uvnitř slidu */
+.slide img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+}
+
+
+/* --- TEXTOVÝ POPIS VLEVO DOLE --- */
+.slide-caption {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    padding: 40px 60px 20px 60px;
+    box-sizing: border-box;
+    z-index: 20;
+}
+
+.slide-caption h2 {
+    margin: 0;
+    color: white;
+    font-size: 2.5rem;
+    font-weight: bold;
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 1); /* Jemný stín písma */
+}
+
+.slide-caption a {
+    text-decoration: none;
+}
+
+@keyframes fade {
+    from {
+        opacity: 0.4
+    }
+    to {
+        opacity: 1
+    }
+}
+
+
+.slider-btn {
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    z-index: 999;
+    cursor: pointer;
+    background: rgba(0, 0, 0, 0.7);
+    color: white;
+    border: none;
+    padding: 15px;
+    font-size: 2.5rem;
+}
+
+.prev {
+    left: 0;
+    border-radius: 0 5px 5px 0;
+}
+
+.next {
+    right: 0;
+    border-radius: 5px 0 0 5px;
+}
+
+@media (max-width: 768px) {
+
+    .slider-btn {
+        padding: 10px;
+        font-size: 1.5rem;
+    }
+
+    .slide-caption h2 {
+        font-size: 1.5rem;
+    }
+}
