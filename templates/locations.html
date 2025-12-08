@@ -58,13 +58,13 @@
                     <!--Description-->
                     <div class="location-desc-pc">
                         <p>
-                            {{ loc['description'] | truncate(500, True, '...') | safe }}
+                            {{ loc['description'] | truncate(750, True, '...') | safe | striptags}}
                             <a href="{{ url_for('location_detail',  location_id=loc['id']) }}" class="more">Více...</a>
                         </p>
                     </div>
                     <div class="location-desc-mobile">
                         <p>
-                            {{ loc['description'] | truncate(50, True, '...') | safe }}
+                            {{ loc['description'] | truncate(50, True, '...') | safe | striptags}}
                             <a href="{{ url_for('location_detail',  location_id=loc['id']) }}" class="more">Více...</a>
                         </p>
                     </div>
