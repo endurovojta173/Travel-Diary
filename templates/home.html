@@ -20,12 +20,13 @@
                         {% endif %}
 
                         <div class="slide-caption">
-                           <a href="{{ url_for('location_detail', location_id=loc['id']) }}">
-                               <h2>{{ loc['name'] }}</h2>
-                           </a>
+                            <a href="{{ url_for('location_detail', location_id=loc['id']) }}">
+                                <h2>{{ loc['name'] }}</h2>
+                            </a>
                         </div>
 
-                    </div> {% endfor %}
+                    </div>
+                {% endfor %}
 
                 <button type="button" class="slider-btn prev" onclick="changeSlide(-1)">❮</button>
                 <button type="button" class="slider-btn next" onclick="changeSlide(1)">❯</button>

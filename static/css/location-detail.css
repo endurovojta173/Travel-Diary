@@ -1,0 +1,60 @@
+/* Základní nastavení kontejneru pro lepší vzhled */
+.container {
+    display: flow-root;
+    max-width: 90%;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.float-slider {
+    float: left;
+    width: 50%;
+    margin-right: 20px;
+    margin-bottom: 20px;
+    height: auto;
+    max-width: 100%;
+}
+.user-rating-section {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+.user-rating-section h4 {
+    margin: 0;
+    white-space: nowrap;
+}
+
+.under-slider-buttons{
+    display: flex;
+    flex-direction: row;
+    margin-top: 10px;
+    gap: 15px;
+}
+.under-slider-button{
+    font-size: 1rem;
+    background-color: var(--light-green-color);
+    color: var(--white-text-color);
+    border-radius: 5px;
+    border: none;
+    padding: 5px;
+    cursor: pointer;
+}
+.under-slider-button:hover{
+    transition: background-color 0.2s;
+    background-color: var(--dark-green-color);
+}
+.remove{
+    background-color: red;
+}
+.remove:hover{
+    transition: background-color 0.2s;
+    background-color: darkred;
+}
+
+@media (max-width: 768px) {
+    .plavajici-obrazek {
+        float: none;
+        width: 100%;
+        margin-left: 0;
+    }
+}

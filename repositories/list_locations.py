@@ -47,7 +47,6 @@ def list_locations_with_photos_and_rating(conn: sqlite3.Connection) -> List[Dict
 
 def get_location_by_id_with_photos_and_rating(conn: sqlite3.Connection, location_id: int) -> Dict[str, Any]:
     cursor = conn.cursor()
-    # SQL
     cursor.execute("""
                    SELECT l.id,
                           l.name,
@@ -67,18 +66,24 @@ def get_location_by_id_with_photos_and_rating(conn: sqlite3.Connection, location
                    ORDER BY l.id
                    """, {"id": location_id})
 
-    location = {}
+    rows = cursor.fetchall()
+    if not rows:
+        return {}
 
-    for row in cursor.fetchall():
-        location = {
-            "id": row[0],
-            "name": row[1],
-            "description": row[2],
-            "date_location_added": row[3],
-            "photos": [],
-            "avg_rating": row[7]
-        }
+    first_row = rows[0]
 
+    rating = first_row[7] if first_row[7] is not None else 0
+
+    location = {
+        "id": first_row[0],
+        "name": first_row[1],
+        "description": first_row[2],
+        "date_location_added": first_row[3],
+        "photos": [],
+        "avg_rating": rating
+    }
+
+    for row in rows:
         if row[4] is not None:
             location["photos"].append({
                 "id": row[4],
