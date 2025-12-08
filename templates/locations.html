@@ -4,15 +4,9 @@
     <link rel="stylesheet" href="{{ url_for('static', path='css/locations-layout.css') }}">
 {% endblock %}
 {% block title %}{{ title }}{% endblock %}
-
-<body>
-
 {% block content %}
-
     <h1>{{ title }}</h1>
-
-
-    {# Start of the grid #}
+    <!-- Start of the grid -->
     <div class="home-grid">
         {% for loc in locations %}
             <!--Photo-->
@@ -72,8 +66,4 @@
             </div>
         {% endfor %}
     </div>
-
-
-
 {% endblock %}
-</body>
