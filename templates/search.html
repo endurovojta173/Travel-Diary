@@ -1,24 +1,82 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/rankings.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/rating.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/text.css') }}">
+{% endblock %}
 {% block content %}
     <h1>{{ title }}</h1>
-    <div>
-    <p>Vyhledávaný výraz {{ search_term }}</p>
-    <p>Počet nalezených lokací {{ number_of_locations }}</p>
-    </div>
-    {% if locations %}
-        {% for loc in locations %}
-                    <li><a href="{{url_for('location_detail',  location_id=loc['id']) }}">{{ loc.name }}</a>
-                        {% if loc['photo'] %}
-                            <a href="{{url_for('location_detail',  location_id=loc['id']) }}">
-                            <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
+    <div class="container">
+        <div class="text">
+            <p>Vyhledávaný výraz: {{ search_term }}</p>
+            <p>Počet nalezených lokací: {{ number_of_locations }}</p>
+        </div>
+        <div class="locations-container">
+            {% if locations %}
+                {% for loc in locations %}
+                    <div class="location-box">
+                        {% if not pending %}
+                            <a href="{{ url_for('location_detail',  location_id=loc['id']) }}">
+                                <div class="location-box-img">
+                                    {% if loc['photo'] %}
+                                        <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
+                                    {% else %}
+                                        <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}"
+                                             class="noImage">
+                                    {% endif %}
+                                </div>
+                                <div class="location-box-heading">
+                                    <h2>{{ loc['name'] }}</h2>
+                                </div>
+                                <div class="rating-stars"
+                                     title="Průměrné hodnocení: {{ (loc['avg_rating'] or 0) | round(1) }}">
+                                    {# --- Výpočet --- #}
+                                    {# Převedení na int zaokrouhlí dolů #}
+                                    {% set active_stars = loc['avg_rating'] | int %}
+                                    {# Zbytek do 5 jsou neaktivní #}
+                                    {% set inactive_stars = 5 - active_stars %}
+                                    {% for i in range(active_stars) %}
+                                        <i class="fa-solid fa-star star-active"></i>
+                                    {% endfor %}
+                                    {% for i in range(inactive_stars) %}
+                                        <i class="fa-solid fa-star star-inactive"></i>
+                                    {% endfor %}
+                                    <span class="rating-value">
+                        {% if loc['avg_rating'] %}
+                            {{ loc['avg_rating'] | round(1) }}
+                        {% else %}
+                            0.0
+                        {% endif %}
+                        </span>
+                                </div>
+                                <div class="location-box-description">
+                                    {{ loc['description'] | truncate(200, True, '...') | safe | striptags }}
+                                </div>
                             </a>
                         {% else %}
-                            <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}"  class="noImage">
+                            <a href="{{ url_for('approve_location_detail',  location_id=loc['id']) }}">
+                                <div class="location-box-img">
+                                    {% if loc['photo'] %}
+                                        <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
+                                    {% else %}
+                                        <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}"
+                                             class="noImage">
+                                    {% endif %}
+                                </div>
+                                <div class="location-box-heading">
+                                    <h2>{{ loc['name'] }}</h2>
+                                </div>
+                                <div class="location-box-description">
+                                    {{ loc['description'] | truncate(200, True, '...') | safe | striptags }}
+                                </div>
+                            </a>
                         {% endif %}
-                    </li>
+                    </div>
                 {% endfor %}
-    {% else %}
-        <p>Žádné lokace nenalezeny :(</p>
-    {% endif %}
+            {% else %}
+                <p>Žádné lokace nenalezeny :(</p>
+            {% endif %}
+        </div>
+    </div>
 {% endblock %}
