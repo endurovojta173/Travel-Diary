@@ -1,6 +1,7 @@
 from typing import List, Dict, Any, Optional
 import sqlite3
 
+
 def list_locations_with_photos_and_rating(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
     cursor = conn.cursor()
     cursor.execute("""
@@ -98,11 +99,11 @@ def get_five_random_locations(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
     cursor = conn.cursor()
     # Vybere 5 random lokací
     cursor.execute("""
-                   SELECT l.id       ,
-                          l.name    ,
-                          p.id       ,
-                          p.alt_text ,
-                          p.url     
+                   SELECT l.id,
+                          l.name,
+                          p.id,
+                          p.alt_text,
+                          p.url
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
                    WHERE l.id_status = 1
@@ -176,11 +177,11 @@ def get_most_favorite_location(conn: sqlite3.Connection) -> Dict[str, Any]:
 def get_newest_location(conn: sqlite3.Connection) -> Dict[str, Any]:
     cursor = conn.cursor()
     cursor.execute("""
-                   SELECT l.id       AS loc_id,
-                          l.name     AS loc_name,
-                          p.id       AS photo_id,
-                          p.alt_text AS photo_alt_text,
-                          p.url      AS photo_url
+                   SELECT l.id      ,
+                          l.name     ,
+                          p.id   ,
+                          p.alt_text ,
+                          p.url     
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
                    WHERE l.id_status = 1
@@ -212,13 +213,13 @@ def get_newest_location(conn: sqlite3.Connection) -> Dict[str, Any]:
 def list_locations_by_avg_rating(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
     cursor = conn.cursor()
     cursor.execute("""
-                   SELECT l.id          AS loc_id,
-                          l.name        AS loc_name,
-                          l.description AS loc_description,
-                          p.id          AS photo_id,
-                          p.alt_text    AS photo_alt_text,
-                          p.url         AS photo_url,
-                          r.avg_rating  AS avg_rating
+                   SELECT l.id,
+                          l.name,
+                          l.description,
+                          p.id,
+                          p.alt_text,
+                          p.url,
+                          r.avg_rating
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
                             LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating
@@ -254,13 +255,13 @@ def list_locations_by_avg_rating(conn: sqlite3.Connection) -> List[Dict[str, Any
 def list_locations_by_newest(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
     cursor = conn.cursor()
     cursor.execute("""
-                   SELECT l.id          AS loc_id,
-                          l.name        AS loc_name,
-                          l.description AS loc_description,
-                          p.id          AS photo_id,
-                          p.alt_text    AS photo_alt_text,
-                          p.url         AS photo_url,
-                          r.avg_rating  AS avg_rating
+                   SELECT l.id          ,
+                          l.name        ,
+                          l.description ,
+                          p.id          ,
+                          p.alt_text    ,
+                          p.url         ,
+                          r.avg_rating  
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
                             LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating
@@ -586,7 +587,7 @@ def list_pending_locations(conn: sqlite3.Connection) -> List[Dict[str, str]]:
     cursor.execute("""
                    SELECT l.id,
                           l.name,
-                       l.description,
+                          l.description,
                           p.url,
                           p.alt_text,
                           u.name AS author_name
@@ -679,7 +680,6 @@ def search_locations(conn: sqlite3.Connection, query: str) -> List[Dict[str, Any
                           p.url,
                           p.alt_text,
                           r.avg_rating,
-
                           --VÝPOČET RELEVANCE (SKÓRE)
                           (
                               --Skóre v názvu: (Původní délka - Délka po odstranění slova)
@@ -724,14 +724,14 @@ def search_locations(conn: sqlite3.Connection, query: str) -> List[Dict[str, Any
 def get_location_with_photos_pending_or_approved_status(conn: sqlite3.Connection, location_id: int) -> Dict[str, Any]:
     cursor = conn.cursor()
     cursor.execute("""
-                   SELECT l.id                  AS loc_id,
-                          l.name                AS loc_name,
-                          l.description         AS loc_description,
-                          l.date_location_added AS loc_date_location_added,
-                          l.id_status           AS loc_status_id, -- Přidal jsem i ID statusu, může se hodit
-                          p.id                  AS photo_id,
-                          p.alt_text            AS photo_alt_text,
-                          p.url                 AS photo_url
+                   SELECT l.id,
+                          l.name,
+                          l.description,
+                          l.date_location_added,
+                          l.id_status,
+                          p.id,
+                          p.alt_text,
+                          p.url
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
                    WHERE l.id = :id
@@ -759,11 +759,12 @@ def get_location_with_photos_pending_or_approved_status(conn: sqlite3.Connection
 
     return location
 
+
 def get_location_status(conn: sqlite3.Connection, location_id: int) -> int:
-        cursor = conn.cursor()
-        cursor.execute("""
-                       SELECT id_status
-                       FROM location
-                       WHERE id = ?
-                       """, (location_id,))
-        return cursor.fetchone()[0]
+    cursor = conn.cursor()
+    cursor.execute("""
+                   SELECT id_status
+                   FROM location
+                   WHERE id = ?
+                   """, (location_id,))
+    return cursor.fetchone()[0]
