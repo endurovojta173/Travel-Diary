@@ -1,38 +1,53 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/all-users.css') }}">
+
+{% endblock %}
 {% block content %}
     <h1>{{ title }}</h1>
+    <div class="container">
+        {% if all_users %}
+            <div class="table">
+                <table>
+                    <tr>
+                        <th>ID</th>
+                        <th>Přezdívka/Jméno</th>
+                        <th>Email</th>
+                        <th>Role</th>
+                    </tr>
+                    {% for user in all_users %}
+                        <tr>
+                            <td data-label="ID" class="id">{{ user.id }}</td>
+                            <td data-label="Jméno" class="name">{{ user.name }}</td>
+                            <td data-label="Email" class="email">{{ user.email }}</td>
 
-    {% if all_users %}
-        <table>
-            <tr>
-                <th>ID</th>
-                <th>Přezdívka/Jméno</th>
-                <th>Email</th>
-                <th>Role</th>
-            </tr>
-            {% for user in all_users %}
-                <tr>
-                    <td>{{ user['id'] }}</td>
-                    <td>{{ user['name'] }}</td>
-                    <td>{{ user['email'] }}</td>
-
-                    <td>
-                        <form action="/all_users/update" method="post">
-                            <input type="hidden" name="user_id" value="{{ user['id'] }}">
-                            <select name="role">
-                                <option value="1" {% if user['role'] == 1 %}selected{% endif %}>Administrátor</option>
-                                <option value="2" {% if user['role'] == 2 %}selected{% endif %}>Redaktor</option>
-                                <option value="3" {% if user['role'] == 3 %}selected{% endif %}>Uživatel</option>
-                            </select>
-                            <button type="submit" title="Uložit změnu role"><i class="fa-solid fa-pencil"></i></button>
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-        </table>
-    {% else %}
-        <p>Žádní uživatelé</p>
-    {% endif %}
+                            <td data-label="Akce">
+                                <form action="/all_users/update" method="post">
+                                    <input type="hidden" name="user_id" value="{{ user['id'] }}">
+                                    <div class="split-content">
+                                        <select name="role">
+                                            <option value="1" {% if user['role'] == 1 %}selected{% endif %}>
+                                                Administrátor
+                                            </option>
+                                            <option value="2" {% if user['role'] == 2 %}selected{% endif %}>Redaktor
+                                            </option>
+                                            <option value="3" {% if user['role'] == 3 %}selected{% endif %}>Uživatel
+                                            </option>
+                                        </select>
+                                        <button type="submit" title="Uložit změnu role"><i
+                                                class="fa-solid fa-pencil"></i>
+                                        </button>
+                                    </div>
+                                </form>
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </table>
+            </div>
+        {% else %}
+            <p>Žádní uživatelé</p>
+        {% endif %}
+    </div>
 
 {% endblock %}

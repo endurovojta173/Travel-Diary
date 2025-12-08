@@ -79,13 +79,14 @@
 }
 
 
-@media (max-width: 900px) {
+@media (max-width: 768px) {
     .home-grid {
         grid-template-columns: 1fr; /* Všechno pod sebe */
         height: auto; /* Výška se přizpůsobí obsahu */
     }
 
     .location-slider {
+        margin: 0 auto;
         height: 300px; /* Na mobilu menší slider */
     }
 

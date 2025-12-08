@@ -1,0 +1,141 @@
+.container {
+    display: flex;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.table {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+}
+
+.table table {
+    border: 1px solid var(--neutral-gray-color);
+}
+
+.table tr {
+
+}
+
+.table th {
+    border: 1px solid var(--neutral-gray-color);
+    text-align: center;
+    vertical-align: middle;
+}
+
+.table td {
+    border: 1px solid var(--neutral-gray-color);
+    vertical-align: middle;
+}
+.id{
+    text-align: center;
+}
+.name{
+    text-align: start;
+}
+.email{
+    text-align: start;
+}
+.table select {
+    padding: 2px;
+    font-size: 1rem;
+    background-color: var(--neutral-gray-color);
+    color: var(--text-color);
+    border-radius: 5px;
+    border: none;
+    margin-left: 1vh;
+}
+
+.table option {
+    font-size: 1.2rem;
+    background-color: var(--neutral-gray-color);
+}
+
+.table button {
+    padding: 5px;
+    font-size: 1.2rem;
+    background-color: rgba(0, 0, 0, 0);
+    color: var(--dark-green-color);
+    border-radius: 5px;
+    border: none;
+
+}
+
+
+.table button:hover {
+    color: var(--light-green-color);
+    transition: color 0.2s;
+
+}
+
+.split-content {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    gap: 10px;
+}
+
+
+@media (max-width: 768px) {
+    .table table, .table thead, .table tbody, .table th, .table td, .table tr {
+        display: block;
+    }
+
+    .table thead tr {
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+    }
+
+
+    .table tr {
+        border: 1px solid var(--neutral-gray-color);
+        margin-bottom: 15px;
+        border-radius: 8px;
+        background-color: white;
+        box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    }
+
+
+    .table td {
+        border: none;
+        border-bottom: 1px solid #eee;
+        position: relative;
+        padding-left: 50%;
+        text-align: right !important;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        min-height: 40px;
+        overflow-wrap: anywhere;
+    }
+
+    .table td:last-child {
+        border-bottom: none;
+    }
+
+    .table td::before {
+        content: attr(data-label);
+        position: absolute;
+        left: 10px;
+        width: 45%;
+        padding-right: 10px;
+        white-space: nowrap;
+        text-align: left;
+        font-weight: bold;
+        color: var(--dark-green-color);
+    }
+    .table select{
+        margin-left: 0;
+    }
+    .split-content {
+        width: auto;
+        justify-content: flex-end;
+    }
+
+    .id, .name, .email {
+        text-align: right;
+    }
+}
