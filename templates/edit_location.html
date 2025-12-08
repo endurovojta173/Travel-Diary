@@ -1,40 +1,39 @@
 {% extends "base.html" %}
 {% block title %} {{ title }} {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/add-location.css') }}">
+{% endblock %}
 {% block content %}
-<h1>{{ title }}</h1>
+    <h1>{{ title }}</h1>
 
     <!--Tiny mce setup-->
-<script src="https://cdn.tiny.cloud/1/f7nx8mu5zvkkalck8e5a48fprg4lrdmg5p7hr7mf8gjy6zan/tinymce/6/tinymce.min.js" referrerpolicy="origin"></script>
-<script>
-  tinymce.init({
-    selector: '#description', //Napojí se na textarea s id="description"
-    height: 300,
-    menubar: false,
-    plugins: [
-      'advlist autolink link charmap print preview anchor',
-      'searchreplace visualblocks code fullscreen',
-      'insertdatetime media table paste code help wordcount'
-    ],
-    toolbar: 'undo redo | blocks | ' +
-             'bold italic backcolor | ' + //Styles of text
-             'alignleft aligncenter alignright alignjustify | ' + //Aligns
-             'bullist numlist outdent indent | ' +  //Tabs
-             'hr' //Horizontal line
-  });
-</script>
-<!--Diky enctype odesle realne souborz a ne jen nazvy-->
-<form method="post" action="/locations/{{location['id']}}/edit_location/post" enctype="multipart/form-data">
-    <div>
-        <label for="name">Název lokace:</label><br>
-        <input type="text" id="name" name="name" required value="{{ location['name'] }}">
+    <script src="https://cdn.tiny.cloud/1/f7nx8mu5zvkkalck8e5a48fprg4lrdmg5p7hr7mf8gjy6zan/tinymce/6/tinymce.min.js"
+            referrerpolicy="origin"></script>
+    <script>
+        tinymce.init({
+            selector: '#description', //Napojí se na textarea s id="description"
+            height: 300,
+            menubar: false,
+            plugins: [
+                'advlist autolink link charmap print preview anchor',
+                'searchreplace visualblocks code fullscreen',
+                'insertdatetime media table paste code help wordcount'
+            ],
+            toolbar: 'undo redo | blocks | ' +
+                'bold italic backcolor | ' + //Styles of text
+                'alignleft aligncenter alignright alignjustify | ' + //Aligns
+                'bullist numlist outdent indent | ' +  //Tabs
+                'hr' //Horizontal line
+        });
+    </script>
+    <div class="container">
+        <form method="post" action="/locations/{{ location['id'] }}/edit_location/post" class="form">
+            <label for="name" class="form-label">Název lokace:</label><br>
+            <input type="text" id="name" name="name" required value="{{ location['name'] }}" class="form-input"><br>
+            <label for="description" class="form-label">Popis:</label><br>
+            <textarea id="description" name="description" class="form-tiny-mce">{{ location['description'] }}</textarea><br>
+            <button type="submit" class="form-button">Upravit lokaci <i class="fa-solid fa-floppy-disk"></i></button>
+
     </div>
-    <br>
-    <div>
-        <label for="description">Popis:</label><br>
-        <textarea id="description" name="description">{{ location['description'] }}</textarea>
-    </div>
-    <br>
-    <button type="submit">Upravit lokaci <i class="fa-solid fa-floppy-disk"></i></button>
-</form>
 
 {% endblock %}

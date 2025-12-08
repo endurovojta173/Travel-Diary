@@ -110,7 +110,10 @@
     cursor: pointer;
     font-weight: bold;
 }
-
+.add-comment-section button:hover{
+    background-color: var(--dark-green-color);
+    transition: background-color 0.2s;
+}
 .comment {
     margin: 5px 0 5px 0;
     padding: 10px;
@@ -161,4 +164,65 @@
 .comment-delete-button:hover{
     color: var(--dark-green-color);
     transition: color 0.2s;
+}
+
+@media (max-width: 768px) {
+    .container {
+        display: flex;
+        flex-direction: column;
+    }
+    .heading-box {
+        order: -1; /*čím menší, tím výš prvek bude */
+        width: 100%;
+        margin-bottom: 15px;
+    }
+    .float-slider {
+        float: none;
+        width: 100%;
+        margin-right: 0;
+        margin-bottom: 20px;
+    }
+
+
+    .under-slider-buttons {
+        flex-direction: column;
+    }
+
+
+    .under-slider-button {
+        width: 100%;
+        text-align: center;
+        padding: 10px;
+    }
+
+    .comment {
+        grid-template-columns: 1fr;
+        gap: 10px;
+    }
+
+    .comment-info {
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        padding-bottom: 5px;
+        margin-bottom: 5px;
+    }
+
+    .comment-author {
+        font-size: 1.2rem;
+    }
+
+    .comment-date {
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    .heading-box h1 {
+        font-size: 1.8rem;
+        word-break: break-word;
+    }
+
+    .add-comment-section textarea {
+        height: 15vh;
+    }
 }
