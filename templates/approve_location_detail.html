@@ -1,50 +1,97 @@
 {% extends "base.html" %}
 <!--Title-->
 {% block title %}{{ title }}{% endblock %}
-
-
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/location-detail.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/slider.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/rating.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/approve-location-buttons.css') }}">
+{% endblock %}
 {% block content %}
-    {% if request.session.get("user")['role']<3 %}
-        <!--Editace lokace-->
-        <a href="/locations/{{ location.id }}/edit_location"><button type="button"><i class="fa-solid fa-pencil"></i></button></a>
-        <!--Toto vidí jen admin a redaktor-->
-        <div>
-            <h3>Schválení lokace</h3>
-            <div>
-                <form action="/approve_location/{{ location.id }}/approve" method="post">
-                    <button type="submit">Schválit <i class="fa-solid fa-check"></i></button>
-                </form>
-                <form action="/approve_location/{{ location.id }}/reject" method="post">
-                    <button type="submit">Zamítnout <i class="fa-solid fa-xmark"></i></button>
-                </form>
 
+
+
+    <div class="container">
+        {% if request.session.get("user")['role']<3 %}
+            <!--Toto vidí jen admin a redaktor-->
+            <div>
+                <h3>Schválení lokace</h3>
+                <div class="buttons">
+                    <form action="/approve_location/{{ location.id }}/approve" method="post">
+                        <button type="submit" class="button-approve">Schválit <i class="fa-solid fa-check"></i></button>
+                    </form>
+                    <form action="/approve_location/{{ location.id }}/reject" method="post">
+                        <button type="submit" class="button-reject">Zamítnout <i class="fa-solid fa-xmark"></i></button>
+                    </form>
+
+                </div>
+            </div>
+        {% endif %}
+
+        <div class="float-slider">
+            <div class="location-slider">
+                <div class="simple-slider">
+                    {% for photo in location['photos'] %}
+                        <div class="slide {% if loop.first %}active{% endif %}">
+                            {% if photo %}
+                                <img src="/{{ photo['url'] }}" alt="{{ photo['name'] }}">
+                            {% else %}
+                                <img src="{{ url_for('static', path='img/web/noImage.webp') }}" alt="Bez fotky">
+                            {% endif %}
+                        </div>
+                    {% endfor %}
+                    {% if location['photos'] | length > 1 %}
+                        <button type="button" class="slider-btn prev" onclick="changeSlide(-1)">❮</button>
+                        <button type="button" class="slider-btn next" onclick="changeSlide(1)">❯</button>
+                    {% endif %}
+                </div>
+                <div class="under-slider-buttons">
+                    <!--Add/Remove favorite-->
+                    <form>
+                        <button type="submit" class="under-slider-button">Přidat do oblíbených <i
+                                class="fa-solid fa-star"></i></button>
+                    </form>
+                    <!--Add/Remove visited-->
+                    <form>
+                        <button type="submit" class="under-slider-button">Přidat do navštívených <i
+                                class="fa-solid fa-globe"></i></button>
+                    </form>
+                </div>
             </div>
         </div>
-    {% endif %}
 
-
-    <h1>{{ title }}</h1>
-    {% if location['photos'] %}
-        <img alt="{{ location['photos'][0]['alt_text'] }}" src="/{{ location['photos'][0]['url'] }}">
-    {% else %}
-        <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}" class="noImage">
-    {% endif %}
-    <div>
-        <!--Add/Remove favorite-->
-        <button type=>Přidat do oblíbených <i class="fa-solid fa-star"></i></button>
-        <!--Add/Remove visited-->
-        <button>Přidat do navštívených <i class="fa-solid fa-globe"></i></button>
+        <div class="heading-box">
+            <h1>{{ title }}</h1>
+            <!--Editace lokace-->
+            {% if request.session.get("user") and request.session.user.role <= 2 %}
+                <a href="/locations/{{ location.id }}/edit_location">
+                    <button type="button"><i class="fa-solid fa-pencil"></i></button>
+                </a>
+            {% endif %}
+        </div>
+        {# Average rating #}
+        <div>
+            <div class="rating-stars" title="Průměrné hodnocení: {{ (location['avg_rating'] or 0) | round(1) }}">
+                {% set active_stars = location['avg_rating'] | int %}
+                {% set inactive_stars = 5 - active_stars %}
+                {% for i in range(active_stars) %}
+                    <i class="fa-solid fa-star star-active"></i>
+                {% endfor %}
+                {% for i in range(inactive_stars) %}
+                    <i class="fa-solid fa-star star-inactive"></i>
+                {% endfor %}
+                <span class="rating-value">
+                {% if location['avg_rating'] %}
+                    {{ location['avg_rating'] | round(1) }}
+                {% else %}
+                    0.0
+                {% endif %}
+                </span>
+            </div>
+            {{ location['date_location_added'] }}<br>
+        </div>
+        <div>
+            {{ location['description']  | safe }}
+        </div>
     </div>
-    {% if location['avg_rating'] == None %}
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-        <i class="fa-solid fa-star"></i>
-    {% else %}
-        {{ location['avg_rating'] }}
-    {% endif %}
-    {{ location['date_location_added'] }}<br>
-    {{ location['description']  | safe }}
-
 {% endblock %}

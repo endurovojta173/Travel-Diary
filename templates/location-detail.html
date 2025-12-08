@@ -1,11 +1,11 @@
 {% extends "base.html" %}
 {# Title #}
+{% block title %}{{ title }}{% endblock %}
 {% block head %}
     <link rel="stylesheet" href="{{ url_for('static', path='css/location-detail.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/slider.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/rating.css') }}">
 {% endblock %}
-{% block title %}{{ title }}{% endblock %}
 {% block content %}
 
 
@@ -23,9 +23,10 @@
                             {% endif %}
                         </div>
                     {% endfor %}
-
-                    <button type="button" class="slider-btn prev" onclick="changeSlide(-1)">❮</button>
-                    <button type="button" class="slider-btn next" onclick="changeSlide(1)">❯</button>
+                    {% if location['photos'] | length > 1 %}
+                        <button type="button" class="slider-btn prev" onclick="changeSlide(-1)">❮</button>
+                        <button type="button" class="slider-btn next" onclick="changeSlide(1)">❯</button>
+                    {% endif %}
                 </div>
                 <div class="under-slider-buttons">
                     <!--Add/Remove favorite-->
@@ -110,8 +111,9 @@
             {{ location['date_location_added'] }}<br>
         </div>
 
-        {{ location['description']  | safe }}
-
+        <div>
+            {{ location['description']  | safe }}
+        </div>
 
         {# Komentáře #}
         <div class="comment-section">
