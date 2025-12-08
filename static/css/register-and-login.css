@@ -55,8 +55,39 @@
 }
 
 input[type="checkbox"] {
-    accent-color: var(--light-green-color); /* Tvoje zelená barva */
+    accent-color: var(--light-green-color); 
     cursor: pointer;
+}
+
+input[type="radio"] {
+    accent-color: var(--light-green-color);
+    width: 18px;
+    height: 18px;
+    cursor: pointer;
+    margin: 0;
+}
+
+.radio-option {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 5px;
+    cursor: pointer;
+}
+
+.radio-option label {
+    cursor: pointer;
+    font-size: 14px;
+    color: var(--text-color);
+}
+
+
+.radio-group {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    width: 100%;
+    margin-bottom: 15px;
 }
 
 .register-button {

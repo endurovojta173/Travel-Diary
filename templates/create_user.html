@@ -1,38 +1,54 @@
 {% extends "base.html" %}
 {% block title %}{{ title }}{% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/register-and-login.css') }}">
+
+{% endblock %}
 {% block content %}
     <h1>{{ title }}</h1>
-    {% if error_message %}
-        <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 10px;">
-            <strong>Chyba:</strong> {{ error_message }}
+    <div class="container">
+        {% if error_message %}
+            <div style="color: red; border: 1px solid red; padding: 10px; margin-bottom: 10px;">
+                <strong>Chyba:</strong> {{ error_message }}
+            </div>
+        {% endif %}
+        <div class="form">
+            <form method="post" action="/create_user">
+                <div>
+                    <label for="name" class="input-label">Přezdívka/Jméno:</label><br>
+                    <input type="text" id="name" name="name" value="{{ name_value or '' }}" required minlength="1"
+                           class="text-input">
+                </div>
+                <br>
+                <div>
+                    <label for="email" class="input-label">E-mail:</label><br>
+                    <input type="email" id="email" name="email" value="{{ email_value or '' }}" required
+                           class="text-input">
+                </div>
+                <br>
+                <div>
+                    <label for="password" class="input-label">Heslo:</label><br>
+                    <input type="password" id="password" name="password" required minlength="8" class="text-input"><br>
+                    <small class="password-info">(Min. 8 znaků - 1 znak velkým písmem, 1 číslo, 1 speciální znak
+                        !@#$%^&*()-_=+)</small>
+                </div>
+                <br>
+                <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="user" name="role" value="3">
+                        <label for="user">Uživatel</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="redactor" name="role" value="2">
+                        <label for="redactor">Redaktor</label>
+                    </div>
+                    <div class="radio-option">
+                        <input type="radio" id="admin" name="role" value="1">
+                        <label for="admin">Administrátor</label>
+                    </div>
+                </div>
+                <button type="submit" class="register-button">Vytvořit uživatele</button>
+            </form>
         </div>
-    {% endif %}
-
-    <form method="post" action="/create_user">
-        <div>
-            <label for="name">Přezdívka/Jméno:</label><br>
-            <input type="text" id="name" name="name" value="{{ name_value or '' }}" required minlength="1">
-        </div>
-        <br>
-        <div>
-            <label for="email">E-mail:</label><br>
-            <input type="email" id="email" name="email" value="{{ email_value or '' }}" required>
-        </div>
-        <br>
-        <div>
-            <label for="password">Heslo:</label><br>
-            <input type="password" id="password" name="password" required minlength="8"><br>
-            <small>(Min. 8 znaků a z toho 1 znak velkým písmem, 1 číslo, 1 speciální znak !@#$%^&*()-_=+)</small>
-        </div>
-        <br>
-        <div>
-            <input type="radio" id="user" name="role" value="3">
-            <label for="user">Uživatel</label><br>
-            <input type="radio" id="redactor" name="role" value="2">
-            <label for="redactor">Redaktor</label><br>
-            <input type="radio" id="admin" name="role" value="1">
-            <label for="admin">Administrátor</label>
-        </div>
-        <button type="submit">Vytvořit uživatele <i class="fa-solid fa-person"></i></button>
-    </form>
+    </div>
 {% endblock %}
