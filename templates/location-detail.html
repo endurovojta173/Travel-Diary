@@ -79,14 +79,15 @@
             </div>
         </div>
 
-
-        <h1>{{ title }}</h1>
-        <!--Editace lokace-->
-        {% if request.session.get("user") and request.session.user.role <= 2 %}
-            <a href="/locations/{{ location.id }}/edit_location">
-                <button type="button"><i class="fa-solid fa-pencil"></i></button>
-            </a>
-        {% endif %}
+        <div class="heading-box">
+            <h1>{{ title }}</h1>
+            <!--Editace lokace-->
+            {% if request.session.get("user") and request.session.user.role <= 2 %}
+                <a href="/locations/{{ location.id }}/edit_location">
+                    <button type="button"><i class="fa-solid fa-pencil"></i></button>
+                </a>
+            {% endif %}
+        </div>
         {# Average rating #}
         <div>
             <div class="rating-stars" title="Průměrné hodnocení: {{ (location['avg_rating'] or 0) | round(1) }}">
@@ -110,45 +111,54 @@
         </div>
 
         {{ location['description']  | safe }}
-    </div>
 
 
+        {# Komentáře #}
+        <div class="comment-section">
+            <h2>Komentáře</h2>
 
-
-
-    {# Komentáře #}
-    <div>
-        <h2>Komentáře</h2>
-        {% if request.session.get("user") %}
-            <h3>Přidat komentář</h3>
-            <form method="post" action="/locations/{{ location.id }}/add_comment" enctype="multipart/form-data">
-                <div>
-                    <label for="comment_text">Komentář:</label><br>
-                    <textarea id="comment_text" name="comment_text"></textarea>
-                </div>
-                <br>
-                <button type="submit">Okomentovat</button>
-            </form>
-        {% endif %}
-        {% for com in comments %}
-            <div>
-                {{ com["author"] }}
-                {{ com["date"] }}
-                {{ com["text"] | safe }}
-            </div>
             {% if request.session.get("user") %}
-                {% if com["user_id"] == request.session.user.id or request.session.user.role <= 2 %}
-                    <div>
-                        <form method="post" action="/locations/{{ location.id }}/delete_comment"
-                              onsubmit="return confirm('Opravdu chceš smazat tento komentář?');">
-                            <input type="hidden" name="comment_id" value="{{ com['id'] }}">
-                            <button type="submit" title="Smazat komentář">Smazat komentář <i
-                                    class="fa-solid fa-trash"></i></button>
-                        </form>
-                    </div>
-                {% endif %}
+                <div class="add-comment-section">
+                    <h3>Přidat komentář</h3>
+                    <form method="post" action="/locations/{{ location.id }}/add_comment" enctype="multipart/form-data">
+                        <div>
+                            <label for="comment_text">Komentář:</label><br>
+                            <textarea id="comment_text" name="comment_text"></textarea>
+                        </div>
+                        <br>
+                        <button type="submit">Okomentovat</button>
+                    </form>
+                </div>
             {% endif %}
-        {% endfor %}
+
+            {% for com in comments %}
+                <div class="comment">
+                    <div class="comment-info">
+                        <div class="comment-author">
+                            {{ com["author"] }}
+                        </div>
+                        <div class="comment-date">
+                            {{ com["date"] }}
+                        </div>
+                    </div>
+                    <div class="comment-text">
+                        {{ com["text"] | safe }}
+                        {% if request.session.get("user") %}
+                            {% if com["user_id"] == request.session.user.id or request.session.user.role <= 2 %}
+                                <form method="post" action="/locations/{{ location.id }}/delete_comment"
+                                      onsubmit="return confirm('Opravdu chceš smazat tento komentář?');">
+                                    <input type="hidden" name="comment_id" value="{{ com['id'] }}">
+                                    <button type="submit" title="Smazat komentář" class="comment-delete-button">
+                                        <i class="fa-solid fa-trash"></i>
+                                    </button>
+                                </form>
+                            {% endif %}
+                        {% endif %}
+                    </div>
+                </div>
+            {% endfor %}
+
+        </div>
     </div>
     <script src="{{ url_for('static', path='js/slider.js') }}"></script>
 {% endblock %}
