@@ -4,14 +4,14 @@ import sqlite3
 def list_locations_with_photos_and_rating(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
     cursor = conn.cursor()
     cursor.execute("""
-                   SELECT l.id          AS loc_id,
-                          l.name        AS loc_name,
-                          l.description AS loc_description,
-                          l.id_status      AS loc_status,
-                          p.id          AS photo_id,
-                          p.alt_text    AS photo_alt_text,
-                          p.url         AS photo_url,
-                          r.avg_rating  AS avg_rating
+                   SELECT l.id,
+                          l.name,
+                          l.description,
+                          l.id_status,
+                          p.id,
+                          p.alt_text,
+                          p.url,
+                          r.avg_rating
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
                             LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating
@@ -49,14 +49,14 @@ def get_location_by_id_with_photos_and_rating(conn: sqlite3.Connection, location
     cursor = conn.cursor()
     # SQL
     cursor.execute("""
-                   SELECT l.id                  AS loc_id,
-                          l.name                AS loc_name,
-                          l.description         AS loc_description,
-                          l.date_location_added AS loc_date_location_added,
-                          p.id                  AS photo_id,
-                          p.alt_text            AS photo_alt_text,
-                          p.url                 AS photo_url,
-                          r.avg_rating          AS avg_rating
+                   SELECT l.id,
+                          l.name,
+                          l.description,
+                          l.date_location_added,
+                          p.id,
+                          p.alt_text,
+                          p.url,
+                          r.avg_rating
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
                             LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating
@@ -93,11 +93,11 @@ def get_five_random_locations(conn: sqlite3.Connection) -> List[Dict[str, Any]]:
     cursor = conn.cursor()
     # Vybere 5 random lokací
     cursor.execute("""
-                   SELECT l.id       AS loc_id,
-                          l.name     AS loc_name,
-                          p.id       AS photo_id,
-                          p.alt_text AS photo_alt_text,
-                          p.url      AS photo_url
+                   SELECT l.id       ,
+                          l.name    ,
+                          p.id       ,
+                          p.alt_text ,
+                          p.url     
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
                    WHERE l.id_status = 1
@@ -131,12 +131,12 @@ def get_most_favorite_location(conn: sqlite3.Connection) -> Dict[str, Any]:
     cursor = conn.cursor()
     # SQL
     cursor.execute("""
-                   SELECT l.id         AS loc_id,
-                          l.name       AS loc_name,
-                          p.id         AS photo_id,
-                          p.alt_text   AS photo_alt_text,
-                          p.url        AS photo_url,
-                          r.avg_rating AS avg_rating
+                   SELECT l.id,
+                          l.name,
+                          p.id,
+                          p.alt_text,
+                          p.url,
+                          r.avg_rating
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
                             LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating
@@ -581,6 +581,7 @@ def list_pending_locations(conn: sqlite3.Connection) -> List[Dict[str, str]]:
     cursor.execute("""
                    SELECT l.id,
                           l.name,
+                       l.description,
                           p.url,
                           p.alt_text,
                           u.name AS author_name
@@ -596,14 +597,15 @@ def list_pending_locations(conn: sqlite3.Connection) -> List[Dict[str, str]]:
         loc_data = {
             "id": row[0],
             "name": row[1],
+            "description": row[2],
             "photo": None,
-            "author": row[4]  # Jméno autora
+            "author": row[5]  # Jméno autora
         }
 
-        if row[2] is not None:
+        if row[3] is not None:
             loc_data["photo"] = {
-                "url": row[2],
-                "alt_text": row[3]
+                "url": row[3],
+                "alt_text": row[4]
             }
 
         locations.append(loc_data)
@@ -613,16 +615,15 @@ def list_pending_locations(conn: sqlite3.Connection) -> List[Dict[str, str]]:
 
 def get_pending_location_detail(conn: sqlite3.Connection, location_id: int) -> Dict[str, Any]:
     cursor = conn.cursor()
-    # SQL
     cursor.execute("""
-                   SELECT l.id                  AS loc_id,
-                          l.name                AS loc_name,
-                          l.description         AS loc_description,
-                          l.date_location_added AS loc_date_location_added,
-                          p.id                  AS photo_id,
-                          p.alt_text            AS photo_alt_text,
-                          p.url                 AS photo_url,
-                          r.avg_rating          AS avg_rating
+                   SELECT l.id,
+                          l.name,
+                          l.description,
+                          l.date_location_added,
+                          p.id,
+                          p.alt_text,
+                          p.url,
+                          r.avg_rating
                    FROM location l
                             LEFT JOIN photo p ON l.id = p.id_location
                             LEFT JOIN (SELECT id_location, AVG(rating) AS avg_rating
@@ -633,10 +634,11 @@ def get_pending_location_detail(conn: sqlite3.Connection, location_id: int) -> D
                    ORDER BY l.id
                    """, {"id": location_id})
 
-    # Inicializace slovníku
     location = {}
+    rows = cursor.fetchall()
+    print("Načtená data:", rows)
 
-    for row in cursor.fetchall():
+    for row in rows:
         location = {
             "id": row[0],
             "name": row[1],

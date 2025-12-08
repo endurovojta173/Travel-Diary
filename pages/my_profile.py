@@ -48,6 +48,7 @@ async def my_profile_added_locations(request: Request, svc_location: LocationSer
             "request": request,
             "title": "Moje přidané lokace",
             "locations": my_added_locations,
+            "pending": False
         }
     )
 @router.get("/my_profile_visited_locations", response_class=HTMLResponse)
@@ -62,6 +63,7 @@ async def my_profile_visited_locations(request: Request, svc_location: LocationS
             "request": request,
             "title": "Moje navštívené lokace",
             "locations": locations,
+            "pending": False
         }
     )
 @router.get("/my_profile_favorite_locations", response_class=HTMLResponse)
@@ -76,6 +78,7 @@ async def my_profile_favorite_locations(request: Request, svc_location: Location
             "request": request,
             "title": "Moje oblíbené lokace",
             "locations": locations,
+            "pending": False
         }
     )
 
@@ -91,6 +94,7 @@ async def my_profile_pending_locations(request: Request, svc_location: LocationS
             "request": request,
             "title": "Moje lokace čekající na schválení",
             "locations": locations,
+            "pending": True
         }
     )
 

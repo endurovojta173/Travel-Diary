@@ -13,11 +13,11 @@
 
             {% for loc in locations %}
                 <div class="location-box">
+                    {% if not pending %}
                     <a href="{{ url_for('location_detail',  location_id=loc['id']) }}">
                         <div class="location-box-img">
                             {% if loc['photo'] %}
-                                <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}"
-                                     style="width: 200px">
+                                <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
                             {% else %}
                                 <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}"
                                      class="noImage">
@@ -50,6 +50,24 @@
                             {{ loc['description'] | truncate(200, True, '...') | safe | striptags }}
                         </div>
                     </a>
+                {% else %}
+                    <a href="{{ url_for('approve_location_detail',  location_id=loc['id']) }}">
+                        <div class="location-box-img">
+                            {% if loc['photo'] %}
+                                <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
+                            {% else %}
+                                <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}"
+                                     class="noImage">
+                            {% endif %}
+                        </div>
+                        <div class="location-box-heading">
+                            <h2>{{ loc['name'] }}</h2>
+                        </div>
+                        <div class="location-box-description">
+                            {{ loc['description'] | truncate(200, True, '...') | safe | striptags }}
+                        </div>
+                    </a>
+                {% endif %}
                 </div>
             {% endfor %}
 

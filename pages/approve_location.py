@@ -29,10 +29,11 @@ async def location_detail(request: Request, location_id:int, svc: LocationServic
 
     if not request.session.get("user"):
         return RedirectResponse(url="/login", status_code=303)
-
+    print(9999999999999999999999999999999)
+    print(location_id)
     location = svc.get_pending_location_detail(location_id)
-    tpl = request.app.state.templates
-    return tpl.TemplateResponse(
+    print(location["name"])
+    return request.app.state.templates.TemplateResponse(
         "approve_location_detail.html",
         {
             "request": request,

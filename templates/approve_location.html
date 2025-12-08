@@ -1,35 +1,36 @@
 {% extends "base.html" %}
-{% block title %}{{ title }}{% endblock %}
+{% block title %} {{ title }} {% endblock %}
+{% block head %}
+    <link rel="stylesheet" href="{{ url_for('static', path='css/rankings.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/rating.css') }}">
+{% endblock %}
 {% block content %}
     <h1>{{ title }}</h1>
+    <div class="container">
+        <div class="locations-container">
 
-    {% if pending_locations %}
-        <table>
-            <tr>
-                <th>ID lokace</th>
-                <th>Název lokace</th>
-                <th>Náhled lokace</th>
-                <th>Zobrazit detail</th>
-            </tr>
             {% for loc in pending_locations %}
-                <tr>
-                    <td>{{ loc['id'] }}</td>
-                    <td>{{ loc['name'] }}</td>
-                <td>
-                    {% if loc['photo'] %}
-                        <img alt="{{ loc['photo']['alt_text']}}" src= "/{{loc['photo']['url']}}" style="width: 30vh">
-                    {% else %}
-                        <img alt="No photo" src="{{url_for('static', path='img/web/noImage.webp') }}" class="noImage">
-                    {% endif %}
-                </td>
-                    <td> <a href="{{url_for('approve_location_detail',  location_id=loc['id']) }}">Zobrazit detail lokace</a></td>
-                </tr>
-
+                <div class="location-box">
+                    <a href="{{ url_for('approve_location_detail',  location_id=loc['id']) }}">
+                        <div class="location-box-id">{{ loc['id'] }}.</div>
+                        <div class="location-box-img">
+                            {% if loc['photo'] %}
+                                <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
+                            {% else %}
+                                <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}"
+                                     class="noImage">
+                            {% endif %}
+                        </div>
+                        <div class="location-box-heading">
+                            <h2>{{ loc['name'] }}</h2>
+                        </div>
+                        <div class="location-box-description">
+                            {{ loc['description'] | truncate(200, True, '...') | safe | striptags }}
+                        </div>
+                    </a>
+                </div>
             {% endfor %}
-
-        </table>
-    {% else %}
-        <p>Žádné lokace čekající na schválení</p>
-    {% endif %}
+        </div>
+    </div>
 
 {% endblock %}

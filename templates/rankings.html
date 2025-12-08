@@ -45,8 +45,7 @@
                         <div class="location-box-id">{{ loc['id'] }}.</div>
                         <div class="location-box-img">
                             {% if loc['photo'] %}
-                                <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}"
-                                     style="width: 200px">
+                                <img alt="{{ loc['photo']['alt_text'] }}" src="/{{ loc['photo']['url'] }}">
                             {% else %}
                                 <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}"
                                      class="noImage">
