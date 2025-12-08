@@ -87,6 +87,8 @@
 .comment-section {
     display: grid;
     grid-template-columns: 1fr;
+    clear: both; /* Přikáže elementu, aby ignoroval plavání a spadl dolů */
+    border-top: 1px solid var(--neutral-gray-color);
 }
 
 .add-comment-section {
@@ -110,10 +112,12 @@
     cursor: pointer;
     font-weight: bold;
 }
-.add-comment-section button:hover{
+
+.add-comment-section button:hover {
     background-color: var(--dark-green-color);
     transition: background-color 0.2s;
 }
+
 .comment {
     margin: 5px 0 5px 0;
     padding: 10px;
@@ -151,17 +155,19 @@
     right: 0;
     margin: 0;
 }
+
 .comment-delete-button {
     padding: 10px;
     border-radius: 8px;
     font-size: 1.3rem;
-    background-color: rgba(0,0,0,0);
+    background-color: rgba(0, 0, 0, 0);
     color: var(--text-color);
     border: none;
     cursor: pointer;
     font-weight: bold;
 }
-.comment-delete-button:hover{
+
+.comment-delete-button:hover {
     color: var(--dark-green-color);
     transition: color 0.2s;
 }
@@ -171,11 +177,13 @@
         display: flex;
         flex-direction: column;
     }
+
     .heading-box {
         order: -1; /*čím menší, tím výš prvek bude */
         width: 100%;
         margin-bottom: 15px;
     }
+
     .float-slider {
         float: none;
         width: 100%;
