@@ -1,12 +1,13 @@
 from fastapi import Request, APIRouter, Depends, Form
 from fastapi.responses import HTMLResponse, RedirectResponse
-from dependencies import locations_service, user_service
+from dependencies import locations_service, user_service, delete_location_service
 from dependencies import location_comments_service
 from dependencies import edit_location_service
 from services.list_locations import LocationService
 from services.location_comments import LocationCommentsService
 from services.edit_location import EditLocationService
 from services.users import UserService
+from services.delete_location import DeleteLocationService
 
 router = APIRouter()
 
@@ -159,4 +160,14 @@ async def rate_location(
     svc.rate_location(location_id,user["id"],  stars)
 
     return RedirectResponse(url=f"/locations/{location_id}", status_code=303)
+
+@router.post("/locations/{location_id}/delete")
+async def delete_location_endpoint(request: Request, location_id: int, svc: DeleteLocationService = Depends(delete_location_service)):
+
+    user = request.session.get("user")
+    if not user or user['role'] > 2:
+         return RedirectResponse("/", status_code=303)
+    svc.delete_location_process(location_id)
+
+    return RedirectResponse("/?message=Lokace_uspesne_smazana", status_code=303)
 

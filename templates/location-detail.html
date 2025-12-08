@@ -82,11 +82,17 @@
 
         <div class="heading-box">
             <h1>{{ title }}</h1>
-            <!--Editace lokace-->
             {% if request.session.get("user") and request.session.user.role <= 2 %}
-                <a href="/locations/{{ location.id }}/edit_location">
-                    <button type="button"><i class="fa-solid fa-pencil"></i></button>
-                </a>
+                <div class="heading-buttons">
+                    <a href="/locations/{{ location.id }}/edit_location">
+                        <button type="button" title="Upravit"><i class="fa-solid fa-pencil"></i></button>
+                    </a>
+                    <form action="/locations/{{ location.id }}/delete" method="post"
+                          onsubmit="return confirm('Opravdu chcete smazat tuto lokaci?');">
+                        <button type="submit" title="Smazat" class="delete-btn"><i class="fa-solid fa-trash"></i>
+                        </button>
+                    </form>
+                </div>
             {% endif %}
         </div>
         {# Average rating #}

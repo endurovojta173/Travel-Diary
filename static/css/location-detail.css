@@ -16,7 +16,21 @@
 .heading-box h1 {
     margin: 0;
 }
+.heading-buttons {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
 
+.heading-buttons form {
+    margin: 0;
+}
+
+
+.delete-btn:hover {
+    color: var(--light-green-color);
+    transition: color 0.2s;
+}
 .heading-box button {
     padding: 5px;
     font-size: 2rem;

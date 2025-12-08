@@ -8,6 +8,7 @@ from services.add_new_location import AddNewLocationService
 from services.approve_location import ApproveLocationService
 from services.location_comments import LocationCommentsService
 from services.edit_location import EditLocationService
+from services.delete_location import DeleteLocationService
 
 
 
@@ -32,3 +33,5 @@ def location_comments_service(conn: sqlite3.Connection = Depends(get_conn)) -> L
 
 def edit_location_service(conn: sqlite3.Connection = Depends(get_conn)) -> EditLocationService:
     return EditLocationService(conn)
+def delete_location_service(conn: sqlite3.Connection = Depends(get_conn)) -> DeleteLocationService:
+    return DeleteLocationService(conn)
