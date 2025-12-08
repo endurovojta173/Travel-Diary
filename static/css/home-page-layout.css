@@ -90,6 +90,7 @@
 
 .section-title {
     text-align: center;
+    font-size: 2rem;
     margin: 50px 0 30px 0;
 }
 
@@ -107,7 +108,11 @@
     border: 1px solid #eee;
     transition: transform 0.2s;
 }
-
+.fa-map-location-dot,
+.fa-camera,
+.fa-star{
+    color: var(--dark-green-color);
+}
 .about-card:hover {
     transform: translateY(-5px);
 }
