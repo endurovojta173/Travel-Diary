@@ -1,80 +1,97 @@
 {% extends "base.html" %}
 {% block head %}
-    <link rel="stylesheet" href="{{ url_for('static', path='css/slider.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', path='css/slider-home-page.css') }}">
     <link rel="stylesheet" href="{{ url_for('static', path='css/home-page-layout.css') }}">
 {% endblock %}
 {% block title %}{{ title }}{% endblock %}
 {% block content %}
-    <h1>Cestovní deník</h1>
-    <div class="home-grid">
-        <!--Slider s lokacemi-->
-        <div class="location-slider">
-            <div class="simple-slider">
-                {% for loc in random_locations %}
-                    <div class="slide {% if loop.first %}active{% endif %}">
+    <div class="landing-wrapper">
 
-                        {% if loc['photo'] %}
-                            <img src="/{{ loc['photo']['url'] }}" alt="{{ loc['name'] }}">
+        <h1 class="main-title">Cestovní deník</h1>
+
+        <div class="home-grid">
+
+            <div class="location-slider">
+                <div class="simple-slider">
+                    {% for loc in random_locations %}
+                        <div class="slide {% if loop.first %}active{% endif %}">
+
+                            {% if loc['photo'] %}
+                                <img src="/{{ loc['photo']['url'] }}" alt="{{ loc['name'] }}">
+                            {% else %}
+                                <img src="{{ url_for('static', path='img/web/noImage.webp') }}" alt="Bez fotky">
+                            {% endif %}
+
+                            <div class="slide-caption">
+                                <a href="{{ url_for('location_detail', location_id=loc['id']) }}">
+                                    <h2>{{ loc['name'] }}</h2>
+                                </a>
+                            </div>
+                        </div>
+                    {% endfor %}
+
+                    <button type="button" class="slider-btn prev" onclick="changeSlide(-1)">❮</button>
+                    <button type="button" class="slider-btn next" onclick="changeSlide(1)">❯</button>
+                </div>
+            </div>
+
+            <div class="side-panel">
+
+                <div class="side-box">
+                    {% if newest_location %}
+                        {% if newest_location['photo'] %}
+                            <img src="/{{ newest_location['photo']['url'] }}" alt="Nejnovější">
                         {% else %}
                             <img src="{{ url_for('static', path='img/web/noImage.webp') }}" alt="Bez fotky">
                         {% endif %}
 
-                        <div class="slide-caption">
-                            <a href="{{ url_for('location_detail', location_id=loc['id']) }}">
-                                <h2>{{ loc['name'] }}</h2>
+                        <div class="side-caption">
+                            <span class="badge">Nejnovější</span>
+                            <a href="{{ url_for('location_detail', location_id=newest_location['id']) }}">
+                                <h3>{{ newest_location['name'] }}</h3>
                             </a>
                         </div>
+                    {% endif %}
+                </div>
 
-                    </div>
-                {% endfor %}
+                <div class="side-box">
+                    {% if favorite_location %}
+                        {% if favorite_location['photo'] %}
+                            <img src="/{{ favorite_location['photo']['url'] }}" alt="Nejoblíbenější">
+                        {% else %}
+                            <img src="{{ url_for('static', path='img/web/noImage.webp') }}" alt="Bez fotky">
+                        {% endif %}
 
-                <button type="button" class="slider-btn prev" onclick="changeSlide(-1)">❮</button>
-                <button type="button" class="slider-btn next" onclick="changeSlide(1)">❯</button>
+                        <div class="side-caption">
+                            <span class="badge">Nejoblíbenější</span>
+                            <a href="{{ url_for('location_detail', location_id=favorite_location['id']) }}">
+                                <h3>{{ favorite_location['name'] }}</h3>
+                            </a>
+                        </div>
+                    {% endif %}
+                </div>
+
+            </div>
+        </div>
+        <h2 class="section-title">O nás</h2>
+        <div class="about-grid">
+            <div class="about-card">
+                <i class="fa-solid fa-map-location-dot"></i>
+                <h3>Objevuj</h3>
+                <p>Najdi zajímavá místa ve svém okolí.</p>
+            </div>
+            <div class="about-card">
+                <i class="fa-solid fa-camera"></i>
+                <h3>Sdílej</h3>
+                <p>Nahraj fotky a ukaž ostatním své zážitky.</p>
+            </div>
+            <div class="about-card">
+                <i class="fa-solid fa-star"></i>
+                <h3>Hodnoť</h3>
+                <p>Pomoz ostatním najít ty nejlepší lokace.</p>
             </div>
         </div>
 
-        <!--Newest location-->
-        <div class="locations-container">
-            <div class="location-box">
-                <h2>Nejnovější lokace</h2>
-                {% if newest_location %}
-                    {% if newest_location['photo'] %}
-                        <a href="{{ url_for('location_detail',  location_id=newest_location['id']) }}">
-                            <img alt="{{ newest_location['photo']['alt_text'] }}"
-                                 src="/{{ newest_location['photo']['url'] }}">
-                        </a>
-                    {% else %}
-                        <a href="{{ url_for('location_detail',  location_id=newest_location['id']) }}">
-                            <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}"
-                                 class="noImage">
-                        </a>
-                    {% endif %}
-                {% endif %}
-            </div>
-            <!--Most favorite location-->
-            <div class="location-box">
-                <h2>Nejoblíbenější lokace</h2>
-                {% if favorite_location %}
-                    {% if favorite_location['photo'] %}
-                        <a href="{{ url_for('location_detail',  location_id=favorite_location['id']) }}">
-                            <img alt="{{ favorite_location['photo']['alt_text'] }}"
-                                 src="/{{ favorite_location['photo']['url'] }}">
-                        </a>
-                    {% else %}
-                        <a href="{{ url_for('location_detail',  location_id=favorite_location['id']) }}">
-                            <img alt="No photo" src="{{ url_for('static', path='img/web/noImage.webp') }}">
-                        </a>
-                    {% endif %}
-                {% endif %}
-            </div>
-        </div>
-    </div>
-
-    <h2>O nás</h2>
-    <div class="about-us-grid">
-        <div class="about-us-box">box1</div>
-        <div class="about-us-box">box2</div>
-        <div class="about-us-box">box3</div>
     </div>
     <script src="{{ url_for('static', path='js/slider.js') }}"></script>
 {% endblock %}
