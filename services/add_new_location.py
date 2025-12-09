@@ -39,12 +39,10 @@ class AddNewLocationService:
                         filename = f"{uuid.uuid4()}.webp"
                         file_path_on_disk = os.path.join(save_dir, filename)
 
-                        # Převedeme na WebP a uložíme
+                        # Převed na WebP a uloží
                         img.save(file_path_on_disk, format="WEBP", quality=80, optimize=True)
 
-                        # Nová URL pro databázi
-                        # Poznámka: Zkontroluj si, jestli tu chceš 'database/' na začátku.
-                        # Pokud máš mount na '/database', tak je to OK.
+
                         web_url = f"database/img/locations/{dir_uuid}/{filename}"
 
                         photos_data_for_db.append({
@@ -58,9 +56,6 @@ class AddNewLocationService:
                 except Exception as e:
                     print(f"Chyba při ukládání {file.filename}: {e}")
                     continue
-        print(11111111111111111111111)
-        print(id_user)
-        print(location_name)
         return repo_add_new_location(
             self.conn,
             id_user,

@@ -5,7 +5,6 @@ import sqlite3
 def register_user(conn: sqlite3.Connection, name:str, email:str, password_hash:str,auth_provider_id:int) -> Optional[int]:
     cursor = conn.cursor()
     try:
-        #??? jsou ochrana proti sql injection, 3 je user role
         cursor.execute("""
                        INSERT INTO user (name, email, password_hash, id_role, id_auth_provider)
                        VALUES (?, ?, ?, ?,?) 
@@ -20,7 +19,6 @@ def register_user(conn: sqlite3.Connection, name:str, email:str, password_hash:s
 def create_user(conn: sqlite3.Connection, name:str, email:str, password_hash:str, role:int) -> Optional[int]:
     cursor = conn.cursor()
     try:
-        #??? jsou ochrana proti sql injection, 3 je user role
         cursor.execute("""
                        INSERT INTO user (name, email, password_hash, id_role, id_auth_provider)
                        VALUES (?, ?, ?, ?, ?) 
@@ -34,7 +32,6 @@ def create_user(conn: sqlite3.Connection, name:str, email:str, password_hash:str
 
 def get_user_by_email(conn: sqlite3.Connection, email: str) -> Optional[Dict[str, Any]]:
     cursor = conn.cursor()
-    # Vybereme id, jméno, heslo a roli
     cursor.execute("""
                    SELECT id, name, email, password_hash, id_role
                    FROM user
@@ -161,7 +158,6 @@ def get_user_rating_for_location(conn: sqlite3.Connection, user_id, location_id:
                    """, (location_id, user_id))
     row = cursor.fetchone()
     if row is None:
-        print(4444444444444)
         return 0  # Uživatel ještě nehlasoval
     return row[0]
 

@@ -30,7 +30,7 @@ async def login_user(request: Request, login_data: UserLogin = Depends(get_login
     user = svc.authenticate_user(login_data.email, login_data.password)
 
     if not user:
-        # CHYBA: Buď neexistuje user, nebo špatné heslo (z bezpečnostních důvodů neříkáme co přesně)
+        # CHYBA: Buď neexistuje user, nebo špatné heslo
         tpl = request.app.state.templates
         return tpl.TemplateResponse("login.html", {
             "request": request,

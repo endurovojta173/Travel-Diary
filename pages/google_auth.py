@@ -19,7 +19,6 @@ oauth.register(
 )
 
 
-# 1. Tlačítko "Přihlásit přes Google"
 @router.get("/login/google")
 async def login_google(request: Request):
     # Kam se má Google vrátit po přihlášení
@@ -27,17 +26,16 @@ async def login_google(request: Request):
     return await oauth.google.authorize_redirect(request, redirect_uri)
 
 
-# 2. Callback (Sem Google vrátí uživatele)
 @router.get("/auth/google")
 async def auth_google(
         request: Request,
         svc: UserService = Depends(user_service)
 ):
     try:
-        # Získáme token
+        # token
         token = await oauth.google.authorize_access_token(request)
 
-        # Získáme info o uživateli (userinfo obsahuje 'email', 'name', 'picture'...)
+        # Info o uživateli
         user_info = token.get('userinfo')
 
         if not user_info:
@@ -46,7 +44,7 @@ async def auth_google(
         #Najít nebo Vytvořit v DB
         user = svc.get_or_create_google_user(google_email=user_info['email'],google_name=user_info['name'])
 
-        # Uložíme do session (stejně jako u klasického loginu)
+        # Uložíme do session
         request.session["user"] = {
             "id": user["id"],
             "name": user["name"],

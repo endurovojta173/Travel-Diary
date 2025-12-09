@@ -41,7 +41,7 @@ class UserService:
         user = repo_get_user_by_email(self.conn, google_email)
 
         if user:
-            return user  # Uživatel už existuje, vrátíme ho (login)
+            return user
 
         random_password = secrets.token_urlsafe(32)
         hashed_password = pwd_context.hash(random_password)
