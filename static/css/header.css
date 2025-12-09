@@ -80,7 +80,7 @@
 }
 
 .nav-toggle {
-    display: none; /* Na počítači není vidět */
+    display: none;
     background: none;
     border: none;
     color: var(--white-text-color, #fff);
@@ -139,7 +139,6 @@
 /* MOBILNÍ ZOBRAZENÍ*/
 @media (max-width: 768px) {
 
-    /* Rodič musí být relative, aby se menu chytlo pod něj */
     .lower-nav {
         position: relative;
         padding: 10px 0;
@@ -148,21 +147,19 @@
     /* Zobrazíme hamburger */
     .nav-toggle {
         display: block;
-        margin-left: auto; /* Odsune tlačítko doprava */
+        margin-left: auto;
     }
 
-    /* MENU - Změna na svislý padací seznam */
     .lower-nav-items {
-        display: none; /* Defaultně zavřeno */
+        display: none;
 
-        /* Pozicování: "Vznáší se" pod lištou */
+
         position: absolute;
-        top: 100%; /* Začne přesně tam, kde končí lower-nav */
+        top: 100%;
         left: 0;
-        width: 100%; /* Přes celou šířku */
+        width: 100%;
 
-        /* Vzhled */
-        flex-direction: column; /* Položky pod sebe */
+        flex-direction: column;
         background-color: var(--light-green-color, #333);
         padding: 20px 0;
         border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -170,12 +167,11 @@
         z-index: 1001;
     }
 
-    /* Třída .active (přidá ji JS) menu zobrazí */
     .lower-nav-items.active {
         display: flex;
     }
 
-    /* Úprava odkazů na mobilu (větší na klikání) */
+
     .lower-nav-item {
         width: 100%;
         text-align: center;
@@ -184,10 +180,9 @@
     }
 
 
-    /* Vyhledávání na mobilu */
     .lower-nav-search {
         margin: 15px 1vh;
-        width: 90%; /* Aby nebylo nalepené na kraje */
+        width: 90%;
         justify-content: space-between;
     }
 
@@ -202,7 +197,6 @@
         margin: 0 0 0 2vh;
     }
 
-    /* Ikony pro mobilní zobrazení */
     .fa-bars,
     .fa-magnifying-glass,
     .fa-user {

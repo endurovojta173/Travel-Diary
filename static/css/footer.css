@@ -103,16 +103,15 @@
     color: crimson;
 }
 
-/*Mobilní zobrazení*/
 @media (max-width: 768px) {
 
     .footer-top {
-        flex-direction: column; /* Všechno pod sebe */
-        gap: 25px; /* Mezery mezi bloky */
+        flex-direction: column;
+        gap: 25px;
         text-align: center;
     }
 
-    /* Navigaci na mobilu dáme taky pod sebe (nebo nech vedle sebe, pokud se vejde) */
+
     .footer-nav {
         flex-direction: column;
         gap: 15px;

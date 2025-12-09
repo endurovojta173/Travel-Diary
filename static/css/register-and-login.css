@@ -141,9 +141,9 @@ input[type="radio"] {
     color: white;
 }
 
-@media (max-width: 700px) {
+@media (max-width: 768px) {
     .container {
-        height: auto; /* Výška se přizpůsobí obsahu */
+        height: auto;
     }
 
     .form {
